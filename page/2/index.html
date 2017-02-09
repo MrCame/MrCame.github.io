@@ -190,6 +190,145 @@
             
             
               
+                <a class="post-title-link" href="/2016/03/24/SICP2/" itemprop="url">
+                  《计算机程序的解释和构造(SICP)》 (2)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-03-24T11:23:50+08:00" content="2016-03-24">
+              2016-03-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/SICP/" itemprop="url" rel="index">
+                    <span itemprop="name">SICP</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>断断续续看完第一章的三节公开课，做完第一章的课后习题，回顾一下。</p>
+<ul>
+<li><p>Lisp的基本语法</p>
+</li>
+<li><p>组合式的概念</p>
+<p>  例如: (+ 3 (* 5 6))</p>
+</li>
+<li><p>表达式类型</p>
+<ul>
+<li>numbers </li>
+<li>symbol </li>
+<li>lambda-expressions </li>
+<li>definitions </li>
+<li>conditionals(条件表达式) </li>
+<li><p>combinations(组合式)</p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(define  a  (* 5 5))  ;a是符号</span><br><span class="line">(define (a) (* 5 5))  ;a是过程</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>应用序和正则序</p>
+<p>  应用序：先求参后应用<br>  正则序：先展开后规约</p>
+</li>
+<li><p>线性递归(Linear-Recurison)与迭代(Iteration)，时间复杂度、空间复杂度简单分析</p>
+</li>
+<li><p>函数式编程(functional programming)将过程(函数)作为参数，返回值等等</p>
+<p>  例如：</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(define (compose f g)</span><br><span class="line">  (lambda (x)</span><br><span class="line">    (f (g x))))</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>复杂问题的分析与分解，划分成一个个自问题来解决</p>
+</li>
+<li><p>语法糖衣(syntactic sugar)</p>
+<ul>
+<li><p>lambda</p>
+<p>以下两种定义等价，都是f(x) = x + 1</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(define (f x) (+ x 1))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(define f </span><br><span class="line">  (lambda (x) </span><br><span class="line">    (+ x 1)))</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>let</p>
+<p> 以下两种定义等价，都是f(x) = 2x + 1</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(define (f x)</span><br><span class="line">  ((lambda (a)		;a + x </span><br><span class="line">    (+ a x))</span><br><span class="line">  (+ 1 x))		;a = x + 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(define (f x)</span><br><span class="line">  (let ((a (+ x 1)))	;a = x + 1</span><br><span class="line">    (+ a x)))		;a + x</span><br></pre></td></tr></table></figure>
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2016/03/23/SICP-ex1-3(3)/" itemprop="url">
                   SICP 1.3节习题(3)
                 </a>
@@ -1246,124 +1385,6 @@ r3 = (r r1 r2)
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2016/03/04/SICP1/" itemprop="url">
-                  《计算机程序的解释和构造(SICP)》 (1)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-03-04T18:09:43+08:00" content="2016-03-04">
-              2016-03-04
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/SICP/" itemprop="url" rel="index">
-                    <span itemprop="name">SICP</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <p>最近开始看SICP这本神书，先草草看了前三章半，看了一点题目，最近开始跟着两位作者的公开课学习。先说一下对这本书的整体感觉吧，抽象程度比较高，对于计算机程序的理解不再停留于语法的层面，而是剖开现象看本质，探讨计算机程序的本质内容——具象化人的思维。</p>
-<p>如作者所言，对CS而言，关键在于</p>
-<blockquote>
-<p>Techniques for controlling the complexity of large system —— 控制大型系统中的复杂度</p>
-</blockquote>
-<p>而这，也是这本书所讨论的核心问题，如何降低复杂度，一层一层抽象过程，简化难度。概括下来方法有以下三点：</p>
-<blockquote>
-<ol>
-<li>Black-box abstraction ——黑盒抽象</li>
-<li>Establishing conventional interfaces ——按约定实现接口</li>
-<li>making new languages ——定义新的语言</li>
-</ol>
-</blockquote>
-<p>而以上三点，也对应了书中前四章的内容，在控制复杂度的过程中，必然涉及到程序架构的问题，作者也给出了两个方向，operations on aggregates (stream)——聚集操作，和著名的object-oriented——面向对象。也许是因为MIT的CS专业是和EE紧密相连的，各种电气系统的概念总能看到。</p>
-<p>OO编程中，各对象通过消息传递进行联系，也联想到OS里的信号量机制(伟大的Dijkstra)，对于流操作，作者又将其类比于大型电气系统，因为我本科也是EE的，对信号与系统，滤波器这些概念听起来还有些怀念。越发佩服这些作者融会贯通的能力。</p>
-<p>另外一个收获是对于一种新语言的思考</p>
-<blockquote>
-<p>General framework ——利用通用框架体系组织语言</p>
-</blockquote>
-<p>对于新语言，探究</p>
-<blockquote>
-<ol>
-<li>Primitive Elements ——基本元素</li>
-<li>How to put together ——组合元素</li>
-<li>Means of abstraction ——如何抽象(黑盒)</li>
-</ol>
-</blockquote>
-<p>而以上的这些，都是之前的书本没有了解到的，站在一个新的角度重新思考了计算机程序</p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1406,7 +1427,7 @@ r3 = (r r1 r2)
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-count">22</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
