@@ -190,6 +190,151 @@
             
             
               
+                <a class="post-title-link" href="/2017/02/09/Java中的编码问题1/" itemprop="url">
+                  深入分析 Java 中的中文编码问题(1)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2017-02-09T11:41:25+08:00" content="2017-02-09">
+              2017-02-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>引自<a href="https://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/" target="_blank" rel="external">《深入分析Java中的中文编码问题》</a></p>
+<hr>
+<h2 id="问题引入"><a href="#问题引入" class="headerlink" title="问题引入"></a>问题引入</h2><ul>
+<li>计算机中存储信息的最小单元是一个字节即 8 个 bit，所以能表示的字符范围是 0~255 个</li>
+<li>人类要表示的符号太多，无法用一个字节来完全表示</li>
+<li>要解决这个矛盾必须需要一个新的数据结构 char，从 char 到 byte 必须编码</li>
+</ul>
+<h2 id="常见的编码格式"><a href="#常见的编码格式" class="headerlink" title="常见的编码格式"></a>常见的编码格式</h2><ul>
+<li><p>ASCII<br>ASCII 码，总共有 128 个，用一个字节的低 7 位表示，0~31 是控制字符如换行回车删除等；32~126 是打印字符，可以通过键盘输入并且能够显示出来。</p>
+</li>
+<li><p>ISO-8859-1<br>128 个字符显然是不够用的，于是 ISO 组织在 ASCII 码基础上又制定了一些列标准用来扩展 ASCII 编码，它们是 ISO-8859-1~ISO-8859-15，其中 ISO-8859-1 涵盖了大多数西欧语言字符，所有应用的最广泛。ISO-8859-1 仍然是单字节编码，它总共能表示 256 个字符。</p>
+</li>
+<li><p>GB2312<br>它的全称是《信息交换用汉字编码字符集基本集》，它是双字节编码，总的编码范围是 A1-F7，其中从 A1-A9 是符号区，总共包含 682 个符号，从 B0-F7 是汉字区，包含 6763 个汉字。</p>
+</li>
+<li><p>GBK<br>全称叫《汉字内码扩展规范》，是国家技术监督局为 windows95 所制定的新的汉字内码规范，它的出现是为了扩展 GB2312，加入更多的汉字，它的编码范围是 8140~FEFE（去掉 XX7F）总共有 23940 个码位，它能表示 21003 个汉字，它的编码是和 GB2312 兼容的，也就是说用 GB2312 编码的汉字可以用 GBK 来解码，并且不会有乱码。</p>
+</li>
+<li><p>GB18030<br>全称是《信息交换用汉字编码字符集》，是我国的强制标准，它可能是单字节、双字节或者四字节编码，它的编码与 GB2312 编码兼容，这个虽然是国家标准，但是实际应用系统中使用的并不广泛。</p>
+</li>
+<li><p>UTF-16<br>UTF-16 具体定义了 Unicode 字符在计算机中存取方法。UTF-16 用两个字节来表示 Unicode 转化格式，这个是定长的表示方法，不论什么字符都可以用两个字节表示，两个字节是 16 个 bit，所以叫 UTF-16。UTF-16 表示字符非常方便，每两个字节表示一个字符，这个在字符串操作时就大大简化了操作，这也是 Java 以 UTF-16 作为内存的字符存储格式的一个很重要的原因。</p>
+</li>
+<li><p>UTF-8<br>UTF-16 统一采用两个字节表示一个字符，虽然在表示上非常简单方便，但是也有其缺点，有很大一部分字符用一个字节就可以表示的现在要两个字节表示，存储空间放大了一倍，在现在的网络带宽还非常有限的今天，这样会增大网络传输的流量，而且也没必要。而 UTF-8 采用了一种变长技术，每个编码区域有不同的字码长度。不同类型的字符可以是由 1~6 个字节组成。<br>UTF-8 有以下编码规则：</p>
+<ul>
+<li>如果一个字节，最高位（第 8 位）为 0，表示这是一个 ASCII 字符（00 - 7F）。可见，所有 ASCII 编码已经是 UTF-8 了。<ul>
+<li>如果一个字节，以 11 开头，连续的 1 的个数暗示这个字符的字节数，例如：110xxxxx 代表它是双字节 UTF-8 字符的首字节。</li>
+<li>如果一个字节，以 10 开始，表示它不是首字节，需要向前查找才能得到当前字符的首字节</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="Java中的编解码"><a href="#Java中的编解码" class="headerlink" title="Java中的编解码"></a>Java中的编解码</h2><p><strong>解码：字节-&gt;字符</strong>　　<strong>编码：字符-&gt;字节</strong></p>
+<h3 id="IO中的编解码"><a href="#IO中的编解码" class="headerlink" title="IO中的编解码"></a>IO中的编解码</h3><p>根据处理数据类型的不同分为：字符流(byte) 字节流(char)<br>根据数据流向不同分为：输入流(读，外存-&gt;内存) 输出流(写，内存-&gt;外存)<br>字符流：Reader，Writer<br>字节流：InputStream, OutputStream<br>桥梁：InputStreamReader(字节-&gt;字符) OutputStreamWriter(字符-&gt;字节)</p>
+<p>InputStreamReader具体的解码由 StreamDecoder 实现，将字节解码成字符，解码过程中必须由用户指定 Charset 格式。值得注意的是如果你没有指定 Charset，将使用本地环境中的默认字符集，例如在中文环境中将使用 GBK 编码。<br><img src="/images/java-0-0.png" alt="&quot;Input&quot;"></p>
+<p>同样，OutputStreamWriter具体的编码由 StreamEncoder 实现，将字符编码成字节，编码格式和默认编码规则与解码是一致的。<br><img src="/images/java-0-1.png" alt="&quot;Output&quot;"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">String file = &quot;c:/stream.txt&quot;; </span><br><span class="line">String charset = &quot;UTF-8&quot;;  // 编码格式</span><br><span class="line"></span><br><span class="line">// 写字符换转成字节流</span><br><span class="line">FileOutputStream outputStream = new FileOutputStream(file);</span><br><span class="line">OutputStreamWriter writer = new OutputStreamWriter( </span><br><span class="line">outputStream, charset);</span><br><span class="line">try &#123; </span><br><span class="line">   writer.write(&quot;这是要保存的中文字符&quot;); </span><br><span class="line">&#125; finally &#123; </span><br><span class="line">   writer.close(); </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">// 读取字节转换成字符</span><br><span class="line">FileInputStream inputStream = new FileInputStream(file); </span><br><span class="line">InputStreamReader reader = new InputStreamReader( </span><br><span class="line">inputStream, charset); </span><br><span class="line">StringBuffer buffer = new StringBuffer(); </span><br><span class="line">char[] buf = new char[64]; </span><br><span class="line">int count = 0; </span><br><span class="line">try &#123; </span><br><span class="line">   while ((count = reader.read(buf)) != -1) &#123; </span><br><span class="line">       buffer.append(buffer, 0, count); </span><br><span class="line">   &#125; </span><br><span class="line">&#125; finally &#123; </span><br><span class="line">   reader.close(); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="内存中的编解码"><a href="#内存中的编解码" class="headerlink" title="内存中的编解码"></a>内存中的编解码</h3><p>在 Java 开发中除了 I/O 涉及到编码外，最常用的应该就是在内存中进行字符到字节的数据类型的转换，Java 中用 String 表示字符串，所以 String 类就提供转换到字节的方法，也支持将字节转换为字符串的构造函数。如下代码示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String s = &quot;这是一段中文字符串&quot;; </span><br><span class="line">byte[] b = s.getBytes(&quot;UTF-8&quot;); </span><br><span class="line">String n = new String(b,&quot;UTF-8&quot;);</span><br></pre></td></tr></table></figure>
+<p>另外一个是已经被被废弃的 ByteToCharConverter 和 CharToByteConverter 类，它们被 Charset 类取代。Charset 提供 encode 与 decode 分别对应 char[] 到 byte[] 的编码和 byte[] 到 char[] 的解码。如下代码所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Charset charset = Charset.forName(&quot;UTF-8&quot;); </span><br><span class="line">ByteBuffer byteBuffer = charset.encode(string); </span><br><span class="line">CharBuffer charBuffer = charset.decode(byteBuffer);</span><br></pre></td></tr></table></figure>
+<h3 id="Java中具体的编解码实例"><a href="#Java中具体的编解码实例" class="headerlink" title="Java中具体的编解码实例"></a>Java中具体的编解码实例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">public class IOTest &#123;</span><br><span class="line">    public static void main(String... args) &#123;</span><br><span class="line">        String s = &quot;I am 君山&quot;;</span><br><span class="line">        encode(s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void encode(String s) &#123;</span><br><span class="line">        toHex(s.toCharArray());</span><br><span class="line">        try &#123;</span><br><span class="line">            byte[] iso8859 = s.getBytes(&quot;ISO-8859-1&quot;);</span><br><span class="line">            toHex(iso8859, &quot;iso8859&quot;);</span><br><span class="line">            byte[] gb2312 = s.getBytes(&quot;GB2312&quot;);</span><br><span class="line">            toHex(gb2312, &quot;gb2312&quot;);</span><br><span class="line">            byte[] gbk = s.getBytes(&quot;GBK&quot;);</span><br><span class="line">            toHex(gbk, &quot;gbk&quot;);</span><br><span class="line">            byte[] utf16 = s.getBytes(&quot;UTF-16&quot;);</span><br><span class="line">            toHex(utf16, &quot;utf16&quot;);</span><br><span class="line">            byte[] utf8 = s.getBytes(&quot;UTF-8&quot;);</span><br><span class="line">            toHex(utf8, &quot;utf8&quot;);</span><br><span class="line">        &#125; catch (UnsupportedEncodingException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static void toHex(char[] c) &#123;</span><br><span class="line">        System.out.println(&quot;-------- char[] --------&quot;);</span><br><span class="line">        String s = &quot;&quot;;</span><br><span class="line">        for (int i = 0; i &lt; c.length; i++)</span><br><span class="line">            s += Integer.toHexString(c[i]) + &quot; &quot;;</span><br><span class="line">        System.out.println(s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static void toHex(byte[] b, String charset) &#123;</span><br><span class="line">        System.out.println(&quot;------&quot; + charset + &quot;-------&quot;);</span><br><span class="line">        for (int i = 0; i &lt; b.length; i++) &#123;</span><br><span class="line">            System.out.printf(&quot;%x&quot;, b[i]);</span><br><span class="line">            System.out.print(&quot; &quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-------- char[] --------</span><br><span class="line">49 20 61 6d 20 541b 5c71 </span><br><span class="line">------iso8859-------</span><br><span class="line">49 20 61 6d 20 3f 3f </span><br><span class="line">------gb2312-------</span><br><span class="line">49 20 61 6d 20 be fd c9 bd </span><br><span class="line">------gbk-------</span><br><span class="line">49 20 61 6d 20 be fd c9 bd </span><br><span class="line">------utf16-------</span><br><span class="line">fe ff 0 49 0 20 0 61 0 6d 0 20 54 1b 5c 71 </span><br><span class="line">------utf8-------</span><br><span class="line">49 20 61 6d 20 e5 90 9b e5 b1 b1</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>ISO-8859-1<br><img src="/images/java-0-2.png" alt="&quot;ISO-8859-1&quot;"><br>7 个 char 字符经过 ISO-8859-1 编码转变成 7 个 byte 数组，ISO-8859-1 是单字节编码，中文“君山”被转化成值是 3f 的 byte。3f 也就是“？”字符，所以经常会出现中文变成“？”很可能就是错误的使用了 ISO-8859-1 导致的。中文字符经过 ISO-8859-1 编码会丢失信息，通常我们称之为“黑洞”，它会把不认识的字符吸收掉。由于现在大部分基础的 Java 框架或系统默认的字符集编码都是 ISO-8859-1，所以很容易出现乱码问题。</p>
+</li>
+<li><p>GB2312<br><img src="/images/java-0-3.png" alt="&quot;GB2312&quot;"><br>GB2312 字符集有一个 char 到 byte 的码表，不同的字符编码就是查这个码表找到与每个字符的对应的字节，然后拼装成 byte 数组。如果查到的码位值大于 oxff 则是双字节，否则是单字节。双字节高 8 位作为第一个字节，低 8 位作为第二个字节</p>
+</li>
+<li><p>GBK<br><img src="/images/java-0-4.png" alt="&quot;GBK&quot;"><br>与 GB2312 编码的结果是一样的，由此可以得出 GBK 编码是兼容 GB2312 编码的，它们的编码算法也是一样的。不同的是它们的码表长度不一样，GBK 包含的汉字字符更多。所以只要是经过 GB2312 编码的汉字都可以用 GBK 进行解码，反过来则不然。</p>
+</li>
+<li><p>UTF-16<br><img src="/images/java-0-5.png" alt="&quot;UTF-16&quot;"><br>用 UTF-16 编码将 char 数组放大了一倍，单字节范围内的字符，在高位补 0 变成两个字节，中文字符也变成两个字节。从 UTF-16 编码规则来看，仅仅将字符的高位和地位进行拆分变成两个字节。特点是编码效率非常高，规则很简单，由于不同处理器对 2 字节处理方式不同，Big-endian（高位字节在前，低位字节在后）或 Little-endian（低位字节在前，高位字节在后）编码，所以在对一串字符串进行编码是需要指明到底是 Big-endian 还是 Little-endian，所以前面有两个字节用来保存 BYTE_ORDER_MARK 值。<strong>(UTF16打印结果中的前两个字节fe ff，因为在Windows平台下默认的Unicode编码为Little-endian的UTF-16)</strong>UTF-16 是用定长 16 位（2 字节）来表示的 UCS-2 或 Unicode 转换格式，通过代理对来访问 BMP 之外的字符编码。</p>
+</li>
+<li><p>UTF-8<br><img src="/images/java-0-6.png" alt="&quot;UTF-8&quot;"><br>UTF-16 虽然编码效率很高，但是对单字节范围内字符也放大了一倍，这无形也浪费了存储空间，另外 UTF-16 采用顺序编码，不能对单个字符的编码值进行校验，如果中间的一个字符码值损坏，后面的所有码值都将受影响。而 UTF-8 这些问题都不存在，UTF-8 对单字节范围内字符仍然用一个字节表示，对汉字采用三个字节表示。<br><strong>UTF-8 编码与 GBK 和 GB2312 不同，不用查码表，所以在编码效率上 UTF-8 的效率会更好，所以在存储中文字符时 UTF-8 编码比较理想。</strong></p>
+</li>
+</ul>
+<h3 id="几种编码格式的比较"><a href="#几种编码格式的比较" class="headerlink" title="几种编码格式的比较"></a>几种编码格式的比较</h3><p>对中文字符后面四种编码格式都能处理，GB2312 与 GBK 编码规则类似，但是 GBK 范围更大，它能处理所有汉字字符，所以 GB2312 与 GBK 比较应该选择 GBK。UTF-16 与 UTF-8 都是处理 Unicode 编码，它们的编码规则不太相同，相对来说 UTF-16 编码效率最高，字符到字节相互转换更简单，进行字符串操作也更好。它适合在本地磁盘和内存之间使用，可以进行字符和字节之间快速切换，如 Java 的内存编码就是采用 UTF-16 编码。但是它不适合在网络之间传输，因为网络传输容易损坏字节流，一旦字节流损坏将很难恢复，想比较而言 UTF-8 更适合网络传输，对 ASCII 字符采用单字节存储，另外单个字符损坏也不会影响后面其它字符，在编码效率上介于 GBK 和 UTF-16 之间，所以 UTF-8 在编码效率上和编码安全性上做了平衡，是理想的中文编码方式。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2016/05/05/hexo-1/" itemprop="url">
                   Hexo的NexT主题默认显示侧边栏
                 </a>
@@ -1263,109 +1408,11 @@ x
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2016/03/23/SICP-ex1-3(3)/" itemprop="url">
-                  SICP 1.3节习题(3)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-03-23T20:10:07+08:00" content="2016-03-23">
-              2016-03-23
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
-                    <span itemprop="name">SICP解题集</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h1 id="第一章-构造过程抽象"><a href="#第一章-构造过程抽象" class="headerlink" title="第一章 构造过程抽象"></a>第一章 构造过程抽象</h1><h2 id="1-3-用高阶函数做抽象"><a href="#1-3-用高阶函数做抽象" class="headerlink" title="1.3 用高阶函数做抽象"></a>1.3 用高阶函数做抽象</h2><h3 id="EX-1-40"><a href="#EX-1-40" class="headerlink" title="EX 1.40"></a>EX 1.40</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">;定义过程cubic</span><br><span class="line">(define (cubic a b c)</span><br><span class="line">  (lambda (x) (+ (cube x) (* a (square x)) (* b x) c)))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-1-41"><a href="#EX-1-41" class="headerlink" title="EX 1.41"></a>EX 1.41</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(define (double f)</span><br><span class="line">  (lambda (x)</span><br><span class="line">    (f (f x))))</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(((double (double double)) inc) 5)  ;答案是21</span><br></pre></td></tr></table></figure>
-<p>分析:<br>((double inc) 5)                     将inc应用2^1次,结果为7<br>(((double double) inc) 5)            将inc应用2^2次,结果为9<br>((double (double double)) inc) 5)    将inc应用(2^2)^2次,结果为21</p>
-<h3 id="EX-1-42"><a href="#EX-1-42" class="headerlink" title="EX 1.42"></a>EX 1.42</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(define (compose f g)</span><br><span class="line">  (lambda (x)</span><br><span class="line">    (f (g x))))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-1-43"><a href="#EX-1-43" class="headerlink" title="EX 1.43"></a>EX 1.43</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">;递归版本</span><br><span class="line">(define (repeated f n)</span><br><span class="line">  (if (= n 1)</span><br><span class="line">      f</span><br><span class="line">      (lambda (x)</span><br><span class="line">        (f ((repeated f (- n 1)) x)))))</span><br><span class="line">;迭代版本</span><br><span class="line">(define (re-iter f n)</span><br><span class="line">  (define (iter i f-result)</span><br><span class="line">    (if (= i n)</span><br><span class="line">        f-result</span><br><span class="line">        (iter (+ i 1) (lambda (x) (f (f-result x))))))</span><br><span class="line">  (iter 1 f))</span><br></pre></td></tr></table></figure>
-<p>根据提示,可以使用EX 1.42的compose过程,省去了使用lambda</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">;使用compose的递归版本</span><br><span class="line">(define (repeated f n)</span><br><span class="line">  (if (= n 1)</span><br><span class="line">      f</span><br><span class="line">      (compose f (repeated f (- n 1)))))</span><br><span class="line">;使用compose的迭代版本</span><br><span class="line">(define (repeated f n)</span><br><span class="line">  (define (iter i f-result)</span><br><span class="line">    (if (= i n)</span><br><span class="line">        f-result</span><br><span class="line">        (iter (+ i 1) (compose f f-result))))</span><br><span class="line">  (iter 1 f))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-1-44"><a href="#EX-1-44" class="headerlink" title="EX 1.44"></a>EX 1.44</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">;一次平滑</span><br><span class="line">(define (smooth f)</span><br><span class="line">  (define dx 0.000001)</span><br><span class="line">  (lambda (x)</span><br><span class="line">    (/ (+ (f (- x dx)) (f x) (f (+ x dx))) 3))) </span><br><span class="line">;n次平滑</span><br><span class="line">(define (n-smooth f n)</span><br><span class="line">  (re1 smooth n) f)</span><br></pre></td></tr></table></figure>
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1403,21 +1450,21 @@ x
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-count">21</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-count">10</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -1452,7 +1499,7 @@ x
       <div class="footer-inner"> <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

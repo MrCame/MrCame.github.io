@@ -1,0 +1,722 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  
+    <link href='//fonts.lug.ustc.edu.cn/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  
+
+
+<link rel="stylesheet" type="text/css" href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" />
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.2"/>
+
+
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+<meta name="description" content="引自《深入分析Java中的中文编码问题》
+
+问题引入
+计算机中存储信息的最小单元是一个字节即 8 个 bit，所以能表示的字符范围是 0~255 个
+人类要表示的符号太多，无法用一个字节来完全表示
+要解决这个矛盾必须需要一个新的数据结构 char，从 char 到 byte 必须编码
+
+常见的编码格式
+ASCIIASCII 码，总共有 128 个，用一个字节的低 7 位表示，0~31 是控制字符如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入分析 Java 中的中文编码问题(1)">
+<meta property="og:url" content="http://yoursite.com/2017/02/09/Java中的编码问题1/index.html">
+<meta property="og:site_name" content="Welcome to My World">
+<meta property="og:description" content="引自《深入分析Java中的中文编码问题》
+
+问题引入
+计算机中存储信息的最小单元是一个字节即 8 个 bit，所以能表示的字符范围是 0~255 个
+人类要表示的符号太多，无法用一个字节来完全表示
+要解决这个矛盾必须需要一个新的数据结构 char，从 char 到 byte 必须编码
+
+常见的编码格式
+ASCIIASCII 码，总共有 128 个，用一个字节的低 7 位表示，0~31 是控制字符如">
+<meta property="og:image" content="http://yoursite.com/images/java-0-0.png">
+<meta property="og:image" content="http://yoursite.com/images/java-0-1.png">
+<meta property="og:image" content="http://yoursite.com/images/java-0-2.png">
+<meta property="og:image" content="http://yoursite.com/images/java-0-3.png">
+<meta property="og:image" content="http://yoursite.com/images/java-0-4.png">
+<meta property="og:image" content="http://yoursite.com/images/java-0-5.png">
+<meta property="og:image" content="http://yoursite.com/images/java-0-6.png">
+<meta property="og:updated_time" content="2017-02-09T06:15:29.027Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入分析 Java 中的中文编码问题(1)">
+<meta name="twitter:description" content="引自《深入分析Java中的中文编码问题》
+
+问题引入
+计算机中存储信息的最小单元是一个字节即 8 个 bit，所以能表示的字符范围是 0~255 个
+人类要表示的符号太多，无法用一个字节来完全表示
+要解决这个矛盾必须需要一个新的数据结构 char，从 char 到 byte 必须编码
+
+常见的编码格式
+ASCIIASCII 码，总共有 128 个，用一个字节的低 7 位表示，0~31 是控制字符如">
+<meta name="twitter:image" content="http://yoursite.com/images/java-0-0.png">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'always'
+  };
+</script>
+
+
+
+  <title> 深入分析 Java 中的中文编码问题(1) | Welcome to My World </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to My World</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                深入分析 Java 中的中文编码问题(1)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2017-02-09T11:41:25+08:00" content="2017-02-09">
+              2017-02-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>引自<a href="https://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/" target="_blank" rel="external">《深入分析Java中的中文编码问题》</a></p>
+<hr>
+<h2 id="问题引入"><a href="#问题引入" class="headerlink" title="问题引入"></a>问题引入</h2><ul>
+<li>计算机中存储信息的最小单元是一个字节即 8 个 bit，所以能表示的字符范围是 0~255 个</li>
+<li>人类要表示的符号太多，无法用一个字节来完全表示</li>
+<li>要解决这个矛盾必须需要一个新的数据结构 char，从 char 到 byte 必须编码</li>
+</ul>
+<h2 id="常见的编码格式"><a href="#常见的编码格式" class="headerlink" title="常见的编码格式"></a>常见的编码格式</h2><ul>
+<li><p>ASCII<br>ASCII 码，总共有 128 个，用一个字节的低 7 位表示，0~31 是控制字符如换行回车删除等；32~126 是打印字符，可以通过键盘输入并且能够显示出来。</p>
+</li>
+<li><p>ISO-8859-1<br>128 个字符显然是不够用的，于是 ISO 组织在 ASCII 码基础上又制定了一些列标准用来扩展 ASCII 编码，它们是 ISO-8859-1~ISO-8859-15，其中 ISO-8859-1 涵盖了大多数西欧语言字符，所有应用的最广泛。ISO-8859-1 仍然是单字节编码，它总共能表示 256 个字符。</p>
+</li>
+<li><p>GB2312<br>它的全称是《信息交换用汉字编码字符集基本集》，它是双字节编码，总的编码范围是 A1-F7，其中从 A1-A9 是符号区，总共包含 682 个符号，从 B0-F7 是汉字区，包含 6763 个汉字。</p>
+</li>
+<li><p>GBK<br>全称叫《汉字内码扩展规范》，是国家技术监督局为 windows95 所制定的新的汉字内码规范，它的出现是为了扩展 GB2312，加入更多的汉字，它的编码范围是 8140~FEFE（去掉 XX7F）总共有 23940 个码位，它能表示 21003 个汉字，它的编码是和 GB2312 兼容的，也就是说用 GB2312 编码的汉字可以用 GBK 来解码，并且不会有乱码。</p>
+</li>
+<li><p>GB18030<br>全称是《信息交换用汉字编码字符集》，是我国的强制标准，它可能是单字节、双字节或者四字节编码，它的编码与 GB2312 编码兼容，这个虽然是国家标准，但是实际应用系统中使用的并不广泛。</p>
+</li>
+<li><p>UTF-16<br>UTF-16 具体定义了 Unicode 字符在计算机中存取方法。UTF-16 用两个字节来表示 Unicode 转化格式，这个是定长的表示方法，不论什么字符都可以用两个字节表示，两个字节是 16 个 bit，所以叫 UTF-16。UTF-16 表示字符非常方便，每两个字节表示一个字符，这个在字符串操作时就大大简化了操作，这也是 Java 以 UTF-16 作为内存的字符存储格式的一个很重要的原因。</p>
+</li>
+<li><p>UTF-8<br>UTF-16 统一采用两个字节表示一个字符，虽然在表示上非常简单方便，但是也有其缺点，有很大一部分字符用一个字节就可以表示的现在要两个字节表示，存储空间放大了一倍，在现在的网络带宽还非常有限的今天，这样会增大网络传输的流量，而且也没必要。而 UTF-8 采用了一种变长技术，每个编码区域有不同的字码长度。不同类型的字符可以是由 1~6 个字节组成。<br>UTF-8 有以下编码规则：</p>
+<ul>
+<li>如果一个字节，最高位（第 8 位）为 0，表示这是一个 ASCII 字符（00 - 7F）。可见，所有 ASCII 编码已经是 UTF-8 了。<ul>
+<li>如果一个字节，以 11 开头，连续的 1 的个数暗示这个字符的字节数，例如：110xxxxx 代表它是双字节 UTF-8 字符的首字节。</li>
+<li>如果一个字节，以 10 开始，表示它不是首字节，需要向前查找才能得到当前字符的首字节</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="Java中的编解码"><a href="#Java中的编解码" class="headerlink" title="Java中的编解码"></a>Java中的编解码</h2><p><strong>解码：字节-&gt;字符</strong>　　<strong>编码：字符-&gt;字节</strong></p>
+<h3 id="IO中的编解码"><a href="#IO中的编解码" class="headerlink" title="IO中的编解码"></a>IO中的编解码</h3><p>根据处理数据类型的不同分为：字符流(byte) 字节流(char)<br>根据数据流向不同分为：输入流(读，外存-&gt;内存) 输出流(写，内存-&gt;外存)<br>字符流：Reader，Writer<br>字节流：InputStream, OutputStream<br>桥梁：InputStreamReader(字节-&gt;字符) OutputStreamWriter(字符-&gt;字节)</p>
+<p>InputStreamReader具体的解码由 StreamDecoder 实现，将字节解码成字符，解码过程中必须由用户指定 Charset 格式。值得注意的是如果你没有指定 Charset，将使用本地环境中的默认字符集，例如在中文环境中将使用 GBK 编码。<br><img src="/images/java-0-0.png" alt="&quot;Input&quot;"></p>
+<p>同样，OutputStreamWriter具体的编码由 StreamEncoder 实现，将字符编码成字节，编码格式和默认编码规则与解码是一致的。<br><img src="/images/java-0-1.png" alt="&quot;Output&quot;"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">String file = &quot;c:/stream.txt&quot;; </span><br><span class="line">String charset = &quot;UTF-8&quot;;  // 编码格式</span><br><span class="line"></span><br><span class="line">// 写字符换转成字节流</span><br><span class="line">FileOutputStream outputStream = new FileOutputStream(file);</span><br><span class="line">OutputStreamWriter writer = new OutputStreamWriter( </span><br><span class="line">outputStream, charset);</span><br><span class="line">try &#123; </span><br><span class="line">   writer.write(&quot;这是要保存的中文字符&quot;); </span><br><span class="line">&#125; finally &#123; </span><br><span class="line">   writer.close(); </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">// 读取字节转换成字符</span><br><span class="line">FileInputStream inputStream = new FileInputStream(file); </span><br><span class="line">InputStreamReader reader = new InputStreamReader( </span><br><span class="line">inputStream, charset); </span><br><span class="line">StringBuffer buffer = new StringBuffer(); </span><br><span class="line">char[] buf = new char[64]; </span><br><span class="line">int count = 0; </span><br><span class="line">try &#123; </span><br><span class="line">   while ((count = reader.read(buf)) != -1) &#123; </span><br><span class="line">       buffer.append(buffer, 0, count); </span><br><span class="line">   &#125; </span><br><span class="line">&#125; finally &#123; </span><br><span class="line">   reader.close(); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="内存中的编解码"><a href="#内存中的编解码" class="headerlink" title="内存中的编解码"></a>内存中的编解码</h3><p>在 Java 开发中除了 I/O 涉及到编码外，最常用的应该就是在内存中进行字符到字节的数据类型的转换，Java 中用 String 表示字符串，所以 String 类就提供转换到字节的方法，也支持将字节转换为字符串的构造函数。如下代码示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String s = &quot;这是一段中文字符串&quot;; </span><br><span class="line">byte[] b = s.getBytes(&quot;UTF-8&quot;); </span><br><span class="line">String n = new String(b,&quot;UTF-8&quot;);</span><br></pre></td></tr></table></figure>
+<p>另外一个是已经被被废弃的 ByteToCharConverter 和 CharToByteConverter 类，它们被 Charset 类取代。Charset 提供 encode 与 decode 分别对应 char[] 到 byte[] 的编码和 byte[] 到 char[] 的解码。如下代码所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Charset charset = Charset.forName(&quot;UTF-8&quot;); </span><br><span class="line">ByteBuffer byteBuffer = charset.encode(string); </span><br><span class="line">CharBuffer charBuffer = charset.decode(byteBuffer);</span><br></pre></td></tr></table></figure>
+<h3 id="Java中具体的编解码实例"><a href="#Java中具体的编解码实例" class="headerlink" title="Java中具体的编解码实例"></a>Java中具体的编解码实例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">public class IOTest &#123;</span><br><span class="line">    public static void main(String... args) &#123;</span><br><span class="line">        String s = &quot;I am 君山&quot;;</span><br><span class="line">        encode(s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void encode(String s) &#123;</span><br><span class="line">        toHex(s.toCharArray());</span><br><span class="line">        try &#123;</span><br><span class="line">            byte[] iso8859 = s.getBytes(&quot;ISO-8859-1&quot;);</span><br><span class="line">            toHex(iso8859, &quot;iso8859&quot;);</span><br><span class="line">            byte[] gb2312 = s.getBytes(&quot;GB2312&quot;);</span><br><span class="line">            toHex(gb2312, &quot;gb2312&quot;);</span><br><span class="line">            byte[] gbk = s.getBytes(&quot;GBK&quot;);</span><br><span class="line">            toHex(gbk, &quot;gbk&quot;);</span><br><span class="line">            byte[] utf16 = s.getBytes(&quot;UTF-16&quot;);</span><br><span class="line">            toHex(utf16, &quot;utf16&quot;);</span><br><span class="line">            byte[] utf8 = s.getBytes(&quot;UTF-8&quot;);</span><br><span class="line">            toHex(utf8, &quot;utf8&quot;);</span><br><span class="line">        &#125; catch (UnsupportedEncodingException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static void toHex(char[] c) &#123;</span><br><span class="line">        System.out.println(&quot;-------- char[] --------&quot;);</span><br><span class="line">        String s = &quot;&quot;;</span><br><span class="line">        for (int i = 0; i &lt; c.length; i++)</span><br><span class="line">            s += Integer.toHexString(c[i]) + &quot; &quot;;</span><br><span class="line">        System.out.println(s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static void toHex(byte[] b, String charset) &#123;</span><br><span class="line">        System.out.println(&quot;------&quot; + charset + &quot;-------&quot;);</span><br><span class="line">        for (int i = 0; i &lt; b.length; i++) &#123;</span><br><span class="line">            System.out.printf(&quot;%x&quot;, b[i]);</span><br><span class="line">            System.out.print(&quot; &quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-------- char[] --------</span><br><span class="line">49 20 61 6d 20 541b 5c71 </span><br><span class="line">------iso8859-------</span><br><span class="line">49 20 61 6d 20 3f 3f </span><br><span class="line">------gb2312-------</span><br><span class="line">49 20 61 6d 20 be fd c9 bd </span><br><span class="line">------gbk-------</span><br><span class="line">49 20 61 6d 20 be fd c9 bd </span><br><span class="line">------utf16-------</span><br><span class="line">fe ff 0 49 0 20 0 61 0 6d 0 20 54 1b 5c 71 </span><br><span class="line">------utf8-------</span><br><span class="line">49 20 61 6d 20 e5 90 9b e5 b1 b1</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>ISO-8859-1<br><img src="/images/java-0-2.png" alt="&quot;ISO-8859-1&quot;"><br>7 个 char 字符经过 ISO-8859-1 编码转变成 7 个 byte 数组，ISO-8859-1 是单字节编码，中文“君山”被转化成值是 3f 的 byte。3f 也就是“？”字符，所以经常会出现中文变成“？”很可能就是错误的使用了 ISO-8859-1 导致的。中文字符经过 ISO-8859-1 编码会丢失信息，通常我们称之为“黑洞”，它会把不认识的字符吸收掉。由于现在大部分基础的 Java 框架或系统默认的字符集编码都是 ISO-8859-1，所以很容易出现乱码问题。</p>
+</li>
+<li><p>GB2312<br><img src="/images/java-0-3.png" alt="&quot;GB2312&quot;"><br>GB2312 字符集有一个 char 到 byte 的码表，不同的字符编码就是查这个码表找到与每个字符的对应的字节，然后拼装成 byte 数组。如果查到的码位值大于 oxff 则是双字节，否则是单字节。双字节高 8 位作为第一个字节，低 8 位作为第二个字节</p>
+</li>
+<li><p>GBK<br><img src="/images/java-0-4.png" alt="&quot;GBK&quot;"><br>与 GB2312 编码的结果是一样的，由此可以得出 GBK 编码是兼容 GB2312 编码的，它们的编码算法也是一样的。不同的是它们的码表长度不一样，GBK 包含的汉字字符更多。所以只要是经过 GB2312 编码的汉字都可以用 GBK 进行解码，反过来则不然。</p>
+</li>
+<li><p>UTF-16<br><img src="/images/java-0-5.png" alt="&quot;UTF-16&quot;"><br>用 UTF-16 编码将 char 数组放大了一倍，单字节范围内的字符，在高位补 0 变成两个字节，中文字符也变成两个字节。从 UTF-16 编码规则来看，仅仅将字符的高位和地位进行拆分变成两个字节。特点是编码效率非常高，规则很简单，由于不同处理器对 2 字节处理方式不同，Big-endian（高位字节在前，低位字节在后）或 Little-endian（低位字节在前，高位字节在后）编码，所以在对一串字符串进行编码是需要指明到底是 Big-endian 还是 Little-endian，所以前面有两个字节用来保存 BYTE_ORDER_MARK 值。<strong>(UTF16打印结果中的前两个字节fe ff，因为在Windows平台下默认的Unicode编码为Little-endian的UTF-16)</strong>UTF-16 是用定长 16 位（2 字节）来表示的 UCS-2 或 Unicode 转换格式，通过代理对来访问 BMP 之外的字符编码。</p>
+</li>
+<li><p>UTF-8<br><img src="/images/java-0-6.png" alt="&quot;UTF-8&quot;"><br>UTF-16 虽然编码效率很高，但是对单字节范围内字符也放大了一倍，这无形也浪费了存储空间，另外 UTF-16 采用顺序编码，不能对单个字符的编码值进行校验，如果中间的一个字符码值损坏，后面的所有码值都将受影响。而 UTF-8 这些问题都不存在，UTF-8 对单字节范围内字符仍然用一个字节表示，对汉字采用三个字节表示。<br><strong>UTF-8 编码与 GBK 和 GB2312 不同，不用查码表，所以在编码效率上 UTF-8 的效率会更好，所以在存储中文字符时 UTF-8 编码比较理想。</strong></p>
+</li>
+</ul>
+<h3 id="几种编码格式的比较"><a href="#几种编码格式的比较" class="headerlink" title="几种编码格式的比较"></a>几种编码格式的比较</h3><p>对中文字符后面四种编码格式都能处理，GB2312 与 GBK 编码规则类似，但是 GBK 范围更大，它能处理所有汉字字符，所以 GB2312 与 GBK 比较应该选择 GBK。UTF-16 与 UTF-8 都是处理 Unicode 编码，它们的编码规则不太相同，相对来说 UTF-16 编码效率最高，字符到字节相互转换更简单，进行字符串操作也更好。它适合在本地磁盘和内存之间使用，可以进行字符和字节之间快速切换，如 Java 的内存编码就是采用 UTF-16 编码。但是它不适合在网络之间传输，因为网络传输容易损坏字节流，一旦字节流损坏将很难恢复，想比较而言 UTF-8 更适合网络传输，对 ASCII 字符采用单字节存储，另外单个字符损坏也不会影响后面其它字符，在编码效率上介于 GBK 和 UTF-16 之间，所以 UTF-8 在编码效率上和编码安全性上做了平衡，是理想的中文编码方式。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/05/hexo-1/" rel="next" title="Hexo的NexT主题默认显示侧边栏">
+                <i class="fa fa-chevron-left"></i> Hexo的NexT主题默认显示侧边栏
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/uploads/avatar.jpg" alt="Carl John" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Carl John</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description"></p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题引入"><span class="nav-number">1.</span> <span class="nav-text">问题引入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的编码格式"><span class="nav-number">2.</span> <span class="nav-text">常见的编码格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java中的编解码"><span class="nav-number">3.</span> <span class="nav-text">Java中的编解码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IO中的编解码"><span class="nav-number">3.1.</span> <span class="nav-text">IO中的编解码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存中的编解码"><span class="nav-number">3.2.</span> <span class="nav-text">内存中的编解码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java中具体的编解码实例"><span class="nav-number">3.3.</span> <span class="nav-text">Java中具体的编解码实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#几种编码格式的比较"><span class="nav-number">3.4.</span> <span class="nav-text">几种编码格式的比较</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Carl John</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.2" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+
+      motionIntegrator.bootstrap();
+    });
+  </script>
+
+  
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
