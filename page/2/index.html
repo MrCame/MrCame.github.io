@@ -190,6 +190,158 @@
             
             
               
+                <a class="post-title-link" href="/2016/04/13/SICP-ex2-1(1)/" itemprop="url">
+                  SICP 2.1节习题(1)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-04-13T21:33:17+08:00" content="2016-04-13">
+              2016-04-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
+                    <span itemprop="name">SICP解题集</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h1 id="第二章-构造数据抽象"><a href="#第二章-构造数据抽象" class="headerlink" title="第二章 构造数据抽象"></a>第二章 构造数据抽象</h1><h2 id="2-1-数据抽象引导"><a href="#2-1-数据抽象引导" class="headerlink" title="2.1 数据抽象引导"></a>2.1 数据抽象引导</h2><h3 id="EX-2-1"><a href="#EX-2-1" class="headerlink" title="EX 2.1"></a>EX 2.1</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(define (new-make-rat n d)</span><br><span class="line">  (let ((g (gcd n d)))</span><br><span class="line">    (cond ((or (and (&lt; n 0) (&lt; d 0)) (and (&gt; n 0) (&lt; d 0)))</span><br><span class="line">           (cons (- (/ n g)) (- (/ d g))))</span><br><span class="line">          (else (cons (/ n g) (/ d g))))))</span><br></pre></td></tr></table></figure>
+<p><img src="/images/ex2-1.png" alt="“ex2-1”"></p>
+<h3 id="EX-2-2"><a href="#EX-2-2" class="headerlink" title="EX 2.2"></a>EX 2.2</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">(define (make-segment start end)  ;构造函数make-segment</span><br><span class="line">  (cons start end))</span><br><span class="line"></span><br><span class="line">(define (start-segment segment)  ;选择函数start-segment</span><br><span class="line">  (car segment))</span><br><span class="line"></span><br><span class="line">(define (end-segment segment)  ;选择函数end-segment</span><br><span class="line">  (cdr segment))</span><br><span class="line"></span><br><span class="line">(define (make-point x y)	  ;构造函数make-point</span><br><span class="line">  (cons x y))</span><br><span class="line"></span><br><span class="line">(define (x-point point)  ;选择函数x-point</span><br><span class="line">  (car point))</span><br><span class="line"></span><br><span class="line">(define (y-point point)  ;选择函数y-point</span><br><span class="line">  (cdr point))</span><br><span class="line"></span><br><span class="line">;求线段中点</span><br><span class="line">(define (midpoint-segment segment)</span><br><span class="line">  (let ((start (start-segment segment))</span><br><span class="line">        (end (end-segment segment)))</span><br><span class="line">    (make-point (/ (+ (x-point start) (x-point end)) 2)</span><br><span class="line">                (/ (+ (y-point start) (y-point end)) 2))))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">;测试程序</span><br><span class="line">(define start (make-point 1 3))</span><br><span class="line">(define end (make-point 4 3))</span><br><span class="line">(define seg (make-segment start end))</span><br><span class="line">(define mid (midpoint-segment seg))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-2-3"><a href="#EX-2-3" class="headerlink" title="EX 2.3"></a>EX 2.3</h3><p>两种矩形表示，一种采用两对线段(4条)，另一种采用两条相邻线段(2条)，主要设计抽象屏障，这里只采用后一种。当然还有别的表示方法，如<a href="https://github.com/spinab/sicp_exercise/blob/master/sicp_2_3.rkt" target="_blank" rel="external">三点表示</a>(我没有仔细研究)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">(define (make-rect seg1 seg2)  ;构造函数,构造矩形</span><br><span class="line">  (cons seg1 seg2))</span><br><span class="line">(define (seg1-in-rect rect)  ;选择函数,相邻的一条边a</span><br><span class="line">  (car rect))</span><br><span class="line">(define (seg2-in-rect rect)  ;选择函数,相邻的另一条边b</span><br><span class="line">  (cdr rect))</span><br><span class="line">(define (a-length rect)  ;a的长度</span><br><span class="line">  (let ((a (seg1-in-rect rect)))</span><br><span class="line">    (let ((a-startpt (start-segment a))</span><br><span class="line">          (a-endpt (end-segment a)))</span><br><span class="line">      (let ((a-x1 (x-point a-startpt))</span><br><span class="line">            (a-y1 (y-point a-startpt))</span><br><span class="line">            (a-x2 (x-point a-endpt))</span><br><span class="line">            (a-y2 (y-point a-endpt)))</span><br><span class="line">        (sqrt (+ (square (abs (- a-x1 a-x2))) (square (abs (- a-y1 a-y2)))))))))</span><br><span class="line">(define (b-length rect)  ;b的长度</span><br><span class="line">  (let ((b (seg2-in-rect rect)))</span><br><span class="line">    (let ((b-startpt (start-segment b))</span><br><span class="line">          (b-endpt (end-segment b)))</span><br><span class="line">      (let ((b-x1 (x-point b-startpt))</span><br><span class="line">            (b-y1 (y-point b-startpt))</span><br><span class="line">            (b-x2 (x-point b-endpt))</span><br><span class="line">            (b-y2 (y-point b-endpt)))</span><br><span class="line">        (sqrt (+ (square (abs (- b-x1 b-x2))) (square (abs (- b-y1 b-y2)))))))))</span><br><span class="line">(define (area-rect rect)	  ;计算面积,参数是矩形</span><br><span class="line">  (let ((a (a-length rect))</span><br><span class="line">        (b (b-length rect)))</span><br><span class="line">    (* a b)))</span><br><span class="line">(define (perimeter-rect rect)  ;计算周长,参数是矩形</span><br><span class="line">  (let ((a (a-length rect))</span><br><span class="line">        (b (b-length rect)))</span><br><span class="line">    (* (+ a b) 2)))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">;测试程序</span><br><span class="line">;(define p1 (make-point 1 2))  ;p1 p2 p3,边不平行于坐标轴的矩形</span><br><span class="line">;(define p2 (make-point 2 3))</span><br><span class="line">;(define p3 (make-point 3 1))</span><br><span class="line">(define p1 (make-point 1 1))	  ;p1 p2 p3,边平行于坐标轴的矩形</span><br><span class="line">(define p2 (make-point 1 3))</span><br><span class="line">(define p3 (make-point 5 1))</span><br><span class="line">(define rectangle  ;测试所用的矩形</span><br><span class="line">  (make-rect (make-segment p1 p2)</span><br><span class="line">             (make-segment p1 p3)))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-2-4"><a href="#EX-2-4" class="headerlink" title="EX 2.4"></a>EX 2.4</h3><p>根据代换法则，分析一下这种过程性表示方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(define (cons x y)</span><br><span class="line">  (lambda (m) (m x y)))</span><br><span class="line">(define (car z)</span><br><span class="line">  (z (lambda (p q) p)))</span><br></pre></td></tr></table></figure>
+<pre><code>(car (cons x y))                        ——&gt;
+(car (lambda (m) (m x y)))                ——&gt;
+((lambda (m) (m x y)) (lambda (p q) p))    ——&gt;
+((lambda (p q) p) x y)                    ——&gt;
+x
+</code></pre><p>代入具体的数字</p>
+<pre><code>(car (cons 1 2))            ——&gt;
+((lambda (p q) p) 1 2)        ——&gt;
+1     
+</code></pre><p>由代换结果分析，不难写出cdr的过程性表示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(define (cdr z)</span><br><span class="line">  (z (lambda (p q) q)))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-2-5"><a href="#EX-2-5" class="headerlink" title="EX 2.5"></a>EX 2.5</h3><p>(cons 2 3) = 108 = 2 <em> 2 </em> 3 <em> 3 </em> 3<br>将(cons 2 3)连续除以2，得到car。连续除以3，得到cdr</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(define (cons x y)</span><br><span class="line">  (* (expt 2 x) (expt 3 y)))</span><br><span class="line"></span><br><span class="line">(define (car z)</span><br><span class="line">  (if (= 0 (remainder z 2))</span><br><span class="line">      (+ (car (/ z 2)) 1)</span><br><span class="line">      0))</span><br><span class="line"></span><br><span class="line">(define (cdr z)</span><br><span class="line">  (if (= 0 (remainder z 3))</span><br><span class="line">      (+ (cdr (/ z 3)) 1)</span><br><span class="line">      0))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-2-6"><a href="#EX-2-6" class="headerlink" title="EX 2.6"></a>EX 2.6</h3><p>根据书中给出的zero和add-1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(define zero </span><br><span class="line">  (lambda (f) (lambda (x) x)))</span><br><span class="line">(define (add-1 n)</span><br><span class="line">  (lambda (f) (lambda (x) (f ((n f) x)))))</span><br></pre></td></tr></table></figure>
+<p>推导出one(one = zero + add-1)</p>
+<pre><code>(add-1 zero)                                ——&gt;
+(add-1 (lambda (f) (lambda (x) x)))            ——&gt;
+(lambda (f) 
+  (lambda (x) 
+    (f (
+      ((lambda (f) (lambda (x) x)) f) x))))    ——&gt;
+(lambda (f)
+  (lambda (x)
+    (f 
+      ((lambda (x) x) x))))                    ——&gt;
+(lambda (f)
+  (lambda (x)
+    (f x)))                                    ——&gt;
+得到one的定义
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(define one</span><br><span class="line">  (lambda (f)</span><br><span class="line">	(lambda (x)</span><br><span class="line">	  (f x))))</span><br></pre></td></tr></table></figure>
+<p>同理，求two的定义。two = one + add-1</p>
+<pre><code>(add-1 one)                                    ——&gt;
+(add-1 (lambda (f) (lambda (x) (f x))))        ——&gt;
+(lambda (f)
+  (lambda (x)
+    (f ((n f) x))))                            ——&gt;将n代换为one
+(lambda (f)
+  (lambda (x)
+    (f ((
+      (lambda (f) (lambda (x) (f x))) f) 
+        x))))                                ——&gt;化简lambda (f)
+(lambda (f)
+  (lambda (x)
+    (f ( (lambda (x) (f x)) x))))            ——&gt;化简lambda (x)
+(lambda (f)
+  (lambda (x)
+    (f (f x))))                                ——&gt;
+得到two的定义
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(define two</span><br><span class="line">  (lambda (f)</span><br><span class="line">    (lambda (x)</span><br><span class="line">      (f (f x)))))</span><br></pre></td></tr></table></figure>
+<p>根据zero，one，two的定义</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(define zero		;no f</span><br><span class="line">  (lambda (f) </span><br><span class="line">	(lambda (x) </span><br><span class="line">	  x)))</span><br><span class="line">(define one			;one f</span><br><span class="line">  (lambda (f)</span><br><span class="line">	(lambda (x)</span><br><span class="line">	  (f x))))</span><br><span class="line">(define two			;two f</span><br><span class="line">  (lambda (f)</span><br><span class="line">    (lambda (x)</span><br><span class="line">      (f (f x)))))</span><br></pre></td></tr></table></figure>
+<p>据此推导加法过程定义(对此仍不太懂，没有理解FP，柯里化之类的内容)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(define church-add</span><br><span class="line">  (lambda (m n)</span><br><span class="line">	(lambda (f)</span><br><span class="line">	  (lambda (x)</span><br><span class="line">		(m f (n f x))))))</span><br></pre></td></tr></table></figure>
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2016/03/24/SICP2/" itemprop="url">
                   《计算机程序的解释和构造(SICP)》 (2)
                 </a>
@@ -1277,114 +1429,6 @@ r3 = (r r1 r2)
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2016/03/04/SICP-ex1-1/" itemprop="url">
-                  SICP 1.1节习题
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-03-04T20:01:25+08:00" content="2016-03-04">
-              2016-03-04
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
-                    <span itemprop="name">SICP解题集</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h1 id="第一章-构造过程抽象"><a href="#第一章-构造过程抽象" class="headerlink" title="第一章 构造过程抽象"></a>第一章 构造过程抽象</h1><h2 id="1-1-程序设计的基本元素"><a href="#1-1-程序设计的基本元素" class="headerlink" title="1.1 程序设计的基本元素"></a>1.1 程序设计的基本元素</h2><p>ex 1.1 ~ ex 1.4都比较容易理解，就不写出结果了</p>
-<h3 id="EX-1-5"><a href="#EX-1-5" class="headerlink" title="EX 1.5"></a>EX 1.5</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(define (p) (p))</span><br><span class="line"></span><br><span class="line">(define (test x y)</span><br><span class="line">  (if (= x 0)</span><br><span class="line">       0</span><br><span class="line">       y))</span><br></pre></td></tr></table></figure>
-<p>求值</p>
-<pre><code>(test 0 (P))
-</code></pre><p>分析：</p>
-<blockquote>
-<p>采用应用序，先求参数值再应用， (p)无限递归调用自身，编译器停滞<br>采用正则序，先展开后规约求值，实参0和(p)不会先求值，解释到if之后，返回0</p>
-</blockquote>
-<h3 id="EX-1-6"><a href="#EX-1-6" class="headerlink" title="EX 1.6"></a>EX 1.6</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(define (new-if predicate then-clause else-clause)</span><br><span class="line">  (cond (predicate then-clause)</span><br><span class="line">        (else else-clause)))</span><br></pre></td></tr></table></figure>
-<p>对于这个程序题中演示的使用</p>
-<pre><code>(new-if (= 2 3) 0 5)
-(new-if (= 1 1) 0 5)
-</code></pre><p>都是没错的，但若用来重写sqrt程序的话<br><img src="/images/ex1-6.png" alt="“error”"></p>
-<p>分析：错误原因是超过递归最大深度<br><strong>new-if</strong> 作为定义的一个过程，由于scheme采用应用序，先求参数值再应用，调用顺序<br><strong>sqrt-iter -&gt; new-if -&gt; cond -&gt; sqrt-iter -&gt; new-if -&gt; …… -&gt; </strong> 最终超出栈最大深度</p>
-<h3 id="EX-1-7"><a href="#EX-1-7" class="headerlink" title="EX 1.7"></a>EX 1.7</h3><p>原始程序<br><img src="/images/ex1-7-1.png" alt="“很大的数”"><br><img src="/images/ex1-7-2.png" alt="“很小的数”"><br>当数字很大时，程序跑不动，当数字很小时，结果错误</p>
-<p>修改过程<strong>good-enough</strong>为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(define (good-enough? guess x)</span><br><span class="line">	(&lt; </span><br><span class="line">	  (/ (abs (- x guess)) guess) </span><br><span class="line">	  0.001))</span><br></pre></td></tr></table></figure>
-<p>对于很大和很小的数字都可以计算平方根</p>
-<h3 id="EX-1-8"><a href="#EX-1-8" class="headerlink" title="EX 1.8"></a>EX 1.8</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(define (square x)</span><br><span class="line">  (* x x))</span><br><span class="line">(define (cube x)</span><br><span class="line">  (* x x x))</span><br><span class="line">(define (cube-root x)</span><br><span class="line">  (define (good-enough? guess)</span><br><span class="line">    (&lt; (abs (- (cube guess) x)) 0.001))</span><br><span class="line">  (define (improve guess)</span><br><span class="line">    (/ (+ (/ x (square guess)) (* 2 guess)) 3))</span><br><span class="line">  (define (cube-iter guess)</span><br><span class="line">    (if (good-enough? guess)</span><br><span class="line">        guess</span><br><span class="line">        (cube-iter (improve guess))))</span><br><span class="line">  (cube-iter 1.0))</span><br></pre></td></tr></table></figure>
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1427,7 +1471,7 @@ r3 = (r r1 r2)
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">22</span>
+              <span class="site-state-item-count">23</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
