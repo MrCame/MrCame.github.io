@@ -248,8 +248,9 @@
 <ul>
 <li>这么做会造成代码混乱，迭代代码与Collection本身实现代码混淆在一起，造成阅读困难，而且有方法重复，比如remove，不能做到迭代与本身实现分离。</li>
 <li>在Collection实现类中必须包含当前cursor指针，在并发时处理相当尴尬。</li>
-<li>访问接口不统一，Collection从Iterable继承的话，在迭代时只需拿到其Iterator(内部类实现)，用统一的对象迭代，而且多个迭代器可以做到互不干扰。<br>从接口看，整体可以分为两大类：Collection和Map。因为Map表示的是关联式容器。接下来，将从比较独立的Iterator来进行分析。</li>
+<li>访问接口不统一，Collection从Iterable继承的话，在迭代时只需拿到其Iterator(内部类实现)，用统一的对象迭代，而且多个迭代器可以做到互不干扰。</li>
 </ul>
+<p>从接口看，整体可以分为两大类：Collection和Map。因为Map表示的是关联式容器。接下来，将从比较独立的Iterator来进行分析。</p>
 
             
           </span>
