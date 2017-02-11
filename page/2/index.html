@@ -190,6 +190,106 @@
             
             
               
+                <a class="post-title-link" href="/2016/04/21/SICP-ex2-1(2)/" itemprop="url">
+                  SICP 2.1节习题(2)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-04-21T20:09:17+08:00" content="2016-04-21">
+              2016-04-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
+                    <span itemprop="name">SICP解题集</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h1 id="第二章-构造数据抽象"><a href="#第二章-构造数据抽象" class="headerlink" title="第二章 构造数据抽象"></a>第二章 构造数据抽象</h1><h2 id="2-1-数据抽象引导"><a href="#2-1-数据抽象引导" class="headerlink" title="2.1 数据抽象引导"></a>2.1 数据抽象引导</h2><h3 id="EX-2-7"><a href="#EX-2-7" class="headerlink" title="EX 2.7"></a>EX 2.7</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(define (upper-bound x) (cdr x))</span><br><span class="line"></span><br><span class="line">(define (lower-bound x) (car x))</span><br><span class="line"></span><br><span class="line">(define (make-interval a b) (cons a b))</span><br><span class="line"></span><br><span class="line">(define test (make-interval 1 2))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-2-8"><a href="#EX-2-8" class="headerlink" title="EX 2.8"></a>EX 2.8</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(define (sub-interval x y)</span><br><span class="line">  (make-interval (- (lower-bound x) (lower-bound y))</span><br><span class="line">                 (- (upper-bound x) (upper-bound y))))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-2-9"><a href="#EX-2-9" class="headerlink" title="EX 2.9"></a>EX 2.9</h3><pre><code>显而易见，若两个区间分别为(1,2) (3,4)，被加宽度为0.5
+对于加：(4,6)，宽度为0.5+0.5=1
+对于减：(-2,-2),宽度为0.5-0.5=0
+对于乘：p1=3 p2=4 p3=6 p4=8，(3,8), 宽度为2.5
+对于除：第一个区间乘上第二个区间的倒数，p1=1/4 p2=1/3 p3=1/2 p4=2/3，(1/4,2/3)，宽度为5/24
+</code></pre><h3 id="EX-2-10"><a href="#EX-2-10" class="headerlink" title="EX 2.10"></a>EX 2.10</h3><pre><code>显然，如果两个区间分别为(0,1)，(1,2)
+对于除：取倒数的时候可能会出现分母为0的情况
+如果区间横跨0，区间取倒数的时候会出现上界小于下界的情况，(-1,2)取倒数后(1/2, -1)
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(define (new-div-interval x y)</span><br><span class="line">  (let ((y1 (lower-bound y))</span><br><span class="line">        (y2 (upper-bound y)))</span><br><span class="line">    (cond ((or (= y1 0) (= y2 0)) (display &quot;error&quot;))</span><br><span class="line">          ((&lt; y1 0) (display &quot;error&quot;))</span><br><span class="line">          (else</span><br><span class="line">           (mul-interval x</span><br><span class="line">                         (make-interval (/ 1.0 y1)</span><br><span class="line">                                        (/ 1.0 y2)))))))</span><br></pre></td></tr></table></figure>
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2016/04/13/SICP-ex2-1(1)/" itemprop="url">
                   SICP 2.1节习题(1)
                 </a>
@@ -1244,191 +1344,6 @@ x
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2016/03/07/SICP-ex1-2/" itemprop="url">
-                  SICP 1.2节习题(1)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-03-07T19:45:13+08:00" content="2016-03-07">
-              2016-03-07
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
-                    <span itemprop="name">SICP解题集</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h1 id="第一章-构造过程抽象"><a href="#第一章-构造过程抽象" class="headerlink" title="第一章 构造过程抽象"></a>第一章 构造过程抽象</h1><h2 id="1-2-过程与它们所产生的计算"><a href="#1-2-过程与它们所产生的计算" class="headerlink" title="1.2 过程与它们所产生的计算"></a>1.2 过程与它们所产生的计算</h2><h3 id="EX-1-9"><a href="#EX-1-9" class="headerlink" title="EX 1.9"></a>EX 1.9</h3><p>过程1</p>
-<pre><code>(+ 4 5)                             ——&gt;
-(inc (+ 3 5))                         ——&gt;
-(inc (inc (+ 2 5)))                 ——&gt;
-(inc (inc (inc (+ 1 5))))             ——&gt;
-(inc (inc (inc (inc (+ 0 5)))))     ——&gt;
-(inc (inc (inc (inc 5))))             ——&gt;
-(inc (inc (inc 6)))                 ——&gt;
-(inc (inc 7))                         ——&gt;
-(inc 8)                             ——&gt;
-9
-</code></pre><p>过程2</p>
-<pre><code>(+ 4 5)                ——&gt;
-(+ 3 6)                ——&gt;
-(+ 2 7)                ——&gt;
-(+ 1 8)                ——&gt;
-(+ 0 9)                ——&gt;
-9
-</code></pre><p>明显，过程1是线性递归(Linear-Recursion)，过程2是迭代(Iteration)。如公开课(链接)Lec1b里讲到的那样，<br>对于过程1，时间复杂度和空间复杂度都随着问题规模的增大而增大</p>
-<blockquote>
-<p>time = O(a)<br>space = O(a)<br>对于过程2，显然空间复杂度会是一个常数(当然这也并不完全准确，随着计算的数增大，所需要的空间也在变化)<br>time = O(a)<br>space = O(1)</p>
-</blockquote>
-<h3 id="EX-1-10"><a href="#EX-1-10" class="headerlink" title="EX 1.10"></a>EX 1.10</h3><pre><code>(A 1 10)     ;answer is 1024
-(A 2 4)        ;answer is 65536
-(A 3 3)        ;answer is 65536
-(define (f n) (A 0 n))        ;f(n)=2n
-(define (g n) (A 1 n))        ;g(n)=2^n
-(define (k n) (A 2 n))        ;k(n)=2^2^2^…… 连续求n次平方
-</code></pre><h3 id="EX-1-11"><a href="#EX-1-11" class="headerlink" title="EX 1.11"></a>EX 1.11</h3><pre><code>递归版本
-(define (f n)
-    (if (&lt; n 3)
-          n
-          (+ (f (- n 1)) (* 2 (f (- n 2))) (* 3 (f (- n 3))))))
-
-迭代版本
-(define (f n)
-    (define (iter n a b c i)
-        (if (= i n)
-            c
-            (iter n 
-                  (+ a (* 2 b) (* 3 c))
-                  a
-                  b
-                  (+ i 1))))
-    (iter n 2 1 0 0))
-</code></pre><p>迭代版本需要观察<br>f(0)=0, f(1)=1, f(2)=2<br>f(3)=f(2)+2f(1)+3f(0)<br>f(4)=f(3)+2f(2)+3f(1)<br>f(5)=f(4)+2f(3)+3f(2)<br>a、b、c分别表示f(n-1) f(n-2) f(n-3)<br>这里的i，个人认为可以类比其他语言中循环语法里的计数变量i，而迭代器iter可以类比于for、while等循环</p>
-<h3 id="EX-1-12"><a href="#EX-1-12" class="headerlink" title="EX 1.12"></a>EX 1.12</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(define (pascal r c)</span><br><span class="line">	(cond ((or (= r c) (= c 0)) 1)</span><br><span class="line">    	  ((&gt; c r) &quot;error&quot;)</span><br><span class="line">    	  (else (+ (pascal (- r 1) (- c 1)) (pascal (- r 1) c)))))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-1-13-1-14略"><a href="#EX-1-13-1-14略" class="headerlink" title="EX 1.13 1.14略"></a>EX 1.13 1.14略</h3><h3 id="EX-1-15"><a href="#EX-1-15" class="headerlink" title="EX 1.15"></a>EX 1.15</h3><pre><code>a) p将被使用五次
-(sine 12.15)                        ——&gt;
-(p (sine 12.15/3))                    ——&gt;
-(p (p (sine 12.15/6)))                ——&gt;
-(p (p (p (sine 12.15/9))))            ——&gt;
-(p (p (p (p (p (sine 12.15/12)))))    ——&gt;
-(p (p (p (p (p (sine 0.0514……)))))    ——&gt;
-…………
-
-b) 求值(sine a)时候，除以3.0，sine是递归程序，因此时间复杂度和空间复杂度都是O(log a)
-</code></pre><h3 id="EX-1-16"><a href="#EX-1-16" class="headerlink" title="EX 1.16"></a>EX 1.16</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(define (even? x)</span><br><span class="line">  (= (remainder x 2) 0))</span><br><span class="line">(define (square x)</span><br><span class="line">	(* x x))</span><br><span class="line">(define (exp b n)</span><br><span class="line">	(define (exp-iter b n p)</span><br><span class="line">		(cond ((= n 0) p)</span><br><span class="line">      		  ((even? n) (exp-iter (square b) (/ n 2) p))</span><br><span class="line">      		  (else (exp-iter b (- n 1) (* b p)))))</span><br><span class="line">	(exp-iter b n 1))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-1-17"><a href="#EX-1-17" class="headerlink" title="EX 1.17"></a>EX 1.17</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(define (double x)</span><br><span class="line">  (+ x x))</span><br><span class="line">(define (halve x)</span><br><span class="line">  (/ x 2))</span><br><span class="line">(define (even? x)</span><br><span class="line">  (= (remainder x 2) 0))</span><br><span class="line">(define (expt b n)</span><br><span class="line">  (cond ((= n 0) 0)</span><br><span class="line">        ((even? n) (double (expt b (halve n))))</span><br><span class="line">        (else (+ b (expt b (- n 1))))))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-1-18"><a href="#EX-1-18" class="headerlink" title="EX 1.18"></a>EX 1.18</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(define (double x)</span><br><span class="line">  (+ x x))</span><br><span class="line">(define (halve x)</span><br><span class="line">  (/ x 2))</span><br><span class="line">(define (even? x)</span><br><span class="line">  (= (remainder x 2) 0))</span><br><span class="line">(define (multi a b)</span><br><span class="line">  (define (multi-iter a b p)</span><br><span class="line">    (cond ((= b 0) p)</span><br><span class="line">          ((even? b) (multi-iter (double a) (halve b) p))</span><br><span class="line">          (else (multi-iter a (- b 1) (+ a p)))))</span><br><span class="line">  (multi-iter a b 0))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-1-19"><a href="#EX-1-19" class="headerlink" title="EX 1.19"></a>EX 1.19</h3><p>通过两次变换，可以得到<br>p’ = p^2 + q^2<br>q’ = 2pq + q^2</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">(define (even? x)</span><br><span class="line">  (= (remainder x 2) 0))</span><br><span class="line">(define (fib n)</span><br><span class="line">  (define (fib-iter a b p q count)</span><br><span class="line">    (cond ((= count 0) b)</span><br><span class="line">          ((even? count)</span><br><span class="line">           (fib-iter a</span><br><span class="line">                     b</span><br><span class="line">                     (+ (square p) (square q))</span><br><span class="line">                     (+ (* 2 p q) (square q))</span><br><span class="line">                     (/ count 2)))</span><br><span class="line">          (else (fib-iter (+ (* b q) (* a q) (* a p))</span><br><span class="line">                          (+ (* b p) (* a q))</span><br><span class="line">                          p</span><br><span class="line">                          q</span><br><span class="line">                          (- count 1)))))</span><br><span class="line">  (fib-iter 1 0 0 1 n))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-1-20"><a href="#EX-1-20" class="headerlink" title="EX 1.20"></a>EX 1.20</h3><pre><code>正则序
-(gcd 206 40)        //a=206,b=60                ——&gt;
-(gcd 40 (r 206 40)) //a=40,b=6,r1=(r 206 40)    ——&gt;r1:1
-(gcd r1 (r 40 r1))  //a=6,b=4,r2=(r 40 r1)        ——&gt;r2:1+1=2
-(gcd r2 (r r1 r2))  //a=4,b=2,r3=(r r1 r2)        ——&gt;r3:1+1+2=4
-(gcd r3 (r r2 r3))  //a=2,b=0,r4=(r r2 r3)        ——&gt;1+2+4=7
-r3 = (r r1 r2)
-    |
-    V
-(r (r 206 40) (r 40 (r 206 40))                    ——&gt;1
-    |
-    V
-(r (r 206 40) (r 40 6))
-    |
-    V
-(r 6 4)                                            ——&gt;2
-2                                                ——&gt;1
-
-正则序执行了1+2+4+7+1+2+1=18次remainder运算
-
-应用序
-(gcd 206 40)
-(gcd 40 (r 206 40))          ——&gt;1
-(gcd 40 6)
-(gcd 6 (r 40 6))             ——&gt;1
-(gcd 6 4)
-(gcd 4 (r 6 4))              ——&gt;1
-(gcd 4 2)
-(gcd 2 (r 4 2))             ——&gt;1
-(gcd 2 0)
-2
-
-应用序执行了1+1+1+1次remainder运算
-</code></pre>
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1471,7 +1386,7 @@ r3 = (r r1 r2)
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
