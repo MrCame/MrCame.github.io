@@ -190,6 +190,145 @@
             
             
               
+                <a class="post-title-link" href="/2016/03/11/SICP-ex1-2(1)/" itemprop="url">
+                  SICP 1.2节习题(2)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-03-11T15:42:13+08:00" content="2016-03-11">
+              2016-03-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
+                    <span itemprop="name">SICP解题集</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h1 id="第一章-构造过程抽象"><a href="#第一章-构造过程抽象" class="headerlink" title="第一章 构造过程抽象"></a>第一章 构造过程抽象</h1><h2 id="1-2-过程与它们所产生的计算"><a href="#1-2-过程与它们所产生的计算" class="headerlink" title="1.2 过程与它们所产生的计算"></a>1.2 过程与它们所产生的计算</h2><h3 id="EX-1-21"><a href="#EX-1-21" class="headerlink" title="EX 1.21"></a>EX 1.21</h3><p>smallest-divisor程序如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(define (smallest-divisor n)</span><br><span class="line">	(find-divisor n 2))</span><br><span class="line">(define (find-divisor n test-divisor)</span><br><span class="line">	(cond ((&gt; (square test-divisor) n) n)</span><br><span class="line">		  ((divides? test-divisor n) test-divisor)</span><br><span class="line">		  (else (find-divisor n (+ test-divisor 1)))))</span><br><span class="line">(define (divides? a b)</span><br><span class="line">	(= (remainder b a) 0))</span><br></pre></td></tr></table></figure>
+<pre><code>(smallest-divisor 199)        ;answer is 199
+(smallest-divisor 1999)        ;answer is 1999
+(smallest-divisor 19999)    ;answer is 7
+</code></pre><h3 id="EX-1-22"><a href="#EX-1-22" class="headerlink" title="EX 1.22"></a>EX 1.22</h3><p>解决这个问题，可以把问题划分成几个子问题来解决，这也是SICP这本书所教授的核心问题职业——如何将复杂问题分解</p>
+<blockquote>
+<p>如何生成连续奇数？<br>如何描述大于某数x的前i个素数？<br>如何判断素数？<br>如何计算程序运行时间？</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">;生成奇数</span><br><span class="line">(define (odd-generator x)</span><br><span class="line">	(if (odd? x)</span><br><span class="line">		(+ x 2)</span><br><span class="line">		(+ x 1)))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">;大于x的前i个素数</span><br><span class="line">(define (continue-prime i x)</span><br><span class="line">	(cond ((= i 0) (display &quot;These are all primes&quot;))</span><br><span class="line">		  ((prime? x)</span><br><span class="line">			(display x)</span><br><span class="line">			(newline)</span><br><span class="line">			(continue-prime (- i 1) (odd-generator x)))</span><br><span class="line">		  (else (continue-prime i (odd-generator x)))))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">;判断素数,可以采用33页最基本的方法</span><br><span class="line">(define (prime? n)</span><br><span class="line">	(define (smallest-divisor n)</span><br><span class="line">		(find-divisor n 2))</span><br><span class="line">	(define (find-divisor n test-divisor)</span><br><span class="line">		(cond ((&gt; (square test-divisor) n) n)</span><br><span class="line">			  ((divides? test-divisor n) test-divisor)</span><br><span class="line">			  (else (find-divisor n (+ test-divisor 1)))))</span><br><span class="line">	(define (divides? a b)</span><br><span class="line">		(= (remainder b a) 0))</span><br><span class="line">	(= n (smallest-divisor n)))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;运行时间计算</span><br><span class="line">;(runtime)返回的是秒,(real-time-clock)返回毫秒</span><br><span class="line">;最终的search-for程序:</span><br><span class="line">(define (search-for-primes x)</span><br><span class="line">	(let ((start-time (real-time-clock)))</span><br><span class="line">	(continue-prime 3 x)</span><br><span class="line">	(- (real-time-clock) start-time)))</span><br></pre></td></tr></table></figure>
+<p>结果<br><img src="/images/ex1-22.png" alt="“1-22”"></p>
+<p>结果分析放在1.24，显然并不遵循预期的结果</p>
+<h3 id="EX-1-23"><a href="#EX-1-23" class="headerlink" title="EX 1.23"></a>EX 1.23</h3><p>首先定义一个新的prime过程——new prime<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(define (new-prime? n)</span><br><span class="line">	(define (next x)</span><br><span class="line">		(if (= x 2)</span><br><span class="line">		    3</span><br><span class="line">		    (+ x 2)))</span><br><span class="line">	(define (smallest-divisor n)</span><br><span class="line">		(find-divisor n 2))</span><br><span class="line">	(define (find-divisor n test-divisor)</span><br><span class="line">		(cond ((&gt; (square test-divisor) n) n)</span><br><span class="line">			  ((divides? test-divisor n) test-divisor)</span><br><span class="line">			  (else (find-divisor n (next test-divisor)))))</span><br><span class="line">	(define (divides? a b)</span><br><span class="line">		(= (remainder b a) 0))</span><br><span class="line">	(= n (smallest-divisor n)))</span><br></pre></td></tr></table></figure></p>
+<p>然后用这个新的素数判断过程重写continue-prime<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(define (continue-newprime i x)</span><br><span class="line">	(cond ((= i 0) (display &quot;These are all primes&quot;))</span><br><span class="line">		  ((new-prime? x)</span><br><span class="line">			(display x)</span><br><span class="line">			(newline)</span><br><span class="line">			(continue-prime (- i 1) (odd-generator x)))</span><br><span class="line">		  (else (continue-prime i (odd-generator x)))))</span><br></pre></td></tr></table></figure></p>
+<p>最后重写search-for方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(define (search-for-newprimes x)</span><br><span class="line">	(let ((start-time (real-time-clock)))</span><br><span class="line">	(continue-newprime 3 x)</span><br><span class="line">	(- (real-time-clock) start-time)))</span><br></pre></td></tr></table></figure></p>
+<p>当然，scheme里新绑定的过程会覆盖原来的，可以局部替换为新的过程，为了更明显一些，都重写了这些过程<br>结果<br><img src="/images/ex1-23.png" alt="“1-23”"></p>
+<p>结果分析放在1.24，显然也并不遵循预期的结果</p>
+<h3 id="EX-1-24"><a href="#EX-1-24" class="headerlink" title="EX 1.24"></a>EX 1.24</h3><p>同1.23。使用费马定理来判断是否为素数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">(define (fast-prime? n times)</span><br><span class="line">  (define (expmod base exp m)</span><br><span class="line">    (cond ((= exp 0) 1)</span><br><span class="line">        ((even? exp)</span><br><span class="line">         (remainder (square (expmod base (/ exp 2) m)) m))</span><br><span class="line">        (else</span><br><span class="line">         (remainder (* base (expmod base (- exp 1) m)) m))))</span><br><span class="line">  (define (fermat-test n)</span><br><span class="line">    (define (try-it a)</span><br><span class="line">      (= (expmod a n n) a))</span><br><span class="line">    (try-it (+ 1 (random (- n 1)))))</span><br><span class="line">  (cond ((= times 0) true)</span><br><span class="line">        ((fermat-test n) (fast-prime? n (- times 1)))</span><br><span class="line">        (else false)))</span><br><span class="line"></span><br><span class="line">(define (expmod base exp m)</span><br><span class="line">  (cond ((= exp 0) 1)</span><br><span class="line">        ((even? exp)</span><br><span class="line">         (remainder (square (expmod base (/ exp 2) m)) m))</span><br><span class="line">        (else</span><br><span class="line">         (remainder (* base (expmod base (- exp 1) m)) m))))</span><br></pre></td></tr></table></figure></p>
+<p>重写continue-prime和search-for<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(define (continue-fastprime i x)</span><br><span class="line">	(cond ((= i 0) (display &quot;These are all primes&quot;))</span><br><span class="line">		  ((fast-prime? x 100)</span><br><span class="line">			(display x)</span><br><span class="line">			(newline)</span><br><span class="line">			(continue-prime (- i 1) (odd-generator x)))</span><br><span class="line">		  (else (continue-prime i (odd-generator x)))))</span><br><span class="line">(define (search-for-fastprimes x)</span><br><span class="line">	(let ((start-time (real-time-clock)))</span><br><span class="line">	(continue-fastprime 3 x)</span><br><span class="line">	(- (real-time-clock) start-time)))</span><br></pre></td></tr></table></figure></p>
+<p>结果<br><img src="/images/ex1-24.png" alt="“1-24”"></p>
+<p>结果分析,1.22,1.23,1.24三个例子中，可以明显看到，随着问题复杂度的增加，用时并不按照理论耗时增长。结果可能有以下原因，机器的差异，运行环境的差异，资源的占用情况，编译器优化等等，都会影响到程序的运行速度。然而，随着复杂度逐渐加大，可以看到，复杂度更低的算法效率更高。</p>
+<h3 id="EX-1-25"><a href="#EX-1-25" class="headerlink" title="EX 1.25"></a>EX 1.25</h3><p>Alyssa的程序理论上更快，但是实际操作中发现，当底数和幂都很大的时候，使用fast-expt计算速度非常慢，而且占用大量CPU资源。究其原因，书中34页的expmod程序，每一次幂的结果都会进行remainder操作，从而将幂控制在一个合理的范围内，防止溢出。</p>
+<h3 id="EX-1-26"><a href="#EX-1-26" class="headerlink" title="EX 1.26"></a>EX 1.26</h3><p>显然，Louis的程序在偶次幂时，两次调用expmod。也看到有这样的分析：</p>
+<pre><code>Louis的expmod使得原来的线性递归变成了具有两个分支的树形递归
+计算量是原来expmod复杂度的平方，即Θ(logn)的平方，即Θ(n)
+而prime?的复杂度是Θ(sqrt n)，所以比prime?还慢
+</code></pre><h3 id="EX-1-27"><a href="#EX-1-27" class="headerlink" title="EX 1.27"></a>EX 1.27</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">;是否同余</span><br><span class="line">(define (same-remainder? a n)</span><br><span class="line">	(= (expmod a n n) a))</span><br><span class="line"></span><br><span class="line">(define (carmichael n)</span><br><span class="line">	(iter 1 n))</span><br><span class="line">(define (iter a n)</span><br><span class="line">	(cond ((= a n) &quot;YES&quot;)</span><br><span class="line">		  ((same-remainder? a n) (iter (+ a 1) n))</span><br><span class="line">		  (else &quot;NO&quot;)))</span><br></pre></td></tr></table></figure>
+<pre><code>(carmichael 561)
+(carmichael 1105)
+(carmichael 1729)
+(carmichael 2465)
+(carmichael 2821)
+(carmichael 6601)
+</code></pre><p>以上几个数均骗过了费马检查</p>
+<p>结果<br><img src="/images/ex1-27.png" alt="“1-27”"></p>
+<h3 id="EX-1-28"><a href="#EX-1-28" class="headerlink" title="EX 1.28"></a>EX 1.28</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">;求一个数是否是非凡平方根,即非零非n-1的数x，x平方模n结果为1</span><br><span class="line">(define (special-square-root? x n)</span><br><span class="line">	(and (= (remainder (square x) n) 1) </span><br><span class="line">		 (not (= x 0))</span><br><span class="line">		 (not (= x (- n 1)))))</span><br><span class="line"></span><br><span class="line">;改进expmod过程,增加判断非凡平方根</span><br><span class="line">(define (expmod base exp m)</span><br><span class="line">	(cond ((= exp 0) 1)</span><br><span class="line">		  ((special-square-root? base m) 0)</span><br><span class="line">		  ((even? exp)</span><br><span class="line">			(remainder (square (expmod base (/ exp 2) m)) m))</span><br><span class="line">		  (else</span><br><span class="line">			(remainder (* (expmod base (- exp 1) m) base) m))))</span><br><span class="line"></span><br><span class="line">;随机取一个数a,并且a&lt;n</span><br><span class="line">(define (rand-smaller-than-n n)</span><br><span class="line">	(let ((x (random n)))</span><br><span class="line">	(if (not (= x 0))</span><br><span class="line">		x</span><br><span class="line">		(rand-smaller-than-n n))))</span><br><span class="line"></span><br><span class="line">;Miller-Rabin测试</span><br><span class="line">(define (miller-rabin-test n)</span><br><span class="line">	(let ((times n))</span><br><span class="line">		(define (miller-prime? n times)</span><br><span class="line">				  (cond ((= times 0) true)</span><br><span class="line">				  ((= (expmod (rand-smaller-than-n n) (- n 1) n) 1) (miller-prime? n (- times 1)))</span><br><span class="line">				  (else false)))</span><br><span class="line">		(miller-prime? n times)))</span><br></pre></td></tr></table></figure>
+<pre><code>(miller-rabin-test 561)
+(miller-rabin-test 1105)
+(miller-rabin-test 1729)
+(miller-rabin-test 2465)
+(miller-rabin-test 2821)
+(miller-rabin-test 6601)
+(miller-rabin-test 13)
+(miller-rabin-test 19)
+(miller-rabin-test 23)
+</code></pre><p>结果<br><img src="/images/ex1-28.png" alt="“1-28”"></p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2016/03/07/SICP-ex1-2/" itemprop="url">
                   SICP 1.2节习题(1)
                 </a>
@@ -726,7 +865,7 @@ r3 = (r r1 r2)
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
