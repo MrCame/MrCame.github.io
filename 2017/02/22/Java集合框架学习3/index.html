@@ -53,7 +53,7 @@
 一些成员变量12345678// 默认数组容量private static final int DEFAULT_CAPACITY = 10;// 底层数组transient Object[] elementData;// ArrayList包含的元素数量private int siz">
 <meta property="og:image" content="http://yoursite.com/images/java-4-0.png">
 <meta property="og:image" content="http://yoursite.com/images/java-4-1.png">
-<meta property="og:updated_time" content="2017-02-22T04:30:09.232Z">
+<meta property="og:updated_time" content="2017-02-22T08:50:29.292Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java集合框架学(3)——ArrayList">
 <meta name="twitter:description" content="ArrayList是Java集合框架里很常用的一个数据结构，底层用数组实现数据存储，所以基本上都是对数据的操作。
@@ -285,7 +285,7 @@
 <li><p>add(int index, E element)，在指定位置添加元素，复杂度O(n)<br>需要将该位置后的所有元素向后移动一位，复杂度取决于数组规模</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public void add(int index, E element) &#123;</span><br><span class="line">    rangeCheckForAdd(index);</span><br><span class="line"></span><br><span class="line">    ensureCapacityInternal(size + 1);  // Increments modCount!!</span><br><span class="line">    System.arraycopy(elementData, index, elementData, index + 1,</span><br><span class="line">                     size - index);</span><br><span class="line">    size++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>remove(int index) 删除指定位置的元素，复杂度O(n)<br>需要将该位置后的所有元素向前移动一位，复杂度取决于数组规模</p>
+<li><p>remove(int index) 删除并取得指定位置的元素，复杂度O(n)<br>需要将该位置后的所有元素向前移动一位，复杂度取决于数组规模</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public E remove(int index) &#123;</span><br><span class="line">    rangeCheck(index);</span><br><span class="line"></span><br><span class="line">    modCount++;</span><br><span class="line">    E oldValue = elementData(index);</span><br><span class="line"></span><br><span class="line">    int numMoved = size - index - 1;  // 需要向前移动一位的元素长度</span><br><span class="line">    if (numMoved &gt; 0)</span><br><span class="line">        System.arraycopy(elementData, index+1, elementData, index,</span><br><span class="line">                         numMoved);</span><br><span class="line">    elementData[--size] = null; // 清除该位置的引用，让GC起作用</span><br><span class="line"></span><br><span class="line">    return oldValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
@@ -323,6 +323,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/27/Java-Framework1/" rel="prev" title="《从零开始写Java Web框架》——笔记(1)">
+                《从零开始写Java Web框架》——笔记(1) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -387,7 +391,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-count">26</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
