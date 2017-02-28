@@ -190,6 +190,121 @@
             
             
               
+                <a class="post-title-link" href="/2016/04/28/SICP-ex2-2(3)/" itemprop="url">
+                  SICP 2.2节习题(3)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-04-28T20:08:11+08:00" content="2016-04-28">
+              2016-04-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
+                    <span itemprop="name">SICP解题集</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h1 id="第二章-构造数据抽象"><a href="#第二章-构造数据抽象" class="headerlink" title="第二章 构造数据抽象"></a>第二章 构造数据抽象</h1><h2 id="2-2-层次性数据和闭包性质"><a href="#2-2-层次性数据和闭包性质" class="headerlink" title="2.2 层次性数据和闭包性质"></a>2.2 层次性数据和闭包性质</h2><h3 id="EX-2-33"><a href="#EX-2-33" class="headerlink" title="EX 2.33"></a>EX 2.33</h3><p>accumulate中参数op是二元操作<br>lambda (x y) 中，x:(car seq) y:(accumulate op init (cdr seq))</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">;原始map定义</span><br><span class="line">(define (map proc items)</span><br><span class="line">  (if (null? items)</span><br><span class="line">      &apos;()</span><br><span class="line">      (cons (proc (car items))</span><br><span class="line">            (map proc (cdr items)))))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">;用accumulate定义</span><br><span class="line">(define (map1 p sequence)</span><br><span class="line">  (accumulate (lambda (x y) (cons (p x) y)) &apos;() sequence))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">;原始append定义</span><br><span class="line">(define (append list1 list2)</span><br><span class="line">  (if (null? list1)</span><br><span class="line">      list2</span><br><span class="line">      (cons (car list1) (append (cdr list1) list2))))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">;用accumulate定义</span><br><span class="line">(define (append1 seq1 seq2)</span><br><span class="line">  (accumulate cons seq2 seq1))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">;原始length定义</span><br><span class="line">(define (length items)</span><br><span class="line">  (define (length-iter a count)</span><br><span class="line">    (if (null? a)</span><br><span class="line">        count</span><br><span class="line">        (length-iter (cdr a) (+ 1 count)))))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">;用accumulate定义</span><br><span class="line">(define (length1 sequence)</span><br><span class="line">  (accumulate (lambda (x y) (+ y 1)) 0 sequence))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-2-34"><a href="#EX-2-34" class="headerlink" title="EX 2.34"></a>EX 2.34</h3><p>主要是采用Horner规则将多项式变形</p>
+<p><img src="/images/ex2-34.jpg" alt="“ex2-34”"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(define (horner-eval x coefficient-sequence)</span><br><span class="line">  (accumulate (lambda (this-coeff higher-terms) (+ this-coeff (* higher-terms x)))</span><br><span class="line">              0</span><br><span class="line">              coefficient-sequence))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-2-35"><a href="#EX-2-35" class="headerlink" title="EX 2.35"></a>EX 2.35</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">;原始count-leaves定义</span><br><span class="line">(define (count-leaves t)</span><br><span class="line">  (cond ((null? t) 0)</span><br><span class="line">        ((not (pair? t)) 1)</span><br><span class="line">        (else (+ (count-leaves (car t))</span><br><span class="line">                 (count-leaves (cdr t))))))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">;用accumulate定义</span><br><span class="line">;map计算每一个结点的叶子数量,得到如(0 0 1 1 ......)的list，再累积便可</span><br><span class="line">(define (count-leaves1 t)</span><br><span class="line">  (accumulate + 0 (map</span><br><span class="line">                   (lambda (x)</span><br><span class="line">                     (if (pair? x)</span><br><span class="line">                         (count-leaves1 x)</span><br><span class="line">                         1))</span><br><span class="line">                     t)))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-2-36"><a href="#EX-2-36" class="headerlink" title="EX 2.36"></a>EX 2.36</h3><p>重点在于如何得到每一个内部序列的第一个元素，于是map一次seqs，对每个内部序列都得到其car</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(define (accumulate-n op init seqs)</span><br><span class="line">  (if (null? (car seqs))</span><br><span class="line">      &apos;()</span><br><span class="line">      (cons (accumulate op init (map car seqs))</span><br><span class="line">            (accumulate-n op init (map cdr seqs)))))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-2-37"><a href="#EX-2-37" class="headerlink" title="EX 2.37"></a>EX 2.37</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">;测试程序 矩阵1、2 向量1、2</span><br><span class="line">(define test-matrix1 (list (list 1 2 3 4) (list 4 5 6 6) (list 6 7 8 9)))</span><br><span class="line">(define test-matrix2 (list (list 1 4 6) (list 2 5 7) (list 3 6 8) (list 4 6 9)))</span><br><span class="line">(define test-vector1 (list 1 2 3 4))</span><br><span class="line">(define test-vector2 (list 4 5 6 6))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">;求点积</span><br><span class="line">(define (dot-product v w)</span><br><span class="line">  (accumulate + 0 (map * v w)))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">;矩阵乘向量，(矩阵列数 = 向量行数) 用map对每一行做点积</span><br><span class="line">(define (matrix-*-vector m v)</span><br><span class="line">  (map (lambda (row)</span><br><span class="line">         (dot-product row v))</span><br><span class="line">         m))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">;求转置矩阵</span><br><span class="line">(define (transpose mat)</span><br><span class="line">  (accumulate-n cons &apos;() mat))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">;矩阵相乘</span><br><span class="line">(define (matrix-*-matrix m n)</span><br><span class="line">  (let ((cols (transpose n)))</span><br><span class="line">    (map (lambda (row)</span><br><span class="line">           (map (lambda (col)</span><br><span class="line">                  (dot-product row col))</span><br><span class="line">                cols))</span><br><span class="line">         m)))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-2-38"><a href="#EX-2-38" class="headerlink" title="EX 2.38"></a>EX 2.38</h3><p>书中fold-left过程如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(define (fold-left op initial sequence)</span><br><span class="line">  (define (iter result rest)</span><br><span class="line">    (if (null? rest)</span><br><span class="line">        result</span><br><span class="line">        (iter (op result (car rest))</span><br><span class="line">              (cdr rest))))</span><br><span class="line">  (iter initial sequence))</span><br></pre></td></tr></table></figure>
+<p>从右向左对元素使用op操作，类似于accumulate</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(define (fold-right op initial sequence)</span><br><span class="line">  (if (null? sequence)</span><br><span class="line">      initial</span><br><span class="line">      (op (car sequence)</span><br><span class="line">          (accumulate op initial (cdr sequence)))))</span><br></pre></td></tr></table></figure>
+<p>由几个例子可以看出，加法、乘法等满足结合律的op，对任何序列可以产生同样的结果</p>
+<h3 id="EX-2-39"><a href="#EX-2-39" class="headerlink" title="EX 2.39"></a>EX 2.39</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;原始reverse</span><br><span class="line">(define (reverse x)</span><br><span class="line">  (define (iter remain result)</span><br><span class="line">    (if (null? remain)</span><br><span class="line">        result</span><br><span class="line">        (iter (cdr remain) (cons (car remain) result))))</span><br><span class="line">  (iter x &apos;()))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(define (reverse1 sequence)</span><br><span class="line">  (fold-right (lambda (x y) (append y (list x))) &apos;() sequence))</span><br><span class="line">(define (reverse2 sequence)</span><br><span class="line">  (fold-left (lambda (x y) (cons y x)) &apos;() sequence))</span><br></pre></td></tr></table></figure>
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2016/04/21/SICP-ex2-2(2)/" itemprop="url">
                   SICP 2.2节习题(2)
                 </a>
@@ -1214,142 +1329,6 @@ x
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2016/03/16/play(1)/" itemprop="url">
-                  Play Framework环境搭建
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-03-16T13:38:22+08:00" content="2016-03-16">
-              2016-03-16
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/搭建环境/" itemprop="url" rel="index">
-                    <span itemprop="name">搭建环境</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h1 id="Play-Framework-笔记-1"><a href="#Play-Framework-笔记-1" class="headerlink" title="Play Framework 笔记(1)"></a>Play Framework 笔记(1)</h1><p>从去年七月开始进入实验室，一直使用的就是Play Framework来进行Web开发，慢慢的应该总结一些东西，免得以后忘记。</p>
-<p>先说说<a href="https://www.playframework.com/" target="_blank" rel="external">Play</a>这个框架吧，使用了一段时间，直观的感觉是：</p>
-<ul>
-<li>MVC架构很清晰，Model层针对数据封装、数据库操作，Controller层负责响应各个请求，View层主要就是一些Html的东西来呈现在浏览器上。</li>
-<li>Debug之后可以在浏览器上直接看到error</li>
-</ul>
-<p>以下援引自<a href="https://en.wikipedia.org/wiki/Play_Framework" target="_blank" rel="external">Wiki</a></p>
-<blockquote>
-<p>Play is an open source web application framework, written in Scala and Java, which follows the model–view–controller (mvc) architectural pattern. It aims to optimize developer productivity by using convention over configuration, hot code reloading and display of errors in the browser.<br>Support for the Scala programming language has been available since version 1.1 of the framework.In version 2.0, the framework core was rewritten in Scala. Build and deployment was migrated to SBT, and templates use Scala instead of Groovy.</p>
-</blockquote>
-<p>一个软件工程的术语<a href="https://en.wikipedia.org/wiki/Convention_over_configuration" target="_blank" rel="external">convention over configuration</a></p>
-<blockquote>
-<p>约定优于配置(convention over configuration)，也称作按约定编程，是一种软件设计范式，旨在减少软件开发人员需做决定的数量，获得简单的好处，而又不失灵活性。<br>本质是说，开发人员仅需规定应用中不符约定的部分。例如，如果模型中有个名为Sale的类，那么数据库中对应的表就会默认命名为sales。只有在偏离这一约定时，例如将该表命名为”products_sold”，才需写有关这个名字的配置。</p>
-</blockquote>
-<p>一开始配环境的时候，被人告知应该装一个typesafe-activator，很懵逼的是不知道这个玩意儿和Play框架有什么关系，继续google。发现typesafe这公司已经更名为<a href="https://www.lightbend.com/" target="_blank" rel="external">Lightbend</a>了，当然这并没有什么影响。继续看看他们的<a href="https://www.lightbend.com/activator/download" target="_blank" rel="external">Activator</a></p>
-<blockquote>
-<p>Activator is the Lightbend Reactive Platform’s build and tutorial tool</p>
-</blockquote>
-<p>看起来Activator是一个构建工具的样子，在<a href="https://www.playframework.com/documentation/2.5.x/Installing" target="_blank" rel="external">Play</a>可以看到教程，如何使用Lightbend Activator安装Play，以及一些相关的配置需求。最开始接触的Play 2.2,现在version已经到了2.5，感觉已经有点跟不上节奏了快。大致扫了一眼新版本的配置，相比之前越来越简洁了，activator也有UI界面，可以新建各个项目，当然Play项目也是可以的。<br>看了一下Lightbend的官网，这个公司做的东西也有一点意思，他们的产品Lightbend Reactive Platform包括以下几个</p>
-<ul>
-<li>ConductR</li>
-<li>Monitoring</li>
-<li>Lagom</li>
-<li>Apache Spark</li>
-</ul>
-<p>Spark还算知道一点点，前三个完全是很陌生的东西了，随便查了一下，有这样的内容</p>
-<blockquote>
-<p>《Lagom：一个新的微服务框架》——Lightbend，也就是Akka背后的公司，最近发布了一款开源的微服务框架Lagom，它构建在他们的Reactive平台之上，尤其是使用了Play框架和Akka的家族产品，并添加了ConductR用于部署。</p>
-</blockquote>
-<p>对<a href="https://en.wikipedia.org/wiki/Typesafe_Inc." target="_blank" rel="external">Typesafe(Lightbend)</a>这个公司看了一下</p>
-<blockquote>
-<p>Typesafe (now Lightbend) is a company founded by Martin Odersky, the creator of the Scala programming language, Jonas Bonér, the creator of the Akka middleware, and Paul Phillips in 2011. It provides an Open source platform for building Reactive applications for the JVM, consisting of the Play Framework, Akka middleware and Scala programming language—with additional supporting products and development tools such as the Scala IDE for Eclipse, the Slick database query and access library for Scala and the sbt build tool. Typesafe also provides training, consulting and commercial support on the platform.<br>Typesafe is one of the main contributors of Reactive Streams.</p>
-</blockquote>
-<p>这里有几个点值得关注</p>
-<ul>
-<li>Akka: 简化并发问题的开源工具包</li>
-<li>Reactive: Reactive Programming, 一种面向数据流和变化传播的编程范式</li>
-<li>sbt: 构建Scala和Java项目的工具，类似于Maven和Ant</li>
-</ul>
-<p>言归正传，Play的工程结构这样的，MVC层次分明。<br><img src="/images/play1.png" alt="“play”"></p>
-<p>在一开始配置play2.2的时候，遇到的主要的问题有</p>
-<ul>
-<li>集成在Intellij 13中</li>
-<li>依赖的jar包很多</li>
-</ul>
-<p>我采用的办法是使用Activator直接new play application，再导入Intellij中。所依赖的jar包很多，只能从公司的服务器上把ivy仓库全部download下来覆盖本地。<br>后来用了intellij 14、15版本，对于Scala、playframework的集成好多了，直接装个Scala plugin，ivy一覆盖就行。</p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1392,7 +1371,7 @@ x
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-count">27</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

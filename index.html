@@ -190,6 +190,112 @@
             
             
               
+                <a class="post-title-link" href="/2017/02/27/Java集合框架学习4/" itemprop="url">
+                  Java集合框架学(3)——ArrayList中的modCount变量
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2017-02-27T23:56:39+08:00" content="2017-02-27">
+              2017-02-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <hr>
+<p>在上一篇学习了一些ArrayList基本的API及其实现后，看一些细节性的东西，其中这个modCount变量值得注意。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public abstract class AbstractList&lt;E&gt; extends AbstractCollection&lt;E&gt; implements List&lt;E&gt; &#123;</span><br><span class="line"></span><br><span class="line">    // ...</span><br><span class="line"></span><br><span class="line">    protected transient int modCount = 0;</span><br><span class="line">	</span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>modCount是定义在AbstractList中的成员变量</p>
+<ul>
+<li><strong>protected</strong>，说明该变量只可以在同包中的任何类、不同包中的任何当前类的子类中所访问。即不同包中的任何不是该类的子类不可访问</li>
+<li><strong>transient</strong>，说明串行化时被忽略</li>
+</ul>
+<p>在ArrayList中与add和remove相关的操作，都会对该变量进行修改，例如remove方法中用到的fastRemove<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private void fastRemove(int index) &#123;</span><br><span class="line">    modCount++;</span><br><span class="line">    int numMoved = size - index - 1;</span><br><span class="line">    if (numMoved &gt; 0)</span><br><span class="line">        System.arraycopy(elementData, index+1, elementData, index,</span><br><span class="line">                         numMoved);</span><br><span class="line">    elementData[--size] = null; // clear to let GC do its work</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>那么这个变量的作用是什么呢？ArrayList的内部类Itr实现了迭代器，其中定义了成员变量expectedModCount，在checkForComodification方法中对expectedModCount是否与ModCount相同进行了检查。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">private class Itr implements Iterator&lt;E&gt; &#123;</span><br><span class="line">    int cursor;       // index of next element to return</span><br><span class="line">    int lastRet = -1; // index of last element returned; -1 if no such</span><br><span class="line">    int expectedModCount = modCount;</span><br><span class="line"></span><br><span class="line">    public boolean hasNext() &#123;</span><br><span class="line">        return cursor != size;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">    public E next() &#123;</span><br><span class="line">        checkForComodification();</span><br><span class="line">        int i = cursor;</span><br><span class="line">        if (i &gt;= size)</span><br><span class="line">            throw new NoSuchElementException();</span><br><span class="line">        Object[] elementData = ArrayList.this.elementData;</span><br><span class="line">        if (i &gt;= elementData.length)</span><br><span class="line">            throw new ConcurrentModificationException();</span><br><span class="line">        cursor = i + 1;</span><br><span class="line">        return (E) elementData[lastRet = i];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void remove() &#123;</span><br><span class="line">        if (lastRet &lt; 0)</span><br><span class="line">            throw new IllegalStateException();</span><br><span class="line">        checkForComodification();</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            ArrayList.this.remove(lastRet);</span><br><span class="line">            cursor = lastRet;</span><br><span class="line">            lastRet = -1;</span><br><span class="line">            expectedModCount = modCount;</span><br><span class="line">        &#125; catch (IndexOutOfBoundsException ex) &#123;</span><br><span class="line">            throw new ConcurrentModificationException();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">    public void forEachRemaining(Consumer&lt;? super E&gt; consumer) &#123;</span><br><span class="line">        Objects.requireNonNull(consumer);</span><br><span class="line">        final int size = ArrayList.this.size;</span><br><span class="line">        int i = cursor;</span><br><span class="line">        if (i &gt;= size) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        final Object[] elementData = ArrayList.this.elementData;</span><br><span class="line">        if (i &gt;= elementData.length) &#123;</span><br><span class="line">            throw new ConcurrentModificationException();</span><br><span class="line">        &#125;</span><br><span class="line">        while (i != size &amp;&amp; modCount == expectedModCount) &#123;</span><br><span class="line">            consumer.accept((E) elementData[i++]);</span><br><span class="line">        &#125;</span><br><span class="line">        // update once at end of iteration to reduce heap write traffic</span><br><span class="line">        cursor = i;</span><br><span class="line">        lastRet = i - 1;</span><br><span class="line">        checkForComodification();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    final void checkForComodification() &#123;</span><br><span class="line">        if (modCount != expectedModCount)</span><br><span class="line">            throw new ConcurrentModificationException();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可想而知，在使用迭代器遍历ArrayList时，如果使用ArrayList的add、remove方法，导致modCount改变，迭代器在检查时发现与期待的expectModCount不同，会抛出ConcurrentModificationException异常，如下例所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">    public static void main(String[] args)  &#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();</span><br><span class="line">        list.add(2);</span><br><span class="line">        Iterator&lt;Integer&gt; iterator = list.iterator();</span><br><span class="line">        while(iterator.hasNext())&#123;</span><br><span class="line">            Integer integer = iterator.next(); // 检查抛出异常</span><br><span class="line">            if(integer==2)</span><br><span class="line">                list.remove(integer); </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>那么如果在迭代过程中只是将ArrayList的remove方法换成在迭代器中定义的remove方法就对了吗？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">    public static void main(String[] args)  &#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();</span><br><span class="line">        list.add(2);</span><br><span class="line">        Iterator&lt;Integer&gt; iterator = list.iterator();</span><br><span class="line">        while(iterator.hasNext())&#123;</span><br><span class="line">            Integer integer = iterator.next();</span><br><span class="line">            if(integer==2)</span><br><span class="line">                iterator.remove();   //注意这个地方</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在单线程环境下确实如此，可当有多个线程对ArrayList进行操作时，线程1进行remove操作后改变了modCount值，但由于modCount不是volatile变量，线程2可能会看到原来的modCount，也可能看到新的modCount，当发现与本线程的expectModCount不同时，仍然会抛出异常。<br>即使换成Vector容器，可Vector也是继承自AbstractList，仍然会有问题。因此一般有2种解决办法：</p>
+<ul>
+<li>在使用iterator迭代的时候使用synchronized或者Lock进行同步；</li>
+<li>使用并发容器CopyOnWriteArrayList代替ArrayList和Vector。</li>
+</ul>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2017/02/27/Java-Framework1/" itemprop="url">
                   《从零开始写Java Web框架》——笔记(1)
                 </a>
@@ -1228,121 +1334,6 @@
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2016/04/28/SICP-ex2-2(3)/" itemprop="url">
-                  SICP 2.2节习题(3)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-04-28T20:08:11+08:00" content="2016-04-28">
-              2016-04-28
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
-                    <span itemprop="name">SICP解题集</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h1 id="第二章-构造数据抽象"><a href="#第二章-构造数据抽象" class="headerlink" title="第二章 构造数据抽象"></a>第二章 构造数据抽象</h1><h2 id="2-2-层次性数据和闭包性质"><a href="#2-2-层次性数据和闭包性质" class="headerlink" title="2.2 层次性数据和闭包性质"></a>2.2 层次性数据和闭包性质</h2><h3 id="EX-2-33"><a href="#EX-2-33" class="headerlink" title="EX 2.33"></a>EX 2.33</h3><p>accumulate中参数op是二元操作<br>lambda (x y) 中，x:(car seq) y:(accumulate op init (cdr seq))</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">;原始map定义</span><br><span class="line">(define (map proc items)</span><br><span class="line">  (if (null? items)</span><br><span class="line">      &apos;()</span><br><span class="line">      (cons (proc (car items))</span><br><span class="line">            (map proc (cdr items)))))</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">;用accumulate定义</span><br><span class="line">(define (map1 p sequence)</span><br><span class="line">  (accumulate (lambda (x y) (cons (p x) y)) &apos;() sequence))</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">;原始append定义</span><br><span class="line">(define (append list1 list2)</span><br><span class="line">  (if (null? list1)</span><br><span class="line">      list2</span><br><span class="line">      (cons (car list1) (append (cdr list1) list2))))</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">;用accumulate定义</span><br><span class="line">(define (append1 seq1 seq2)</span><br><span class="line">  (accumulate cons seq2 seq1))</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">;原始length定义</span><br><span class="line">(define (length items)</span><br><span class="line">  (define (length-iter a count)</span><br><span class="line">    (if (null? a)</span><br><span class="line">        count</span><br><span class="line">        (length-iter (cdr a) (+ 1 count)))))</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">;用accumulate定义</span><br><span class="line">(define (length1 sequence)</span><br><span class="line">  (accumulate (lambda (x y) (+ y 1)) 0 sequence))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-2-34"><a href="#EX-2-34" class="headerlink" title="EX 2.34"></a>EX 2.34</h3><p>主要是采用Horner规则将多项式变形</p>
-<p><img src="/images/ex2-34.jpg" alt="“ex2-34”"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(define (horner-eval x coefficient-sequence)</span><br><span class="line">  (accumulate (lambda (this-coeff higher-terms) (+ this-coeff (* higher-terms x)))</span><br><span class="line">              0</span><br><span class="line">              coefficient-sequence))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-2-35"><a href="#EX-2-35" class="headerlink" title="EX 2.35"></a>EX 2.35</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">;原始count-leaves定义</span><br><span class="line">(define (count-leaves t)</span><br><span class="line">  (cond ((null? t) 0)</span><br><span class="line">        ((not (pair? t)) 1)</span><br><span class="line">        (else (+ (count-leaves (car t))</span><br><span class="line">                 (count-leaves (cdr t))))))</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">;用accumulate定义</span><br><span class="line">;map计算每一个结点的叶子数量,得到如(0 0 1 1 ......)的list，再累积便可</span><br><span class="line">(define (count-leaves1 t)</span><br><span class="line">  (accumulate + 0 (map</span><br><span class="line">                   (lambda (x)</span><br><span class="line">                     (if (pair? x)</span><br><span class="line">                         (count-leaves1 x)</span><br><span class="line">                         1))</span><br><span class="line">                     t)))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-2-36"><a href="#EX-2-36" class="headerlink" title="EX 2.36"></a>EX 2.36</h3><p>重点在于如何得到每一个内部序列的第一个元素，于是map一次seqs，对每个内部序列都得到其car</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(define (accumulate-n op init seqs)</span><br><span class="line">  (if (null? (car seqs))</span><br><span class="line">      &apos;()</span><br><span class="line">      (cons (accumulate op init (map car seqs))</span><br><span class="line">            (accumulate-n op init (map cdr seqs)))))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-2-37"><a href="#EX-2-37" class="headerlink" title="EX 2.37"></a>EX 2.37</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">;测试程序 矩阵1、2 向量1、2</span><br><span class="line">(define test-matrix1 (list (list 1 2 3 4) (list 4 5 6 6) (list 6 7 8 9)))</span><br><span class="line">(define test-matrix2 (list (list 1 4 6) (list 2 5 7) (list 3 6 8) (list 4 6 9)))</span><br><span class="line">(define test-vector1 (list 1 2 3 4))</span><br><span class="line">(define test-vector2 (list 4 5 6 6))</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">;求点积</span><br><span class="line">(define (dot-product v w)</span><br><span class="line">  (accumulate + 0 (map * v w)))</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">;矩阵乘向量，(矩阵列数 = 向量行数) 用map对每一行做点积</span><br><span class="line">(define (matrix-*-vector m v)</span><br><span class="line">  (map (lambda (row)</span><br><span class="line">         (dot-product row v))</span><br><span class="line">         m))</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">;求转置矩阵</span><br><span class="line">(define (transpose mat)</span><br><span class="line">  (accumulate-n cons &apos;() mat))</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">;矩阵相乘</span><br><span class="line">(define (matrix-*-matrix m n)</span><br><span class="line">  (let ((cols (transpose n)))</span><br><span class="line">    (map (lambda (row)</span><br><span class="line">           (map (lambda (col)</span><br><span class="line">                  (dot-product row col))</span><br><span class="line">                cols))</span><br><span class="line">         m)))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-2-38"><a href="#EX-2-38" class="headerlink" title="EX 2.38"></a>EX 2.38</h3><p>书中fold-left过程如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(define (fold-left op initial sequence)</span><br><span class="line">  (define (iter result rest)</span><br><span class="line">    (if (null? rest)</span><br><span class="line">        result</span><br><span class="line">        (iter (op result (car rest))</span><br><span class="line">              (cdr rest))))</span><br><span class="line">  (iter initial sequence))</span><br></pre></td></tr></table></figure>
-<p>从右向左对元素使用op操作，类似于accumulate</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(define (fold-right op initial sequence)</span><br><span class="line">  (if (null? sequence)</span><br><span class="line">      initial</span><br><span class="line">      (op (car sequence)</span><br><span class="line">          (accumulate op initial (cdr sequence)))))</span><br></pre></td></tr></table></figure>
-<p>由几个例子可以看出，加法、乘法等满足结合律的op，对任何序列可以产生同样的结果</p>
-<h3 id="EX-2-39"><a href="#EX-2-39" class="headerlink" title="EX 2.39"></a>EX 2.39</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;原始reverse</span><br><span class="line">(define (reverse x)</span><br><span class="line">  (define (iter remain result)</span><br><span class="line">    (if (null? remain)</span><br><span class="line">        result</span><br><span class="line">        (iter (cdr remain) (cons (car remain) result))))</span><br><span class="line">  (iter x &apos;()))</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(define (reverse1 sequence)</span><br><span class="line">  (fold-right (lambda (x y) (append y (list x))) &apos;() sequence))</span><br><span class="line">(define (reverse2 sequence)</span><br><span class="line">  (fold-left (lambda (x y) (cons y x)) &apos;() sequence))</span><br></pre></td></tr></table></figure>
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1385,7 +1376,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-count">27</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
