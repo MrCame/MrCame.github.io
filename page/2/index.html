@@ -190,6 +190,103 @@
             
             
               
+                <a class="post-title-link" href="/2016/05/03/SICP-ex2-2(4)/" itemprop="url">
+                  SICP 2.2节习题(4)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-05-03T18:36:52+08:00" content="2016-05-03">
+              2016-05-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
+                    <span itemprop="name">SICP解题集</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h1 id="第二章-构造数据抽象"><a href="#第二章-构造数据抽象" class="headerlink" title="第二章 构造数据抽象"></a>第二章 构造数据抽象</h1><h2 id="2-2-层次性数据和闭包性质"><a href="#2-2-层次性数据和闭包性质" class="headerlink" title="2.2 层次性数据和闭包性质"></a>2.2 层次性数据和闭包性质</h2><p>书中P82页，嵌套映射部分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">;二元组</span><br><span class="line">(define (flatmap proc seq)</span><br><span class="line">  (accumulate append &apos;() (map proc seq)))</span><br><span class="line">(define (prime-sum? pair)</span><br><span class="line">  (prime? (+ (car pair) (cadr pair))))</span><br><span class="line">(define (make-pair-sum pair)</span><br><span class="line">  (list (car pair) (cadr pair) (+ (car pair) (cadr pair))))</span><br><span class="line"></span><br><span class="line">(define (prime-sum-pairs n)</span><br><span class="line">  (map make-pair-sum</span><br><span class="line">       (filter prime-sum?</span><br><span class="line">               (flatmap</span><br><span class="line">                (lambda (i)</span><br><span class="line">                  (map (lambda (j) (list i j))</span><br><span class="line">                       (enumerate-interval 1 (- i 1))))</span><br><span class="line">                (enumerate-interval 1 n)))))</span><br></pre></td></tr></table></figure>
+<p>P33页判断是否为素数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">;P33 prime?</span><br><span class="line">(define (prime? n)</span><br><span class="line">	(define (smallest-divisor n)</span><br><span class="line">		(find-divisor n 2))</span><br><span class="line">	(define (find-divisor n test-divisor)</span><br><span class="line">		(cond ((&gt; (square test-divisor) n) n)</span><br><span class="line">			  ((divides? test-divisor n) test-divisor)</span><br><span class="line">			  (else (find-divisor n (+ test-divisor 1)))))</span><br><span class="line">	(define (divides? a b)</span><br><span class="line">		(= (remainder b a) 0))</span><br><span class="line">	(= n (smallest-divisor n)))</span><br><span class="line"></span><br><span class="line">(define (permutations s)</span><br><span class="line">  (if (null? s)</span><br><span class="line">      (list &apos;())</span><br><span class="line">      (flatmap (lambda (x)</span><br><span class="line">                 (map (lambda (p) (cons x p))</span><br><span class="line">                      (permutations (remove x s))))</span><br><span class="line">               s)))</span><br><span class="line">(define (remove item seq)</span><br><span class="line">  (filter (lambda (x) (not (= x item)))</span><br><span class="line">          seq))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-2-40"><a href="#EX-2-40" class="headerlink" title="EX 2.40"></a>EX 2.40</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(define (unique-pairs n)</span><br><span class="line">  (flatmap</span><br><span class="line">   (lambda (i)</span><br><span class="line">     (map (lambda (j) (list i j))</span><br><span class="line">          (enumerate-interval 1 (- i 1))))</span><br><span class="line">   (enumerate-interval 1 n)))</span><br><span class="line">(define (new-prime-sum-pairs n)</span><br><span class="line">  (map make-pair-sum</span><br><span class="line">       (filter prime-sum? (unique-pairs n))))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-2-41"><a href="#EX-2-41" class="headerlink" title="EX 2.41"></a>EX 2.41</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(define (sum-equal-s? triple s)</span><br><span class="line">  (= s (+ (car triple) (cadr triple) (caddr triple))))</span><br><span class="line">(define (make-triple n)</span><br><span class="line">  (flatmap</span><br><span class="line">   (lambda (i)</span><br><span class="line">     (map (lambda (j) (cons i j))</span><br><span class="line">          (unique-pairs (- i 1))))</span><br><span class="line">   (enumerate-interval 1 n)))</span><br><span class="line">(define (remove-not-equal triple s)</span><br><span class="line">  (filter (lambda (pre-triple)</span><br><span class="line">            (sum-equal-s? pre-triple s))</span><br><span class="line">          triple))</span><br><span class="line">(define (2-41 n s)</span><br><span class="line">  (remove-not-equal (make-triple n) s))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-2-42"><a href="#EX-2-42" class="headerlink" title="EX 2.42"></a>EX 2.42</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">(define (queens board-size)</span><br><span class="line">  (define (queen-cols k)  ;第k列</span><br><span class="line">    (if (= k 0)</span><br><span class="line">        (list empty-board)</span><br><span class="line">        (filter</span><br><span class="line">         (lambda (positions) (safe? k positions))</span><br><span class="line">         (flatmap</span><br><span class="line">          (lambda (rest-of-queens)</span><br><span class="line">            (map (lambda (new-row)</span><br><span class="line">                   (adjoin-position new-row k rest-of-queens))</span><br><span class="line">                 (enumerate-interval 1 board-size)))</span><br><span class="line">          (queen-cols (- k 1))))))</span><br><span class="line">  (queen-cols board-size))</span><br><span class="line"></span><br><span class="line">(define empty-board &apos;())</span><br><span class="line">(define (adjoin-position new-row k rest)</span><br><span class="line">  (cons new-row rest))</span><br><span class="line">(define (safe? k position)</span><br><span class="line">    (iter-check (car position) </span><br><span class="line">                (cdr position)</span><br><span class="line">                 1))</span><br><span class="line"></span><br><span class="line">(define (iter-check row-of-new-queen rest-of-queens i)</span><br><span class="line">    (if (null? rest-of-queens)  ; 下方所有皇后检查完毕,新皇后安全</span><br><span class="line">        #t</span><br><span class="line">        (let ((row-of-current-queen (car rest-of-queens)))</span><br><span class="line">            (if (or (= row-of-new-queen row-of-current-queen)           ; 行碰撞</span><br><span class="line">                    (= row-of-new-queen (+ i row-of-current-queen))     ; 右下方碰撞</span><br><span class="line">                    (= row-of-new-queen (- row-of-current-queen i)))    ; 左下方碰撞</span><br><span class="line">                #f</span><br><span class="line">                (iter-check row-of-new-queen </span><br><span class="line">                            (cdr rest-of-queens)    ; 继续检查剩余的皇后</span><br><span class="line">                            (+ i 1))))))            ; 更新步进值</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;测试程序</span><br><span class="line">(define testQueens</span><br><span class="line">  (for-each (lambda (pos)</span><br><span class="line">                    (begin</span><br><span class="line">                        (display pos)</span><br><span class="line">                        (newline)))</span><br><span class="line">                (queens 8)))</span><br></pre></td></tr></table></figure>
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2016/04/28/SICP-ex2-2(3)/" itemprop="url">
                   SICP 2.2节习题(3)
                 </a>
@@ -1234,101 +1331,6 @@ x
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2016/03/21/SICP-ex1-3(1)/" itemprop="url">
-                  SICP 1.3节习题(1)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-03-21T01:13:58+08:00" content="2016-03-21">
-              2016-03-21
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
-                    <span itemprop="name">SICP解题集</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h1 id="第一章-构造过程抽象"><a href="#第一章-构造过程抽象" class="headerlink" title="第一章 构造过程抽象"></a>第一章 构造过程抽象</h1><h2 id="1-3-用高阶函数做抽象"><a href="#1-3-用高阶函数做抽象" class="headerlink" title="1.3 用高阶函数做抽象"></a>1.3 用高阶函数做抽象</h2><h3 id="EX-1-29"><a href="#EX-1-29" class="headerlink" title="EX 1.29"></a>EX 1.29</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">;38页递归版本sum</span><br><span class="line">(define (sum term a next b)</span><br><span class="line">  (if (&gt; a b)</span><br><span class="line">      0</span><br><span class="line">      (+ (term a) (sum term (next a) next b))))</span><br><span class="line">(define (simpson f a b n)</span><br><span class="line">  (define h (/ (- b a) n))</span><br><span class="line">  (define (yk k) (f (+ a (* k h))))</span><br><span class="line">  (define (next k) (+ k 1))</span><br><span class="line">  (define (coefficient k)</span><br><span class="line">    (cond ((or (= k 0) (= k n)) 1)</span><br><span class="line">          ((odd? k) 4)</span><br><span class="line">          (else 2)))</span><br><span class="line">  (define (term k)</span><br><span class="line">    (* (coefficient k) (yk k)))</span><br><span class="line">  (* (sum term 0 next n) (/ h 3)))</span><br></pre></td></tr></table></figure>
-<p>结果<br><img src="/images/ex1-29.png" alt="“1-29”"></p>
-<h3 id="EX-1-30"><a href="#EX-1-30" class="headerlink" title="EX 1.30"></a>EX 1.30</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;sum的迭代版本</span><br><span class="line">(define (sum term a next b)</span><br><span class="line">  (define (iter a result)</span><br><span class="line">    (if (&gt; a b)</span><br><span class="line">        result</span><br><span class="line">        (iter (next a) (+ (term a) result))))</span><br><span class="line">  (iter a 0))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-1-31"><a href="#EX-1-31" class="headerlink" title="EX 1.31"></a>EX 1.31</h3><h4 id="a"><a href="#a" class="headerlink" title="a)"></a>a)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">;类似于sum的过程product,递归版本</span><br><span class="line">(define (product f a next b)</span><br><span class="line">  (if (&gt; a b)</span><br><span class="line">      1</span><br><span class="line">      (* (f a) (product f (next a) next b))))</span><br><span class="line">;用product定义阶乘过程factorial</span><br><span class="line">(define (factorial n)</span><br><span class="line">  (define (f x) x)</span><br><span class="line">  (define (next i) (+ i 1))</span><br><span class="line">  (product f</span><br><span class="line">           1</span><br><span class="line">           next</span><br><span class="line">           n))</span><br><span class="line">;计算pi值,首先计算每一个分数</span><br><span class="line">(define (fraction i)</span><br><span class="line">  (if (odd? i)</span><br><span class="line">      (/ (+ i 1) (+ i 2))</span><br><span class="line">      (/ (+ i 2) (+ i 1))))</span><br><span class="line">;计算pi值,n是精确度</span><br><span class="line">(define (pi n)</span><br><span class="line">  (define (next i) (+ i 1))</span><br><span class="line">  (* (product fraction 1.0 next n) 4.0))</span><br></pre></td></tr></table></figure>
-<p>结果<br><img src="/images/ex1-31a.png" alt="“1-31a”"></p>
-<h4 id="b"><a href="#b" class="headerlink" title="b)"></a>b)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;product的迭代版本</span><br><span class="line">(define (product f a next b)</span><br><span class="line">  (define (iter a result)</span><br><span class="line">    (if (&gt; a b)</span><br><span class="line">        result</span><br><span class="line">        (iter (next a) (* (f a) result))))</span><br><span class="line">  (iter a 1))</span><br></pre></td></tr></table></figure>
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1371,7 +1373,7 @@ x
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-count">28</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

@@ -190,6 +190,101 @@
             
             
               
+                <a class="post-title-link" href="/2017/03/12/Java集合框架学习5/" itemprop="url">
+                  Java集合框架学习(5)——Collection接口和Iterable接口
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2017-03-12T15:05:58+08:00" content="2017-03-12">
+              2017-03-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <hr>
+<p>学习各种集合容器最好先从基本接口入手，之前在<a href="http://mrcame.github.io/2017/02/10/Java%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A01/" target="_blank" rel="external">《Java集合框架学习(1)——概览》</a>中已经梳理清楚了各个类和接口的脉络，现在就从最基本的Collection来看一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public interface Collection&lt;E&gt; extends Iterable&lt;E&gt; &#123;</span><br><span class="line">	</span><br><span class="line">    int size();  // 返回集合中元素数量</span><br><span class="line"></span><br><span class="line">    boolean isEmpty();  // 集合是否为空</span><br><span class="line"></span><br><span class="line">    boolean contains(Object o);  // 集合是否包含特定元素</span><br><span class="line">    </span><br><span class="line">    Iterator&lt;E&gt; iterator();  // 返回该集合的迭代器</span><br><span class="line"></span><br><span class="line">    Object[] toArray();  // 返回一个包含集合中所有元素的数组</span><br><span class="line"></span><br><span class="line">    // 泛型方法用类型变量声明，在方法的修饰符后，返回类型的前面</span><br><span class="line">    &lt;T&gt; T[] toArray(T[] a);  // 同toArray()</span><br><span class="line">    </span><br><span class="line">    boolean add(E e);  // 向集合中添加元素，返回是否添加成功</span><br><span class="line">    </span><br><span class="line">    boolean remove(Object o);  // 删除集合中的特定元素，返回是否删除成功</span><br><span class="line"></span><br><span class="line">    boolean containsAll(Collection&lt;?&gt; c);  // 是否包含特定集合中的全部元素(是否为子集)</span><br><span class="line"></span><br><span class="line">    boolean addAll(Collection&lt;? extends E&gt; c);  // 是否成功添加特定集合中的全部元素</span><br><span class="line"></span><br><span class="line">    boolean removeAll(Collection&lt;?&gt; c);  // 是否删除特定集合中的全部元素</span><br><span class="line"></span><br><span class="line">    boolean retainAll(Collection&lt;?&gt; c);  // 是否包含特定集合中的部分元素(是否有交集)</span><br><span class="line"></span><br><span class="line">    void clear();  // 删除集合中所有元素</span><br><span class="line"></span><br><span class="line">    // ...省略了几个default方法和Object方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样来看基本的集合操作就一目了然了，可以看到Collection继承了Iterable接口，接下来再看一下这个接口：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">package java.lang;</span><br><span class="line">public interface Iterable&lt;T&gt; &#123;</span><br><span class="line">    </span><br><span class="line">    Iterator&lt;T&gt; iterator();  // 返回一个迭代器</span><br><span class="line"></span><br><span class="line">    // ...省略了几个default方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>文档中是这样说的，只要实现了这个接口，就可以使用for-each循环来遍历目标对象。需要注意的是，Iterable这个接口比较特殊，不在java.util中。</p>
+<p>下一篇来学习一下继承了Collection接口的三个基本接口——List、Set、Queue。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2017/02/27/Java集合框架学习4/" itemprop="url">
                   Java集合框架学(3)——ArrayList中的modCount变量
                 </a>
@@ -1237,103 +1332,6 @@
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2016/05/03/SICP-ex2-2(4)/" itemprop="url">
-                  SICP 2.2节习题(4)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-05-03T18:36:52+08:00" content="2016-05-03">
-              2016-05-03
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
-                    <span itemprop="name">SICP解题集</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h1 id="第二章-构造数据抽象"><a href="#第二章-构造数据抽象" class="headerlink" title="第二章 构造数据抽象"></a>第二章 构造数据抽象</h1><h2 id="2-2-层次性数据和闭包性质"><a href="#2-2-层次性数据和闭包性质" class="headerlink" title="2.2 层次性数据和闭包性质"></a>2.2 层次性数据和闭包性质</h2><p>书中P82页，嵌套映射部分</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">;二元组</span><br><span class="line">(define (flatmap proc seq)</span><br><span class="line">  (accumulate append &apos;() (map proc seq)))</span><br><span class="line">(define (prime-sum? pair)</span><br><span class="line">  (prime? (+ (car pair) (cadr pair))))</span><br><span class="line">(define (make-pair-sum pair)</span><br><span class="line">  (list (car pair) (cadr pair) (+ (car pair) (cadr pair))))</span><br><span class="line"></span><br><span class="line">(define (prime-sum-pairs n)</span><br><span class="line">  (map make-pair-sum</span><br><span class="line">       (filter prime-sum?</span><br><span class="line">               (flatmap</span><br><span class="line">                (lambda (i)</span><br><span class="line">                  (map (lambda (j) (list i j))</span><br><span class="line">                       (enumerate-interval 1 (- i 1))))</span><br><span class="line">                (enumerate-interval 1 n)))))</span><br></pre></td></tr></table></figure>
-<p>P33页判断是否为素数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">;P33 prime?</span><br><span class="line">(define (prime? n)</span><br><span class="line">	(define (smallest-divisor n)</span><br><span class="line">		(find-divisor n 2))</span><br><span class="line">	(define (find-divisor n test-divisor)</span><br><span class="line">		(cond ((&gt; (square test-divisor) n) n)</span><br><span class="line">			  ((divides? test-divisor n) test-divisor)</span><br><span class="line">			  (else (find-divisor n (+ test-divisor 1)))))</span><br><span class="line">	(define (divides? a b)</span><br><span class="line">		(= (remainder b a) 0))</span><br><span class="line">	(= n (smallest-divisor n)))</span><br><span class="line"></span><br><span class="line">(define (permutations s)</span><br><span class="line">  (if (null? s)</span><br><span class="line">      (list &apos;())</span><br><span class="line">      (flatmap (lambda (x)</span><br><span class="line">                 (map (lambda (p) (cons x p))</span><br><span class="line">                      (permutations (remove x s))))</span><br><span class="line">               s)))</span><br><span class="line">(define (remove item seq)</span><br><span class="line">  (filter (lambda (x) (not (= x item)))</span><br><span class="line">          seq))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-2-40"><a href="#EX-2-40" class="headerlink" title="EX 2.40"></a>EX 2.40</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(define (unique-pairs n)</span><br><span class="line">  (flatmap</span><br><span class="line">   (lambda (i)</span><br><span class="line">     (map (lambda (j) (list i j))</span><br><span class="line">          (enumerate-interval 1 (- i 1))))</span><br><span class="line">   (enumerate-interval 1 n)))</span><br><span class="line">(define (new-prime-sum-pairs n)</span><br><span class="line">  (map make-pair-sum</span><br><span class="line">       (filter prime-sum? (unique-pairs n))))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-2-41"><a href="#EX-2-41" class="headerlink" title="EX 2.41"></a>EX 2.41</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(define (sum-equal-s? triple s)</span><br><span class="line">  (= s (+ (car triple) (cadr triple) (caddr triple))))</span><br><span class="line">(define (make-triple n)</span><br><span class="line">  (flatmap</span><br><span class="line">   (lambda (i)</span><br><span class="line">     (map (lambda (j) (cons i j))</span><br><span class="line">          (unique-pairs (- i 1))))</span><br><span class="line">   (enumerate-interval 1 n)))</span><br><span class="line">(define (remove-not-equal triple s)</span><br><span class="line">  (filter (lambda (pre-triple)</span><br><span class="line">            (sum-equal-s? pre-triple s))</span><br><span class="line">          triple))</span><br><span class="line">(define (2-41 n s)</span><br><span class="line">  (remove-not-equal (make-triple n) s))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-2-42"><a href="#EX-2-42" class="headerlink" title="EX 2.42"></a>EX 2.42</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">(define (queens board-size)</span><br><span class="line">  (define (queen-cols k)  ;第k列</span><br><span class="line">    (if (= k 0)</span><br><span class="line">        (list empty-board)</span><br><span class="line">        (filter</span><br><span class="line">         (lambda (positions) (safe? k positions))</span><br><span class="line">         (flatmap</span><br><span class="line">          (lambda (rest-of-queens)</span><br><span class="line">            (map (lambda (new-row)</span><br><span class="line">                   (adjoin-position new-row k rest-of-queens))</span><br><span class="line">                 (enumerate-interval 1 board-size)))</span><br><span class="line">          (queen-cols (- k 1))))))</span><br><span class="line">  (queen-cols board-size))</span><br><span class="line"></span><br><span class="line">(define empty-board &apos;())</span><br><span class="line">(define (adjoin-position new-row k rest)</span><br><span class="line">  (cons new-row rest))</span><br><span class="line">(define (safe? k position)</span><br><span class="line">    (iter-check (car position) </span><br><span class="line">                (cdr position)</span><br><span class="line">                 1))</span><br><span class="line"></span><br><span class="line">(define (iter-check row-of-new-queen rest-of-queens i)</span><br><span class="line">    (if (null? rest-of-queens)  ; 下方所有皇后检查完毕,新皇后安全</span><br><span class="line">        #t</span><br><span class="line">        (let ((row-of-current-queen (car rest-of-queens)))</span><br><span class="line">            (if (or (= row-of-new-queen row-of-current-queen)           ; 行碰撞</span><br><span class="line">                    (= row-of-new-queen (+ i row-of-current-queen))     ; 右下方碰撞</span><br><span class="line">                    (= row-of-new-queen (- row-of-current-queen i)))    ; 左下方碰撞</span><br><span class="line">                #f</span><br><span class="line">                (iter-check row-of-new-queen </span><br><span class="line">                            (cdr rest-of-queens)    ; 继续检查剩余的皇后</span><br><span class="line">                            (+ i 1))))))            ; 更新步进值</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;测试程序</span><br><span class="line">(define testQueens</span><br><span class="line">  (for-each (lambda (pos)</span><br><span class="line">                    (begin</span><br><span class="line">                        (display pos)</span><br><span class="line">                        (newline)))</span><br><span class="line">                (queens 8)))</span><br></pre></td></tr></table></figure>
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1376,7 +1374,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-count">28</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

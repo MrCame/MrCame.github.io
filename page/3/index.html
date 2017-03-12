@@ -190,6 +190,101 @@
             
             
               
+                <a class="post-title-link" href="/2016/03/21/SICP-ex1-3(1)/" itemprop="url">
+                  SICP 1.3节习题(1)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-03-21T01:13:58+08:00" content="2016-03-21">
+              2016-03-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
+                    <span itemprop="name">SICP解题集</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h1 id="第一章-构造过程抽象"><a href="#第一章-构造过程抽象" class="headerlink" title="第一章 构造过程抽象"></a>第一章 构造过程抽象</h1><h2 id="1-3-用高阶函数做抽象"><a href="#1-3-用高阶函数做抽象" class="headerlink" title="1.3 用高阶函数做抽象"></a>1.3 用高阶函数做抽象</h2><h3 id="EX-1-29"><a href="#EX-1-29" class="headerlink" title="EX 1.29"></a>EX 1.29</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">;38页递归版本sum</span><br><span class="line">(define (sum term a next b)</span><br><span class="line">  (if (&gt; a b)</span><br><span class="line">      0</span><br><span class="line">      (+ (term a) (sum term (next a) next b))))</span><br><span class="line">(define (simpson f a b n)</span><br><span class="line">  (define h (/ (- b a) n))</span><br><span class="line">  (define (yk k) (f (+ a (* k h))))</span><br><span class="line">  (define (next k) (+ k 1))</span><br><span class="line">  (define (coefficient k)</span><br><span class="line">    (cond ((or (= k 0) (= k n)) 1)</span><br><span class="line">          ((odd? k) 4)</span><br><span class="line">          (else 2)))</span><br><span class="line">  (define (term k)</span><br><span class="line">    (* (coefficient k) (yk k)))</span><br><span class="line">  (* (sum term 0 next n) (/ h 3)))</span><br></pre></td></tr></table></figure>
+<p>结果<br><img src="/images/ex1-29.png" alt="“1-29”"></p>
+<h3 id="EX-1-30"><a href="#EX-1-30" class="headerlink" title="EX 1.30"></a>EX 1.30</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;sum的迭代版本</span><br><span class="line">(define (sum term a next b)</span><br><span class="line">  (define (iter a result)</span><br><span class="line">    (if (&gt; a b)</span><br><span class="line">        result</span><br><span class="line">        (iter (next a) (+ (term a) result))))</span><br><span class="line">  (iter a 0))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-1-31"><a href="#EX-1-31" class="headerlink" title="EX 1.31"></a>EX 1.31</h3><h4 id="a"><a href="#a" class="headerlink" title="a)"></a>a)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">;类似于sum的过程product,递归版本</span><br><span class="line">(define (product f a next b)</span><br><span class="line">  (if (&gt; a b)</span><br><span class="line">      1</span><br><span class="line">      (* (f a) (product f (next a) next b))))</span><br><span class="line">;用product定义阶乘过程factorial</span><br><span class="line">(define (factorial n)</span><br><span class="line">  (define (f x) x)</span><br><span class="line">  (define (next i) (+ i 1))</span><br><span class="line">  (product f</span><br><span class="line">           1</span><br><span class="line">           next</span><br><span class="line">           n))</span><br><span class="line">;计算pi值,首先计算每一个分数</span><br><span class="line">(define (fraction i)</span><br><span class="line">  (if (odd? i)</span><br><span class="line">      (/ (+ i 1) (+ i 2))</span><br><span class="line">      (/ (+ i 2) (+ i 1))))</span><br><span class="line">;计算pi值,n是精确度</span><br><span class="line">(define (pi n)</span><br><span class="line">  (define (next i) (+ i 1))</span><br><span class="line">  (* (product fraction 1.0 next n) 4.0))</span><br></pre></td></tr></table></figure>
+<p>结果<br><img src="/images/ex1-31a.png" alt="“1-31a”"></p>
+<h4 id="b"><a href="#b" class="headerlink" title="b)"></a>b)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;product的迭代版本</span><br><span class="line">(define (product f a next b)</span><br><span class="line">  (define (iter a result)</span><br><span class="line">    (if (&gt; a b)</span><br><span class="line">        result</span><br><span class="line">        (iter (next a) (* (f a) result))))</span><br><span class="line">  (iter a 1))</span><br></pre></td></tr></table></figure>
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2016/03/16/play(1)/" itemprop="url">
                   Play Framework环境搭建
                 </a>
@@ -1097,7 +1192,7 @@ r3 = (r r1 r2)
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-count">28</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
