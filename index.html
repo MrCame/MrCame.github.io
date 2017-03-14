@@ -190,6 +190,100 @@
             
             
               
+                <a class="post-title-link" href="/2017/03/13/Java集合框架学习6/" itemprop="url">
+                  Java集合框架学习(6)——List接口
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2017-03-13T17:25:30+08:00" content="2017-03-13">
+              2017-03-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <hr>
+<p>接着上一篇的内容，看过了Collection以后，再看一下继承了它的三个子接口List、Set、Queue<br>几种常用的数据结构如ArrayList，LinkedList等，都实现了List接口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public interface List&lt;E&gt; extends Collection&lt;E&gt; &#123;</span><br><span class="line">    </span><br><span class="line">    // ... 省略已经在父接口中声明的方法</span><br><span class="line"></span><br><span class="line">    boolean addAll(int index, Collection&lt;? extends E&gt; c);  // 在List的特定位置插入某集合的全部元素</span><br><span class="line">    </span><br><span class="line">    default void replaceAll(UnaryOperator&lt;E&gt; operator)  // 替换列表中的每个数据</span><br><span class="line"></span><br><span class="line">    default void sort(Comparator&lt;? super E&gt; c)  // 使用比较器对列表排序</span><br><span class="line"></span><br><span class="line">    E get(int index);  // 得到列表指定位置的数据</span><br><span class="line"></span><br><span class="line">    E set(int index, E element);  // 替换列表中指定位置的数据</span><br><span class="line"></span><br><span class="line">    void add(int index, E element);  // 在列表的指定位置插入数据</span><br><span class="line"></span><br><span class="line">    E remove(int index);  // 删除列表中指定位置的数据或第一次出现的指定数据</span><br><span class="line"></span><br><span class="line">    int indexOf(Object o);  // 得到指定数据在列表中第一次出现的位置，如果列表中不包含指定数据，返回-1</span><br><span class="line"></span><br><span class="line">    int lastIndexOf(Object o);  // 返回指定数据在列表中最后一次出现的位置</span><br><span class="line"></span><br><span class="line">    ListIterator&lt;E&gt; listIterator();  // 返回列表的迭代器</span><br><span class="line"></span><br><span class="line">    ListIterator&lt;E&gt; listIterator(int index);  // 返回列表指定位置的迭代器</span><br><span class="line"></span><br><span class="line">    List&lt;E&gt; subList(int fromIndex, int toIndex);  // 返回列表两个位置之间的数据组成的列表</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    default Spliterator&lt;E&gt; spliterator()  // 创建一个列表的分片迭代器</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先是一个接口继承的问题，List接口中声明了很多Collection接口中已经声明过的方法，例如size，isEmpty等，没有用@Override做注解，在这里我想为什么已经在Collection中已经声明了size方法还要在子接口List中再次声明呢？<br>我的理解是，采用这样的设计方法，将层次明确，比如一个List的实现需要size方法时指的就是这个List接口的size，后面的实现类中，明确的实现了List接口中定义的size，而非Collection接口中的size。<br>其次是几个在JDK1.8中加入的几个default方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">list.add(1);</span><br><span class="line">list.add(2);</span><br><span class="line"></span><br><span class="line">// 将每个元素加1 </span><br><span class="line">list.replaceAll(new UnaryOperator&lt;Integer&gt;() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public Integer apply(Integer integer) &#123;</span><br><span class="line">        return integer + 1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 使用定义的比较器对list进行排序</span><br><span class="line">list.sort(new Comparator&lt;String&gt;() &#123;</span><br><span class="line">    public int compare(String  x, String y) &#123;</span><br><span class="line">        return x.compareTo(y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>Spliterator方法要细说就不是这个系列所要讲述的内容了。Spliterator（splitable iterator可分割迭代器）接口是Java为了并行遍历数据源中的元素而设计的迭代器，这个可以类比最早Java提供的顺序遍历迭代器Iterator，但一个是顺序遍历，一个是并行遍历。从最早Java提供顺序遍历迭代器Iterator时，那个时候还是单核时代，但现在多核时代下，顺序遍历已经不能满足需求了，如何把多个任务分配到不同核上并行执行，才是能最大发挥多核的能力，于是有了Spliterator。以后再开一篇JDK8的讲解系列。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2017/03/12/Java集合框架学习5/" itemprop="url">
                   Java集合框架学习(5)——Collection接口和Iterable接口
                 </a>
@@ -244,8 +338,10 @@
           <span itemprop="articleBody">
             
               <hr>
-<p>学习各种集合容器最好先从基本接口入手，之前在<a href="http://mrcame.github.io/2017/02/10/Java%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A01/" target="_blank" rel="external">《Java集合框架学习(1)——概览》</a>中已经梳理清楚了各个类和接口的脉络，现在就从最基本的Collection来看一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public interface Collection&lt;E&gt; extends Iterable&lt;E&gt; &#123;</span><br><span class="line">	</span><br><span class="line">    int size();  // 返回集合中元素数量</span><br><span class="line"></span><br><span class="line">    boolean isEmpty();  // 集合是否为空</span><br><span class="line"></span><br><span class="line">    boolean contains(Object o);  // 集合是否包含特定元素</span><br><span class="line">    </span><br><span class="line">    Iterator&lt;E&gt; iterator();  // 返回该集合的迭代器</span><br><span class="line"></span><br><span class="line">    Object[] toArray();  // 返回一个包含集合中所有元素的数组</span><br><span class="line"></span><br><span class="line">    // 泛型方法用类型变量声明，在方法的修饰符后，返回类型的前面</span><br><span class="line">    &lt;T&gt; T[] toArray(T[] a);  // 同toArray()</span><br><span class="line">    </span><br><span class="line">    boolean add(E e);  // 向集合中添加元素，返回是否添加成功</span><br><span class="line">    </span><br><span class="line">    boolean remove(Object o);  // 删除集合中的特定元素，返回是否删除成功</span><br><span class="line"></span><br><span class="line">    boolean containsAll(Collection&lt;?&gt; c);  // 是否包含特定集合中的全部元素(是否为子集)</span><br><span class="line"></span><br><span class="line">    boolean addAll(Collection&lt;? extends E&gt; c);  // 是否成功添加特定集合中的全部元素</span><br><span class="line"></span><br><span class="line">    boolean removeAll(Collection&lt;?&gt; c);  // 是否删除特定集合中的全部元素</span><br><span class="line"></span><br><span class="line">    boolean retainAll(Collection&lt;?&gt; c);  // 是否包含特定集合中的部分元素(是否有交集)</span><br><span class="line"></span><br><span class="line">    void clear();  // 删除集合中所有元素</span><br><span class="line"></span><br><span class="line">    // ...省略了几个default方法和Object方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这样来看基本的集合操作就一目了然了，可以看到Collection继承了Iterable接口，接下来再看一下这个接口：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">package java.lang;</span><br><span class="line">public interface Iterable&lt;T&gt; &#123;</span><br><span class="line">    </span><br><span class="line">    Iterator&lt;T&gt; iterator();  // 返回一个迭代器</span><br><span class="line"></span><br><span class="line">    // ...省略了几个default方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>学习各种集合容器最好先从基本接口入手，之前在<a href="http://mrcame.github.io/2017/02/10/Java%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A01/" target="_blank" rel="external">《Java集合框架学习(1)——概览》</a>中已经梳理清楚了各个类和接口的脉络，现在就从最基本的Collection来看一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public interface Collection&lt;E&gt; extends Iterable&lt;E&gt; &#123;</span><br><span class="line">	</span><br><span class="line">    int size();  // 返回集合中元素数量，超过最大数量后返回Integer.MAX_VALUE</span><br><span class="line"></span><br><span class="line">    boolean isEmpty();  // 集合是否为空</span><br><span class="line"></span><br><span class="line">    boolean contains(Object o);  // 集合是否包含特定元素</span><br><span class="line">    </span><br><span class="line">    Iterator&lt;E&gt; iterator();  // 返回该集合的迭代器</span><br><span class="line"></span><br><span class="line">    Object[] toArray();  // 返回一个包含集合中所有元素的数组</span><br><span class="line"></span><br><span class="line">    // 泛型方法用类型变量声明，在方法的修饰符后，返回类型的前面</span><br><span class="line">    &lt;T&gt; T[] toArray(T[] a);  // 同toArray()</span><br><span class="line">    </span><br><span class="line">    boolean add(E e);  // 向集合中添加元素，返回是否添加成功</span><br><span class="line">    </span><br><span class="line">    boolean remove(Object o);  // 删除集合中的特定元素，返回是否删除成功</span><br><span class="line"></span><br><span class="line">    boolean containsAll(Collection&lt;?&gt; c);  // 是否包含特定集合中的全部元素(是否为子集)</span><br><span class="line"></span><br><span class="line">    boolean addAll(Collection&lt;? extends E&gt; c);  // 是否成功添加特定集合中的全部元素</span><br><span class="line"></span><br><span class="line">    boolean removeAll(Collection&lt;?&gt; c);  // 是否删除特定集合中的全部元素</span><br><span class="line"></span><br><span class="line">    boolean retainAll(Collection&lt;?&gt; c);  // 是否包含特定集合中的部分元素(是否有交集)</span><br><span class="line"></span><br><span class="line">    void clear();  // 删除集合中所有元素</span><br><span class="line"></span><br><span class="line">    // ...省略了几个default方法和Object方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样来看基本的集合操作就一目了然，需要注意的是toArray方法，有两个重构的方法，下面来看一些细节：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();   </span><br><span class="line">list.add(1);  </span><br><span class="line">Integer[] i1 = (Integer[]) list.toArray();  // 造型异常</span><br><span class="line">Integer[] i2 = (Integer[]) list.toArray(new Integer[0]);  // Ok</span><br></pre></td></tr></table></figure></p>
+<p>运行时会报java.lang.ClassCastException。看了一下ArrayList中toArray的实现，在不带参数的toArray方法里：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">// 不带参数的toArray</span><br><span class="line">public Object[] toArray() &#123;</span><br><span class="line">    return Arrays.copyOf(elementData, size);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 带参数的toArray</span><br><span class="line">public &lt;T&gt; T[] toArray(T[] a) &#123;</span><br><span class="line">    if (a.length &lt; size)</span><br><span class="line">        return (T[]) Arrays.copyOf(elementData, size, a.getClass());</span><br><span class="line">    System.arraycopy(elementData, 0, a, 0, size);</span><br><span class="line">    if (a.length &gt; size)</span><br><span class="line">        a[size] = null;</span><br><span class="line">    return a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Arrays.copyOf</span><br><span class="line">public static &lt;T&gt; T[] copyOf(T[] original, int newLength) &#123;</span><br><span class="line">    return (T[]) copyOf(original, newLength, original.getClass());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// copyOf</span><br><span class="line">public static &lt;T,U&gt; T[] copyOf(U[] original, int newLength, Class&lt;? extends T[]&gt; newType) &#123;</span><br><span class="line">    @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">    T[] copy = ((Object)newType == (Object)Object[].class)  // 主要是这里</span><br><span class="line">        ? (T[]) new Object[newLength]</span><br><span class="line">        : (T[]) Array.newInstance(newType.getComponentType(), newLength);</span><br><span class="line">    System.arraycopy(original, 0, copy, 0,</span><br><span class="line">                     Math.min(original.length, newLength));</span><br><span class="line">    return copy;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>采用无参的toArray，在三目运算中直接返回Object数组，此时进行转型是不安全的下溯造型(Downcasting)，会产生ClassCastException，这也就是上述问题的原因了。<br>采用有参的toArray，newType.getCommponentType()返回数组内容的类型，根据该类型构造对应类型的数组copy，于是不会有问题。<br>Collection继承了Iterable接口，接下来再看一下这个接口：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">package java.lang;</span><br><span class="line">public interface Iterable&lt;T&gt; &#123;</span><br><span class="line">    </span><br><span class="line">    Iterator&lt;T&gt; iterator();  // 返回一个迭代器</span><br><span class="line"></span><br><span class="line">    // ...省略了几个default方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>文档中是这样说的，只要实现了这个接口，就可以使用for-each循环来遍历目标对象。需要注意的是，Iterable这个接口比较特殊，不在java.util中。</p>
 <p>下一篇来学习一下继承了Collection接口的三个基本接口——List、Set、Queue。</p>
 
@@ -791,7 +887,7 @@
           <span itemprop="articleBody">
             
               <hr>
-<p>从源码入手学习Java集合框架，首先当然是理清java.util下的各个集合类与接口的关系。整理了一下，如下图所示，关系应该比较清晰了吧。<br><img src="/images/java-2-0.png" alt="&quot;Collection&quot;"><br>当然经历了几个JDK版本的变化，集合框架也越来越庞大，最基本的东西却是没怎么变。<br>核心是<strong>以collection为父类的接口</strong>和<strong>以AbstractCollection为父类的抽象类</strong>，从这两部分入手，顺藤摸瓜，就可以理清整个框架的脉络，然后结合各个具体集合的实现来温习学习过的数据结构和算法。<br>比较奇怪的一点是Iterable接口是在java.lang中，而不是在java.util中。为什么Collection不直接继承Iterator呢？有这么一种说法：<br>JDK的作者之所以采用Iterator设计模式来设计，因为如果Collection直接从Iterator继承，那么Collection的实现类必须直接实现hasNext, next, remove方法。这么做有以下缺点：</p>
+<p>从源码入手学习Java集合框架，选用的JDK版本是1.8.0_111。首先当然是理清java.util下的各个集合类与接口的关系。整理了一下，如下图所示，关系应该比较清晰了吧。<br><img src="/images/java-2-0.png" alt="&quot;Collection&quot;"><br>当然经历了几个JDK版本的变化，集合框架也越来越庞大，最基本的东西却是没怎么变。<br>核心是<strong>以collection为父类的接口</strong>和<strong>以AbstractCollection为父类的抽象类</strong>，从这两部分入手，顺藤摸瓜，就可以理清整个框架的脉络，然后结合各个具体集合的实现来温习学习过的数据结构和算法。<br>比较奇怪的一点是Iterable接口是在java.lang中，而不是在java.util中。为什么Collection不直接继承Iterator呢？有这么一种说法：<br>JDK的作者之所以采用Iterator设计模式来设计，因为如果Collection直接从Iterator继承，那么Collection的实现类必须直接实现hasNext, next, remove方法。这么做有以下缺点：</p>
 <ul>
 <li>这么做会造成代码混乱，迭代代码与Collection本身实现代码混淆在一起，造成阅读困难，而且有方法重复，比如remove，不能做到迭代与本身实现分离。</li>
 <li>在Collection实现类中必须包含当前cursor指针，在并发时处理相当尴尬。</li>
@@ -1182,156 +1278,6 @@
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2016/05/04/PHP-MySql-Apache-WordPress/" itemprop="url">
-                  PHP+MySql+Apache+WordPress Win10 配置
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-05-04T22:48:32+08:00" content="2016-05-04">
-              2016-05-04
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/搭建环境/" itemprop="url" rel="index">
-                    <span itemprop="name">搭建环境</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <p>闲话少说，首先是安装，但是版本的选择很重要。</p>
-<h2 id="PHP-5-6"><a href="#PHP-5-6" class="headerlink" title="PHP 5.6"></a>PHP 5.6</h2><p>当然是<a href="&quot;http://php.net/downloads.php&quot;">官网</a>啦！</p>
-<p><img src="/images/amps1.png" alt="“php1”"></p>
-<p>这里选择5.6的版本，PHP 7太新了，怕兼容性出现问题。点击<a href="&quot;http://windows.php.net/download#php-5.6&quot;">Windows downloads</a></p>
-<p>版本有Thread Safe/Non Thread Safe 和 X86 X64的两种组合，随自己的喜欢了。Non Thread Safe不会检查线程是否安全。这里下载的是Zip格式的压缩包</p>
-<p><img src="/images/amps2.png" alt="“php2”"></p>
-<p>解压缩，我的路径是 F:\php5.6 复制份php.ini-development，并改名为PHP.ini，用记事本打开</p>
-<p>查找 extension_dir 将</p>
-<pre><code>;extension=php_mysql.dll
-;extension=php_mysqli.dll
-</code></pre><p>前面的注释符”;”去掉，使PHP支持mysql</p>
-<h2 id="Apache-2-4"><a href="#Apache-2-4" class="headerlink" title="Apache 2.4"></a>Apache 2.4</h2><p>点<a href="&quot;http://httpd.apache.org/download.cgi&quot;">这里</a>下载！这里选择2.4版本，因为和PHP 5.6一样都是在vc11下编译的</p>
-<p><img src="/images/amps3.png" alt="“apache1”"></p>
-<p>点击 Files for Microsoft Windows，这里有五个版本，第一项ApacheHaus是个第三方下载平台，在它的网站下载独立的Apache压缩包。另外四个中，第二个也是独立的Apache下载地址，另外三个是集成开发环境。这里直接选择了第一个</p>
-<p><img src="/images/amps4.png" alt="“apache2”"></p>
-<p>解压缩，我的路径是 F:\Apache24 接下来的工作就是比较主要的了，配置 httpd.conf</p>
-<ul>
-<li>修改监听端口</li>
-</ul>
-<p>如果原有80端口被其他服务占用，可以修改 <code>Listen 80</code> 为 <code>Listen 8081</code> (例如)</p>
-<ul>
-<li>修改权限</li>
-</ul>
-<p>apache 2.4 不再支持deny/allow 等指令，改用 denied/granted，将denied改为granted，或者注释掉重写。<br>否则会出现的一个问题是 <code>You don’t have permission to access / on this server</code><br>如果根目录下没有index文件，也会出现这个问题</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;Directory /&gt;</span><br><span class="line">    AllowOverride none</span><br><span class="line">    # Require all denied</span><br><span class="line">	Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>修改站点根目录</li>
-</ul>
-<p><code>DocumentRoot &quot;${SRVROOT}/htdocs&quot;</code> 改为自己的目录<br>例如我的 <code>DocumentRoot &quot;D:/PHPWeb&quot;</code></p>
-<ul>
-<li>支持PHP</li>
-</ul>
-<p>在配置文件最后添加以下代码，配置php的module 和 php.ini 的路径</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># php5 support</span><br><span class="line">LoadModule php5_module &quot;F:/php5.6/php5apache2_4.dll&quot;</span><br><span class="line">AddHandler application/x-httpd-php .php</span><br><span class="line"># configure the path to php.ini</span><br><span class="line">PHPIniDir &quot;F:/php5.6&quot;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>启动Apache</li>
-</ul>
-<p>在bin目录下执行httpd.exe，正常情况就是没有信息返回</p>
-<p><img src="/images/amps5.png" alt="“apache3”"></p>
-<p>在 <code>D:/PHPWeb</code> 内新建 <code>index.php</code>, 内容填入以下PHP代码</p>
-<pre><code>&lt;?php Echo &quot;Hello, CJW!&quot;;?&gt;
-</code></pre><p>此时可以在浏览器输入localhost:8081/index.php，可以看到打印的结果，此时PHP+Apache已经搭建好</p>
-<p><img src="/images/amps6.png" alt="“apache4”"></p>
-<h2 id="WordPress"><a href="#WordPress" class="headerlink" title="WordPress"></a>WordPress</h2><p>点<a href="&quot;https://wordpress.org/download/&quot;">这里</a>下载，我选择zip版本，然后解压缩</p>
-<p><a href="&quot;http://codex.wordpress.org.cn/&quot;">官网教程</a>写的也比较清楚，主要有几个步骤需要注意</p>
-<ul>
-<li>上传WordPress到一个远程主机</li>
-</ul>
-<p>教程里说的这一步，可以把zip解压到根目录里，例如我的 <code>&quot;D:\PHPWeb\wordpress&quot;</code></p>
-<ul>
-<li>设置 wp-config.php</li>
-</ul>
-<p>将 wp-config-sample.php 改名为 wp-config.php，然后就是配置数据库，教程里写的很清楚。</p>
-<ul>
-<li>测试</li>
-</ul>
-<p>在浏览器里输入 <code>http://localhost:8081/wordpress/</code> 进行测试，第一次访问是注册界面</p>
-<p>如果出现 <code>You don’t have permission to access / on this server</code> 检查Apache配置，或者看是否缺少index文件</p>
-<p><img src="/images/amps7.png" alt="“wp”"></p>
-<h2 id="MySql-5-6"><a href="#MySql-5-6" class="headerlink" title="MySql 5.6"></a>MySql 5.6</h2><p>安装过程基本一路next，注意填入的用户名和密码要记住，在wp-config.php配置时需要填入</p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1374,7 +1320,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">29</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

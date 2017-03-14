@@ -34,7 +34,7 @@
 
 
 
-  <meta name="keywords" content="SICP," />
+  <meta name="keywords" content="Java," />
 
 
 
@@ -43,25 +43,16 @@
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
 
 
-<meta name="description" content="最近开始看SICP这本神书，先草草看了前三章半，看了一点题目，最近开始跟着两位作者的公开课学习。先说一下对这本书的整体感觉吧，抽象程度比较高，对于计算机程序的理解不再停留于语法的层面，而是剖开现象看本质，探讨计算机程序的本质内容——具象化人的思维。
-如作者所言，对CS而言，关键在于
-
-Techniques for controlling the complexity of large system">
+<meta name="description" content="接着上一篇的内容，看过了Collection以后，再看一下继承了它的三个子接口List、Set、Queue几种常用的数据结构如ArrayList，LinkedList等，都实现了List接口12345678910111213141516171819202122232425262728293031public interface List&amp;lt;E&amp;gt; extends Collection&amp;l">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《计算机程序的解释和构造(SICP)》 (1)">
-<meta property="og:url" content="http://yoursite.com/2016/03/04/SICP1/index.html">
+<meta property="og:title" content="Java集合框架学习(6)——List接口">
+<meta property="og:url" content="http://yoursite.com/2017/03/13/Java集合框架学习6/index.html">
 <meta property="og:site_name" content="Welcome to My World">
-<meta property="og:description" content="最近开始看SICP这本神书，先草草看了前三章半，看了一点题目，最近开始跟着两位作者的公开课学习。先说一下对这本书的整体感觉吧，抽象程度比较高，对于计算机程序的理解不再停留于语法的层面，而是剖开现象看本质，探讨计算机程序的本质内容——具象化人的思维。
-如作者所言，对CS而言，关键在于
-
-Techniques for controlling the complexity of large system">
-<meta property="og:updated_time" content="2016-03-24T03:25:04.571Z">
+<meta property="og:description" content="接着上一篇的内容，看过了Collection以后，再看一下继承了它的三个子接口List、Set、Queue几种常用的数据结构如ArrayList，LinkedList等，都实现了List接口12345678910111213141516171819202122232425262728293031public interface List&amp;lt;E&amp;gt; extends Collection&amp;l">
+<meta property="og:updated_time" content="2017-03-14T05:22:21.492Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《计算机程序的解释和构造(SICP)》 (1)">
-<meta name="twitter:description" content="最近开始看SICP这本神书，先草草看了前三章半，看了一点题目，最近开始跟着两位作者的公开课学习。先说一下对这本书的整体感觉吧，抽象程度比较高，对于计算机程序的理解不再停留于语法的层面，而是剖开现象看本质，探讨计算机程序的本质内容——具象化人的思维。
-如作者所言，对CS而言，关键在于
-
-Techniques for controlling the complexity of large system">
+<meta name="twitter:title" content="Java集合框架学习(6)——List接口">
+<meta name="twitter:description" content="接着上一篇的内容，看过了Collection以后，再看一下继承了它的三个子接口List、Set、Queue几种常用的数据结构如ArrayList，LinkedList等，都实现了List接口12345678910111213141516171819202122232425262728293031public interface List&amp;lt;E&amp;gt; extends Collection&amp;l">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -73,7 +64,7 @@ Techniques for controlling the complexity of large system">
 
 
 
-  <title> 《计算机程序的解释和构造(SICP)》 (1) | Welcome to My World </title>
+  <title> Java集合框架学习(6)——List接口 | Welcome to My World </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -198,7 +189,7 @@ Techniques for controlling the complexity of large system">
             
             
               
-                《计算机程序的解释和构造(SICP)》 (1)
+                Java集合框架学习(6)——List接口
               
             
           </h1>
@@ -207,8 +198,8 @@ Techniques for controlling the complexity of large system">
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2016-03-04T18:09:43+08:00" content="2016-03-04">
-              2016-03-04
+            <time itemprop="dateCreated" datetime="2017-03-13T17:25:30+08:00" content="2017-03-13">
+              2017-03-13
             </time>
           </span>
 
@@ -217,8 +208,8 @@ Techniques for controlling the complexity of large system">
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/SICP/" itemprop="url" rel="index">
-                    <span itemprop="name">SICP</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -246,34 +237,10 @@ Techniques for controlling the complexity of large system">
       
 
       
-        <span itemprop="articleBody"><p>最近开始看SICP这本神书，先草草看了前三章半，看了一点题目，最近开始跟着两位作者的公开课学习。先说一下对这本书的整体感觉吧，抽象程度比较高，对于计算机程序的理解不再停留于语法的层面，而是剖开现象看本质，探讨计算机程序的本质内容——具象化人的思维。</p>
-<p>如作者所言，对CS而言，关键在于</p>
-<blockquote>
-<p>Techniques for controlling the complexity of large system —— 控制大型系统中的复杂度</p>
-</blockquote>
-<p>而这，也是这本书所讨论的核心问题，如何降低复杂度，一层一层抽象过程，简化难度。概括下来方法有以下三点：</p>
-<blockquote>
-<ol>
-<li>Black-box abstraction ——黑盒抽象</li>
-<li>Establishing conventional interfaces ——按约定实现接口</li>
-<li>making new languages ——定义新的语言</li>
-</ol>
-</blockquote>
-<p>而以上三点，也对应了书中前四章的内容，在控制复杂度的过程中，必然涉及到程序架构的问题，作者也给出了两个方向，operations on aggregates (stream)——聚集操作，和著名的object-oriented——面向对象。也许是因为MIT的CS专业是和EE紧密相连的，各种电气系统的概念总能看到。</p>
-<p>OO编程中，各对象通过消息传递进行联系，也联想到OS里的信号量机制(伟大的Dijkstra)，对于流操作，作者又将其类比于大型电气系统，因为我本科也是EE的，对信号与系统，滤波器这些概念听起来还有些怀念。越发佩服这些作者融会贯通的能力。</p>
-<p>另外一个收获是对于一种新语言的思考</p>
-<blockquote>
-<p>General framework ——利用通用框架体系组织语言</p>
-</blockquote>
-<p>对于新语言，探究</p>
-<blockquote>
-<ol>
-<li>Primitive Elements ——基本元素</li>
-<li>How to put together ——组合元素</li>
-<li>Means of abstraction ——如何抽象(黑盒)</li>
-</ol>
-</blockquote>
-<p>而以上的这些，都是之前的书本没有了解到的，站在一个新的角度重新思考了计算机程序</p>
+        <span itemprop="articleBody"><hr>
+<p>接着上一篇的内容，看过了Collection以后，再看一下继承了它的三个子接口List、Set、Queue<br>几种常用的数据结构如ArrayList，LinkedList等，都实现了List接口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public interface List&lt;E&gt; extends Collection&lt;E&gt; &#123;</span><br><span class="line">    </span><br><span class="line">    // ... 省略已经在父接口中声明的方法</span><br><span class="line"></span><br><span class="line">    boolean addAll(int index, Collection&lt;? extends E&gt; c);  // 在List的特定位置插入某集合的全部元素</span><br><span class="line">    </span><br><span class="line">    default void replaceAll(UnaryOperator&lt;E&gt; operator)  // 替换列表中的每个数据</span><br><span class="line"></span><br><span class="line">    default void sort(Comparator&lt;? super E&gt; c)  // 使用比较器对列表排序</span><br><span class="line"></span><br><span class="line">    E get(int index);  // 得到列表指定位置的数据</span><br><span class="line"></span><br><span class="line">    E set(int index, E element);  // 替换列表中指定位置的数据</span><br><span class="line"></span><br><span class="line">    void add(int index, E element);  // 在列表的指定位置插入数据</span><br><span class="line"></span><br><span class="line">    E remove(int index);  // 删除列表中指定位置的数据或第一次出现的指定数据</span><br><span class="line"></span><br><span class="line">    int indexOf(Object o);  // 得到指定数据在列表中第一次出现的位置，如果列表中不包含指定数据，返回-1</span><br><span class="line"></span><br><span class="line">    int lastIndexOf(Object o);  // 返回指定数据在列表中最后一次出现的位置</span><br><span class="line"></span><br><span class="line">    ListIterator&lt;E&gt; listIterator();  // 返回列表的迭代器</span><br><span class="line"></span><br><span class="line">    ListIterator&lt;E&gt; listIterator(int index);  // 返回列表指定位置的迭代器</span><br><span class="line"></span><br><span class="line">    List&lt;E&gt; subList(int fromIndex, int toIndex);  // 返回列表两个位置之间的数据组成的列表</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    default Spliterator&lt;E&gt; spliterator()  // 创建一个列表的分片迭代器</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先是一个接口继承的问题，List接口中声明了很多Collection接口中已经声明过的方法，例如size，isEmpty等，没有用@Override做注解，在这里我想为什么已经在Collection中已经声明了size方法还要在子接口List中再次声明呢？<br>我的理解是，采用这样的设计方法，将层次明确，比如一个List的实现需要size方法时指的就是这个List接口的size，后面的实现类中，明确的实现了List接口中定义的size，而非Collection接口中的size。<br>其次是几个在JDK1.8中加入的几个default方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">list.add(1);</span><br><span class="line">list.add(2);</span><br><span class="line"></span><br><span class="line">// 将每个元素加1 </span><br><span class="line">list.replaceAll(new UnaryOperator&lt;Integer&gt;() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public Integer apply(Integer integer) &#123;</span><br><span class="line">        return integer + 1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 使用定义的比较器对list进行排序</span><br><span class="line">list.sort(new Comparator&lt;String&gt;() &#123;</span><br><span class="line">    public int compare(String  x, String y) &#123;</span><br><span class="line">        return x.compareTo(y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>Spliterator方法要细说就不是这个系列所要讲述的内容了。Spliterator（splitable iterator可分割迭代器）接口是Java为了并行遍历数据源中的元素而设计的迭代器，这个可以类比最早Java提供的顺序遍历迭代器Iterator，但一个是顺序遍历，一个是并行遍历。从最早Java提供顺序遍历迭代器Iterator时，那个时候还是单核时代，但现在多核时代下，顺序遍历已经不能满足需求了，如何把多个任务分配到不同核上并行执行，才是能最大发挥多核的能力，于是有了Spliterator。以后再开一篇JDK8的讲解系列。</p>
 </span>
       
     </div>
@@ -282,7 +249,7 @@ Techniques for controlling the complexity of large system">
       
         <div class="post-tags">
           
-            <a href="/tags/SICP/" rel="tag">#SICP</a>
+            <a href="/tags/Java/" rel="tag">#Java</a>
           
         </div>
       
@@ -291,17 +258,13 @@ Techniques for controlling the complexity of large system">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/05/05/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2017/03/12/Java集合框架学习5/" rel="next" title="Java集合框架学习(5)——Collection接口和Iterable接口">
+                <i class="fa fa-chevron-left"></i> Java集合框架学习(5)——Collection接口和Iterable接口
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/03/04/SICP-ex1-1/" rel="prev" title="SICP 1.1节习题">
-                SICP 1.1节习题 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>

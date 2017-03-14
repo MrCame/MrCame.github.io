@@ -190,6 +190,156 @@
             
             
               
+                <a class="post-title-link" href="/2016/05/04/PHP-MySql-Apache-WordPress/" itemprop="url">
+                  PHP+MySql+Apache+WordPress Win10 配置
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-05-04T22:48:32+08:00" content="2016-05-04">
+              2016-05-04
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/搭建环境/" itemprop="url" rel="index">
+                    <span itemprop="name">搭建环境</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>闲话少说，首先是安装，但是版本的选择很重要。</p>
+<h2 id="PHP-5-6"><a href="#PHP-5-6" class="headerlink" title="PHP 5.6"></a>PHP 5.6</h2><p>当然是<a href="&quot;http://php.net/downloads.php&quot;">官网</a>啦！</p>
+<p><img src="/images/amps1.png" alt="“php1”"></p>
+<p>这里选择5.6的版本，PHP 7太新了，怕兼容性出现问题。点击<a href="&quot;http://windows.php.net/download#php-5.6&quot;">Windows downloads</a></p>
+<p>版本有Thread Safe/Non Thread Safe 和 X86 X64的两种组合，随自己的喜欢了。Non Thread Safe不会检查线程是否安全。这里下载的是Zip格式的压缩包</p>
+<p><img src="/images/amps2.png" alt="“php2”"></p>
+<p>解压缩，我的路径是 F:\php5.6 复制份php.ini-development，并改名为PHP.ini，用记事本打开</p>
+<p>查找 extension_dir 将</p>
+<pre><code>;extension=php_mysql.dll
+;extension=php_mysqli.dll
+</code></pre><p>前面的注释符”;”去掉，使PHP支持mysql</p>
+<h2 id="Apache-2-4"><a href="#Apache-2-4" class="headerlink" title="Apache 2.4"></a>Apache 2.4</h2><p>点<a href="&quot;http://httpd.apache.org/download.cgi&quot;">这里</a>下载！这里选择2.4版本，因为和PHP 5.6一样都是在vc11下编译的</p>
+<p><img src="/images/amps3.png" alt="“apache1”"></p>
+<p>点击 Files for Microsoft Windows，这里有五个版本，第一项ApacheHaus是个第三方下载平台，在它的网站下载独立的Apache压缩包。另外四个中，第二个也是独立的Apache下载地址，另外三个是集成开发环境。这里直接选择了第一个</p>
+<p><img src="/images/amps4.png" alt="“apache2”"></p>
+<p>解压缩，我的路径是 F:\Apache24 接下来的工作就是比较主要的了，配置 httpd.conf</p>
+<ul>
+<li>修改监听端口</li>
+</ul>
+<p>如果原有80端口被其他服务占用，可以修改 <code>Listen 80</code> 为 <code>Listen 8081</code> (例如)</p>
+<ul>
+<li>修改权限</li>
+</ul>
+<p>apache 2.4 不再支持deny/allow 等指令，改用 denied/granted，将denied改为granted，或者注释掉重写。<br>否则会出现的一个问题是 <code>You don’t have permission to access / on this server</code><br>如果根目录下没有index文件，也会出现这个问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;Directory /&gt;</span><br><span class="line">    AllowOverride none</span><br><span class="line">    # Require all denied</span><br><span class="line">	Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改站点根目录</li>
+</ul>
+<p><code>DocumentRoot &quot;${SRVROOT}/htdocs&quot;</code> 改为自己的目录<br>例如我的 <code>DocumentRoot &quot;D:/PHPWeb&quot;</code></p>
+<ul>
+<li>支持PHP</li>
+</ul>
+<p>在配置文件最后添加以下代码，配置php的module 和 php.ini 的路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># php5 support</span><br><span class="line">LoadModule php5_module &quot;F:/php5.6/php5apache2_4.dll&quot;</span><br><span class="line">AddHandler application/x-httpd-php .php</span><br><span class="line"># configure the path to php.ini</span><br><span class="line">PHPIniDir &quot;F:/php5.6&quot;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>启动Apache</li>
+</ul>
+<p>在bin目录下执行httpd.exe，正常情况就是没有信息返回</p>
+<p><img src="/images/amps5.png" alt="“apache3”"></p>
+<p>在 <code>D:/PHPWeb</code> 内新建 <code>index.php</code>, 内容填入以下PHP代码</p>
+<pre><code>&lt;?php Echo &quot;Hello, CJW!&quot;;?&gt;
+</code></pre><p>此时可以在浏览器输入localhost:8081/index.php，可以看到打印的结果，此时PHP+Apache已经搭建好</p>
+<p><img src="/images/amps6.png" alt="“apache4”"></p>
+<h2 id="WordPress"><a href="#WordPress" class="headerlink" title="WordPress"></a>WordPress</h2><p>点<a href="&quot;https://wordpress.org/download/&quot;">这里</a>下载，我选择zip版本，然后解压缩</p>
+<p><a href="&quot;http://codex.wordpress.org.cn/&quot;">官网教程</a>写的也比较清楚，主要有几个步骤需要注意</p>
+<ul>
+<li>上传WordPress到一个远程主机</li>
+</ul>
+<p>教程里说的这一步，可以把zip解压到根目录里，例如我的 <code>&quot;D:\PHPWeb\wordpress&quot;</code></p>
+<ul>
+<li>设置 wp-config.php</li>
+</ul>
+<p>将 wp-config-sample.php 改名为 wp-config.php，然后就是配置数据库，教程里写的很清楚。</p>
+<ul>
+<li>测试</li>
+</ul>
+<p>在浏览器里输入 <code>http://localhost:8081/wordpress/</code> 进行测试，第一次访问是注册界面</p>
+<p>如果出现 <code>You don’t have permission to access / on this server</code> 检查Apache配置，或者看是否缺少index文件</p>
+<p><img src="/images/amps7.png" alt="“wp”"></p>
+<h2 id="MySql-5-6"><a href="#MySql-5-6" class="headerlink" title="MySql 5.6"></a>MySql 5.6</h2><p>安装过程基本一路next，注意填入的用户名和密码要记住，在wp-config.php配置时需要填入</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2016/05/03/SICP-ex2-2(4)/" itemprop="url">
                   SICP 2.2节习题(4)
                 </a>
@@ -1232,105 +1382,6 @@ x
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2016/03/21/阚凯力老师/" itemprop="url">
-                  阚凯力老师
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-03-21T22:38:39+08:00" content="2016-03-21">
-              2016-03-21
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/生活/" itemprop="url" rel="index">
-                    <span itemprop="name">生活</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h1 id="电信竞争与管制——阚凯力老师"><a href="#电信竞争与管制——阚凯力老师" class="headerlink" title="电信竞争与管制——阚凯力老师"></a>电信竞争与管制——阚凯力老师</h1><p>今天终于看到了阚凯力老师的真人，老师昨天才从摩洛哥开会回来，一开始就普及了一下ICANN。</p>
-<p>百度了一下阚老师的履历，清华无线电系，因为文革中断学业，后来又考上北邮研究生，之后成为新中国成立后第一批留美学生，去斯坦福读了博士，在太平洋贝尔工作了一段时间，个人经历也是很传奇。</p>
-<p>聆听这位经历过许多事情的老师授课，感触颇深。抛开其针对体制的一些看法，让我感触最深的是这位老人的对教育的一些思考。斯坦福给他所带来的，除了一个博士头衔之外，更重要的是两点</p>
-<ul>
-<li>有信心敢于承认自己不懂</li>
-<li>技术是为经济服务的</li>
-</ul>
-<p>有关第一点，阚老师关于自己与休斯公司的故事令人记忆深刻。美国企业的航天计划被一个中国留学生所指导，说起来只因为一个词——common sense。因为敢于承认自己不懂，从自身常识来分析，指出运载飞船的高成本和高风险而丢失市场这一事实背后所体现出来的技术和体制的不合理。</p>
-<p>有关第二点，阚老师作为一位有技术背景的人才，后来转而去学习管理、学习经济学，也是因为他看到了真正能变革的推动力，并不是技术，而是思想。这也是斯坦福之所以是硅谷摇篮的关键，师生们思考的是一种新技术能有什么作用？能为社会带来怎样的变革？进而将其产业化，投入市场经济中验证其合理性，反过来再改进技术，而非为技术而技术。反观我身边的大环境，应该改变的东西仍很多。</p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1373,7 +1424,7 @@ x
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">29</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

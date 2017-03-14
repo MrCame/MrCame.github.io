@@ -43,17 +43,17 @@
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
 
 
-<meta name="description" content="从源码入手学习Java集合框架，首先当然是理清java.util下的各个集合类与接口的关系。整理了一下，如下图所示，关系应该比较清晰了吧。当然经历了几个JDK版本的变化，集合框架也越来越庞大，最基本的东西却是没怎么变。核心是以collection为父类的接口和以AbstractCollection为父类的抽象类，从这两部分入手，顺藤摸瓜，就可以理清整个框架的脉络，然后结合各个具体集合的实现来温习">
+<meta name="description" content="从源码入手学习Java集合框架，选用的JDK版本是1.8.0_111。首先当然是理清java.util下的各个集合类与接口的关系。整理了一下，如下图所示，关系应该比较清晰了吧。当然经历了几个JDK版本的变化，集合框架也越来越庞大，最基本的东西却是没怎么变。核心是以collection为父类的接口和以AbstractCollection为父类的抽象类，从这两部分入手，顺藤摸瓜，就可以理清整个框架的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java集合框架学习(1)——概览">
 <meta property="og:url" content="http://yoursite.com/2017/02/10/Java集合框架学习1/index.html">
 <meta property="og:site_name" content="Welcome to My World">
-<meta property="og:description" content="从源码入手学习Java集合框架，首先当然是理清java.util下的各个集合类与接口的关系。整理了一下，如下图所示，关系应该比较清晰了吧。当然经历了几个JDK版本的变化，集合框架也越来越庞大，最基本的东西却是没怎么变。核心是以collection为父类的接口和以AbstractCollection为父类的抽象类，从这两部分入手，顺藤摸瓜，就可以理清整个框架的脉络，然后结合各个具体集合的实现来温习">
+<meta property="og:description" content="从源码入手学习Java集合框架，选用的JDK版本是1.8.0_111。首先当然是理清java.util下的各个集合类与接口的关系。整理了一下，如下图所示，关系应该比较清晰了吧。当然经历了几个JDK版本的变化，集合框架也越来越庞大，最基本的东西却是没怎么变。核心是以collection为父类的接口和以AbstractCollection为父类的抽象类，从这两部分入手，顺藤摸瓜，就可以理清整个框架的">
 <meta property="og:image" content="http://yoursite.com/images/java-2-0.png">
-<meta property="og:updated_time" content="2017-02-10T10:31:14.930Z">
+<meta property="og:updated_time" content="2017-03-14T03:46:46.511Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java集合框架学习(1)——概览">
-<meta name="twitter:description" content="从源码入手学习Java集合框架，首先当然是理清java.util下的各个集合类与接口的关系。整理了一下，如下图所示，关系应该比较清晰了吧。当然经历了几个JDK版本的变化，集合框架也越来越庞大，最基本的东西却是没怎么变。核心是以collection为父类的接口和以AbstractCollection为父类的抽象类，从这两部分入手，顺藤摸瓜，就可以理清整个框架的脉络，然后结合各个具体集合的实现来温习">
+<meta name="twitter:description" content="从源码入手学习Java集合框架，选用的JDK版本是1.8.0_111。首先当然是理清java.util下的各个集合类与接口的关系。整理了一下，如下图所示，关系应该比较清晰了吧。当然经历了几个JDK版本的变化，集合框架也越来越庞大，最基本的东西却是没怎么变。核心是以collection为父类的接口和以AbstractCollection为父类的抽象类，从这两部分入手，顺藤摸瓜，就可以理清整个框架的">
 <meta name="twitter:image" content="http://yoursite.com/images/java-2-0.png">
 
 
@@ -240,7 +240,7 @@
 
       
         <span itemprop="articleBody"><hr>
-<p>从源码入手学习Java集合框架，首先当然是理清java.util下的各个集合类与接口的关系。整理了一下，如下图所示，关系应该比较清晰了吧。<br><img src="/images/java-2-0.png" alt="&quot;Collection&quot;"><br>当然经历了几个JDK版本的变化，集合框架也越来越庞大，最基本的东西却是没怎么变。<br>核心是<strong>以collection为父类的接口</strong>和<strong>以AbstractCollection为父类的抽象类</strong>，从这两部分入手，顺藤摸瓜，就可以理清整个框架的脉络，然后结合各个具体集合的实现来温习学习过的数据结构和算法。<br>比较奇怪的一点是Iterable接口是在java.lang中，而不是在java.util中。为什么Collection不直接继承Iterator呢？有这么一种说法：<br>JDK的作者之所以采用Iterator设计模式来设计，因为如果Collection直接从Iterator继承，那么Collection的实现类必须直接实现hasNext, next, remove方法。这么做有以下缺点：</p>
+<p>从源码入手学习Java集合框架，选用的JDK版本是1.8.0_111。首先当然是理清java.util下的各个集合类与接口的关系。整理了一下，如下图所示，关系应该比较清晰了吧。<br><img src="/images/java-2-0.png" alt="&quot;Collection&quot;"><br>当然经历了几个JDK版本的变化，集合框架也越来越庞大，最基本的东西却是没怎么变。<br>核心是<strong>以collection为父类的接口</strong>和<strong>以AbstractCollection为父类的抽象类</strong>，从这两部分入手，顺藤摸瓜，就可以理清整个框架的脉络，然后结合各个具体集合的实现来温习学习过的数据结构和算法。<br>比较奇怪的一点是Iterable接口是在java.lang中，而不是在java.util中。为什么Collection不直接继承Iterator呢？有这么一种说法：<br>JDK的作者之所以采用Iterator设计模式来设计，因为如果Collection直接从Iterator继承，那么Collection的实现类必须直接实现hasNext, next, remove方法。这么做有以下缺点：</p>
 <ul>
 <li>这么做会造成代码混乱，迭代代码与Collection本身实现代码混淆在一起，造成阅读困难，而且有方法重复，比如remove，不能做到迭代与本身实现分离。</li>
 <li>在Collection实现类中必须包含当前cursor指针，在并发时处理相当尴尬。</li>
@@ -339,7 +339,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">29</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
