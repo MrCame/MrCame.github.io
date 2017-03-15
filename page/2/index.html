@@ -190,6 +190,101 @@
             
             
               
+                <a class="post-title-link" href="/2016/05/05/hexo-1/" itemprop="url">
+                  Hexo的NexT主题默认显示侧边栏
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-05-05T00:15:01+08:00" content="2016-05-05">
+              2016-05-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Hexo/" itemprop="url" rel="index">
+                    <span itemprop="name">Hexo</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>用Hexo的Next主题有一段时间了，但是发觉边框栏即便设置了 <code>sidebar: always</code>，也不能自动展开</p>
+<p>在网上查了查，找到了<a href="&quot;http://www.jianshu.com/p/29589e303f4d&quot;">解决办法</a></p>
+<p>在 <code>\themes\next\source\js\motion_global.js</code> 做如下修改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sidebarToggle: function (integrator) &#123;</span><br><span class="line">    sidebarToggleMotion.init();</span><br><span class="line">    integrator.next();</span><br><span class="line">    // 可以不加if直接显示</span><br><span class="line">    // 加if的话，要在主题配置文件里面修改 sidebar: always</span><br><span class="line">    if (CONFIG.sidebar === &apos;always&apos;) &#123;</span><br><span class="line">       // 模拟点击一下侧边栏按钮</span><br><span class="line">       sidebarToggleMotion.clickHandler();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>哈哈，边框栏可以自动展开啦！开心</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2016/05/04/PHP-MySql-Apache-WordPress/" itemprop="url">
                   PHP+MySql+Apache+WordPress Win10 配置
                 </a>
@@ -1266,122 +1361,6 @@ x
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2016/03/22/SICP-ex1-3(2)/" itemprop="url">
-                  SICP 1.3节习题(2)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-03-22T20:55:27+08:00" content="2016-03-22">
-              2016-03-22
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
-                    <span itemprop="name">SICP解题集</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h1 id="第一章-构造过程抽象"><a href="#第一章-构造过程抽象" class="headerlink" title="第一章 构造过程抽象"></a>第一章 构造过程抽象</h1><h2 id="1-3-用高阶函数做抽象"><a href="#1-3-用高阶函数做抽象" class="headerlink" title="1.3 用高阶函数做抽象"></a>1.3 用高阶函数做抽象</h2><h3 id="EX-1-32"><a href="#EX-1-32" class="headerlink" title="EX 1.32"></a>EX 1.32</h3><h4 id="a"><a href="#a" class="headerlink" title="a)"></a>a)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">;accumulate递归版本</span><br><span class="line">(define (accumulate combiner null-value term a next b)</span><br><span class="line">  (if (&gt; a b)</span><br><span class="line">      null-value</span><br><span class="line">      (combiner (term a)</span><br><span class="line">                (accumulate combiner null-value term (next a) next b))))</span><br><span class="line">;sum测试,计算立方和</span><br><span class="line">(define (cube-sum a b)</span><br><span class="line">  (accumulate + 0 cube a next b))</span><br><span class="line">;product测试,计算阶乘</span><br><span class="line">(define (factorial n)</span><br><span class="line">  (define (f x) x)</span><br><span class="line">  (accumulate * 1 f 1 next n))</span><br></pre></td></tr></table></figure>
-<pre><code>(cube-sum 1 10)
-(factorial 6)
-</code></pre><p>结果<br><img src="/images/ex1-32.png" alt="“1-32”"></p>
-<h4 id="b"><a href="#b" class="headerlink" title="b)"></a>b)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;accumulate迭代版本</span><br><span class="line">(define (accumulate combiner null-value term a next b)</span><br><span class="line">  (define (iter a result)</span><br><span class="line">    (if (&gt; a b)</span><br><span class="line">        result</span><br><span class="line">        (iter (next a) (combiner (term a) result))))</span><br><span class="line">  (iter a null-value))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-1-33"><a href="#EX-1-33" class="headerlink" title="EX 1.33"></a>EX 1.33</h3><h4 id="a-1"><a href="#a-1" class="headerlink" title="a)"></a>a)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">;相比EX 1.32,增加参数filter,用于过滤一些项</span><br><span class="line">(define (filtered-accumulate combiner null-value filter f a next b)</span><br><span class="line">  (if (&gt; a b)</span><br><span class="line">      null-value</span><br><span class="line">      (if (filter a)</span><br><span class="line">          (combiner (f a) (filtered-accumulate combiner null-value filter f (next a) next b))</span><br><span class="line">          (filtered-accumulate combiner null-value filter f (next a) next b))))</span><br><span class="line">;计算a到b之间素数和</span><br><span class="line">(define (prime-sum a b)</span><br><span class="line">  (define (f x) x)</span><br><span class="line">  (filtered-accumulate + 0 prime? f a next b))</span><br><span class="line">;prime?见书P33页</span><br></pre></td></tr></table></figure>
-<p>其实可以使用let来定义剩余项,因为按照书中课后习题的学习顺序,这里并没有使用let</p>
-<pre><code>(let rest (filtered-accumulate combiner null-value filter f (next a) next b))
-</code></pre><h4 id="b-1"><a href="#b-1" class="headerlink" title="b)"></a>b)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(define (gcd-product n)</span><br><span class="line">  (define (f x) x)</span><br><span class="line">  (define (its-prime? x) (= (gcd x n) 1))</span><br><span class="line">  (filtered-accumulate * 1 its-prime? f 1 next n))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-1-34"><a href="#EX-1-34" class="headerlink" title="EX 1.34"></a>EX 1.34</h3><pre><code>(f f)        -&gt; 
-(f 2)        -&gt;
-(2 2)        -&gt; 解释器无法解释(2 2),因为2并不是一个过程(not a procedure)
-</code></pre><h3 id="EX-1-35"><a href="#EX-1-35" class="headerlink" title="EX 1.35"></a>EX 1.35</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">;fixed-point见书P46页</span><br><span class="line">(define golden-ratio</span><br><span class="line">  (fixed-point (lambda (x) (+ (/ 1 x) 1)) 1.0))</span><br></pre></td></tr></table></figure>
-<pre><code>golden-ratio is 1.6180327868852458
-</code></pre><h3 id="EX-1-36"><a href="#EX-1-36" class="headerlink" title="EX 1.36"></a>EX 1.36</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">;可以打印近似值序列的new-fixed-point, close-enough见书P45页</span><br><span class="line">(define (new-fixed-point f first-guess)</span><br><span class="line">  (define (close-enough? v1 v2) (&lt; (abs (- v1 v2)) tolerance))</span><br><span class="line">  (define (try guess step)</span><br><span class="line">    (let ((next (f guess)))</span><br><span class="line">      (cond ((close-enough? guess next) next)</span><br><span class="line">            (else</span><br><span class="line">             (display &quot;step: &quot;)</span><br><span class="line">             (display step)</span><br><span class="line">             (display &quot;, &quot;)</span><br><span class="line">             (display next)</span><br><span class="line">             (newline)</span><br><span class="line">             (try next (+ step 1))))))</span><br><span class="line">  (try first-guess 1))</span><br><span class="line">;计算公式</span><br><span class="line">(define loglog (lambda (x) (/ (log 1000) (log x))))</span><br><span class="line">;平均阻尼计算过程,见书P48页</span><br><span class="line">(define (average-damp f) (lambda (x) (average x (f x))))</span><br><span class="line">;不使用平均阻尼</span><br><span class="line">(define (no-damp-loglog x) (new-fixed-point loglog x))</span><br><span class="line">;使用平均阻尼</span><br><span class="line">(define (damp-loglog x) (new-fixed-point (average-damp loglog) x))</span><br></pre></td></tr></table></figure>
-<p>使用平均阻尼，可以使过程更快的收敛，因此计算步数更少。</p>
-<p>结果<br><img src="/images/ex1-36-1.png" alt="“1-36-1”"><br><img src="/images/ex1-36-2.png" alt="“1-36-2”"></p>
-<h3 id="EX-1-37"><a href="#EX-1-37" class="headerlink" title="EX 1.37"></a>EX 1.37</h3><h4 id="a-2"><a href="#a-2" class="headerlink" title="a)"></a>a)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">;递归版本</span><br><span class="line">(define (cont-frac n d k)</span><br><span class="line">  (define (f i)</span><br><span class="line">    (if (= k i)</span><br><span class="line">        (/ (n i) (d i))</span><br><span class="line">        (/ (n i) (+ (f (+ i 1)) (d i)))))</span><br><span class="line">  (f 1))</span><br><span class="line">;测试是否逼近</span><br><span class="line">(define (check-cont-frac k)</span><br><span class="line">  (cont-frac (lambda (i) 1.0)</span><br><span class="line">             (lambda (i) 1.0)</span><br><span class="line">             k))</span><br></pre></td></tr></table></figure>
-<p>需要至少k=11，具有十进制的4位精度</p>
-<p>结果<br><img src="/images/ex1-37.png" alt="“1-37”"></p>
-<h4 id="b-2"><a href="#b-2" class="headerlink" title="b)"></a>b)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;迭代版本</span><br><span class="line">(define (cont-frac n d k)</span><br><span class="line">  (define (iter i result)</span><br><span class="line">    (if (= i 0)</span><br><span class="line">        result</span><br><span class="line">        (iter (- i 1) (/ (n i) (+ (d i) result)))))</span><br><span class="line">  (iter (- k 1) (/ (n k) (d k))))</span><br></pre></td></tr></table></figure>
-<h3 id="EX-1-38"><a href="#EX-1-38" class="headerlink" title="EX 1.38"></a>EX 1.38</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(define (e k)</span><br><span class="line">  (define (di i)</span><br><span class="line">    (if (= (remainder i 3) 2)</span><br><span class="line">        (* (/ (+ i 1) 3) 2)</span><br><span class="line">        1))</span><br><span class="line">  (+ (cont-frac (lambda (ni) 1.0) di k) 2.0))</span><br></pre></td></tr></table></figure>
-<p>问题的关键在于找到Di序列的规律,发现三个数为一组,发现mod 3 = 2时,Di不等于1。随着k的增大，e的值精确度越高</p>
-<p>结果<br><img src="/images/ex1-38.png" alt="“1-38”"></p>
-<h3 id="EX-1-39"><a href="#EX-1-39" class="headerlink" title="EX 1.39"></a>EX 1.39</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(define (tan-cf x k)</span><br><span class="line">  (define (di i)</span><br><span class="line">    (if (= i 1)</span><br><span class="line">        1</span><br><span class="line">        (- (* i 2) 1)))</span><br><span class="line">  (define (ni i)</span><br><span class="line">    (if (= i 1)</span><br><span class="line">        x</span><br><span class="line">        (- (square x))))</span><br><span class="line">  (cont-frac ni di k))</span><br></pre></td></tr></table></figure>
-<p>问题的关键在于生成奇数序列Di和x序列Ni</p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1424,7 +1403,7 @@ x
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
