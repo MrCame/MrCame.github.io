@@ -190,6 +190,104 @@
             
             
               
+                <a class="post-title-link" href="/2016/03/23/SICP-ex1-3(3)/" itemprop="url">
+                  SICP 1.3节习题(3)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-03-23T20:10:07+08:00" content="2016-03-23">
+              2016-03-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
+                    <span itemprop="name">SICP解题集</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h1 id="第一章-构造过程抽象"><a href="#第一章-构造过程抽象" class="headerlink" title="第一章 构造过程抽象"></a>第一章 构造过程抽象</h1><h2 id="1-3-用高阶函数做抽象"><a href="#1-3-用高阶函数做抽象" class="headerlink" title="1.3 用高阶函数做抽象"></a>1.3 用高阶函数做抽象</h2><h3 id="EX-1-40"><a href="#EX-1-40" class="headerlink" title="EX 1.40"></a>EX 1.40</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">;定义过程cubic</span><br><span class="line">(define (cubic a b c)</span><br><span class="line">  (lambda (x) (+ (cube x) (* a (square x)) (* b x) c)))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-1-41"><a href="#EX-1-41" class="headerlink" title="EX 1.41"></a>EX 1.41</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(define (double f)</span><br><span class="line">  (lambda (x)</span><br><span class="line">    (f (f x))))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(((double (double double)) inc) 5)  ;答案是21</span><br></pre></td></tr></table></figure>
+<p>分析:<br>((double inc) 5)                     将inc应用2^1次,结果为7<br>(((double double) inc) 5)            将inc应用2^2次,结果为9<br>((double (double double)) inc) 5)    将inc应用(2^2)^2次,结果为21</p>
+<h3 id="EX-1-42"><a href="#EX-1-42" class="headerlink" title="EX 1.42"></a>EX 1.42</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(define (compose f g)</span><br><span class="line">  (lambda (x)</span><br><span class="line">    (f (g x))))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-1-43"><a href="#EX-1-43" class="headerlink" title="EX 1.43"></a>EX 1.43</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">;递归版本</span><br><span class="line">(define (repeated f n)</span><br><span class="line">  (if (= n 1)</span><br><span class="line">      f</span><br><span class="line">      (lambda (x)</span><br><span class="line">        (f ((repeated f (- n 1)) x)))))</span><br><span class="line">;迭代版本</span><br><span class="line">(define (re-iter f n)</span><br><span class="line">  (define (iter i f-result)</span><br><span class="line">    (if (= i n)</span><br><span class="line">        f-result</span><br><span class="line">        (iter (+ i 1) (lambda (x) (f (f-result x))))))</span><br><span class="line">  (iter 1 f))</span><br></pre></td></tr></table></figure>
+<p>根据提示,可以使用EX 1.42的compose过程,省去了使用lambda</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">;使用compose的递归版本</span><br><span class="line">(define (repeated f n)</span><br><span class="line">  (if (= n 1)</span><br><span class="line">      f</span><br><span class="line">      (compose f (repeated f (- n 1)))))</span><br><span class="line">;使用compose的迭代版本</span><br><span class="line">(define (repeated f n)</span><br><span class="line">  (define (iter i f-result)</span><br><span class="line">    (if (= i n)</span><br><span class="line">        f-result</span><br><span class="line">        (iter (+ i 1) (compose f f-result))))</span><br><span class="line">  (iter 1 f))</span><br></pre></td></tr></table></figure>
+<h3 id="EX-1-44"><a href="#EX-1-44" class="headerlink" title="EX 1.44"></a>EX 1.44</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">;一次平滑</span><br><span class="line">(define (smooth f)</span><br><span class="line">  (define dx 0.000001)</span><br><span class="line">  (lambda (x)</span><br><span class="line">    (/ (+ (f (- x dx)) (f x) (f (+ x dx))) 3))) </span><br><span class="line">;n次平滑</span><br><span class="line">(define (n-smooth f n)</span><br><span class="line">  (re1 smooth n) f)</span><br></pre></td></tr></table></figure>
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2016/03/22/SICP-ex1-3(2)/" itemprop="url">
                   SICP 1.3节习题(2)
                 </a>
@@ -1266,110 +1364,11 @@ r3 = (r r1 r2)
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2015/05/05/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2015-05-05T00:15:01+08:00" content="2015-05-05">
-              2015-05-05
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">Hexo</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1407,7 +1406,7 @@ r3 = (r r1 r2)
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">31</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
