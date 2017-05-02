@@ -190,6 +190,206 @@
             
             
               
+                <a class="post-title-link" href="/2017/04/30/Leetcode4/" itemprop="url">
+                  Leetcode-4 Median of Two Sorted Arrays
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2017-04-30T22:07:09+08:00" content="2017-04-30">
+              2017-04-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">Leetcode</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <hr>
+<p>题目要求：给定两个有序数组nums1、nums2，找到合并后数组的中位数。</p>
+<p>示例：nums1 = [1, 3]，nums2 = [2]，中位数2.0</p>
+<p>思路：</p>
+<ol>
+<li>传统思路，将两个数组合并起来再排序，找到中位数。</li>
+<li>将问题扩展为在两个有序数组中找到合并后第K个数的问题。</li>
+</ol>
+<p>代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">// 采用第二种思路</span><br><span class="line">public class Solution &#123;</span><br><span class="line">    public double findMedianSortedArrays(int[] nums1, int[] nums2) &#123;</span><br><span class="line">        int m = nums1.length;</span><br><span class="line">        int n = nums2.length;</span><br><span class="line">        int total = m + n;</span><br><span class="line">        // 奇数</span><br><span class="line">        if (total % 2 != 0) &#123;</span><br><span class="line">            return findKth(nums1, 0, m-1, nums2, 0, n-1, total/2 + 1);  // 第total/2+1个元素 </span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            double x = findKth(nums1, 0, m-1, nums2, 0, n-1, total/2);</span><br><span class="line">            double y = findKth(nums1, 0, m-1, nums2, 0, n-1, total/2 + 1);</span><br><span class="line">            return (x + y) / 2;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //  指针从1开始计数</span><br><span class="line">    private double findKth(int[] a, int aLeft, int aRight, int[] b, int bLeft, int bRight, int k) &#123;</span><br><span class="line">        int m = aRight - aLeft + 1;  // 当前a的扫描长度</span><br><span class="line">        int n = bRight - bLeft + 1;  // 当前b的扫描长度</span><br><span class="line">        if (m &gt; n)</span><br><span class="line">            return findKth(b, bLeft, bRight, a, aLeft, aRight, k);</span><br><span class="line">        if (m == 0)</span><br><span class="line">            return b[k-1];</span><br><span class="line">        if (k == 1)</span><br><span class="line">            return Math.min(a[aLeft], b[bLeft]);</span><br><span class="line"></span><br><span class="line">        int partA = Math.min(m, k/2);  // a的指针偏移量</span><br><span class="line">        int partB = k - partA;  // a指针偏移了partA，在合并后的数组中，b指针偏移k-partA</span><br><span class="line"></span><br><span class="line">        // a和b哪个偏移后的数值小，说明Kth大于哪个，证明见下文。则可忽略小于偏移量的那些元素。</span><br><span class="line">        if (a[aLeft + partA - 1] &gt; b[bLeft + partB - 1])</span><br><span class="line">            return findKth(a, aLeft, aRight, b, bLeft+partB, bRight, k-partB);</span><br><span class="line">        else if (a[aLeft + partA - 1] &lt; b[bLeft + partB -1])</span><br><span class="line">            return findKth(a, aLeft+partA, aRight, b, bLeft, bRight, k-partA);</span><br><span class="line">        else</span><br><span class="line">            // a[aLeft+partA-1] == b[bLeft+partB-1]，找到Kth</span><br><span class="line">            return a[aLeft + partA - 1];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>分析：考虑一种情况，假设a和b的个数都大于k/2，设p=k/2-1，如果a[p] &lt; b[p]，则合并后Kth &gt; a[p]<br>证明：用反证法，假设当a[p] &lt; b[p]时，kth &lt; a[p]，不妨令a[p]是合并后第k+1个数。于是，a中有p个数小于a[p]，由假设知b中最多只有p个数小于a[p]，所以总共有2p=k-2个数小于a[p]。a[p]是第k+1个数并且a[p]之前有k-2个数，这是矛盾的，故得证Kth &gt; a[p]。<br>同理，当a[p] &gt; b[p]时，Kth &gt; b[p]，当a[p] == b[p]时，Kth==a[p]==b[p]</p>
+<p>在求Kth时，从相对更短的数组入手来计算偏移量p，主要是比较偏移后元素的大小。如果是上文中假设的情况，则直接取k/2，否则取数组长度，即Math.min(k/2, m)。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                <a class="post-title-link" href="/2017/04/30/Leetcode1/" itemprop="url">
+                  Leetcode-1 Two Sum
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2017-04-30T21:38:18+08:00" content="2017-04-30">
+              2017-04-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">Leetcode</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <hr>
+<p>题目要求：给定一个数组nums以及一个数target，求出和为target的两个元素的索引。</p>
+<p>示例：nums = [2, 7, 11, 15], target = 9，因为nums[0] + nums[1] = 2 + 7 = 9,所以返回[0, 1]</p>
+<p>思路：</p>
+<ol>
+<li>传统的暴力方法，两次遍历数组，求出所有二元组的和，复杂度O($ n^2 $)</li>
+<li>使用Map，数值(key)-索引(value)，遍历一次数组，根据当前nums[i]在Map中查找target-nums[i]</li>
+</ol>
+<p>代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import java.util.Arrays;</span><br><span class="line">public class Solution &#123;</span><br><span class="line">    public int[] twoSum(int[] nums, int target) &#123;</span><br><span class="line">        int N = nums.length;</span><br><span class="line">        if (N &lt; 2)</span><br><span class="line">            return null;</span><br><span class="line">        int[] result = new int[2];</span><br><span class="line">        Map&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();</span><br><span class="line">        for (int i = 0; i &lt; N; i++) &#123;</span><br><span class="line">            if (map.containsKey(target-nums[i]) &#123;</span><br><span class="line">                result[0] = map.get(target-num[i]);</span><br><span class="line">                result[1] = i;</span><br><span class="line">            &#125;</span><br><span class="line">            map.put(nums[i], i);</span><br><span class="line">        &#125;</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2017/03/21/Java内存模型1/" itemprop="url">
                   Java内存模型(1)
                 </a>
@@ -1044,198 +1244,6 @@
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2017/02/11/Java集合框架学习2/" itemprop="url">
-                  Java集合框架学习(2)——Iterator
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2017-02-11T13:20:36+08:00" content="2017-02-11">
-              2017-02-11
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <hr>
-<h3 id="Iterator"><a href="#Iterator" class="headerlink" title="Iterator"></a>Iterator</h3><p><strong>default</strong>修饰符是Java8中新的概念，在Java8发布时，需要Java在现有实现架构的下能往接口里增加新方法。引入Default方法，可以在优化接口的同时，避免跟现有实现架构的兼容问题。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">package java.util;</span><br><span class="line"></span><br><span class="line">import java.util.function.Consumer;</span><br><span class="line"></span><br><span class="line">public interface Iterator&lt;E&gt; &#123;</span><br><span class="line"></span><br><span class="line">    // 是否有下一元素</span><br><span class="line">    boolean hasNext();</span><br><span class="line"></span><br><span class="line">    // 返回下一元素</span><br><span class="line">    E next();</span><br><span class="line"></span><br><span class="line">	// Default方法是指，在接口内部包含了一些默认的方法实现</span><br><span class="line">	// 也就是接口中可以包含方法体，这打破了Java之前版本对接口的语法限制</span><br><span class="line">    // 从而使得接口在进行扩展的时候，不会破坏与接口相关的实现类代码。</span><br><span class="line">    default void remove() &#123;</span><br><span class="line">        throw new UnsupportedOperationException(&quot;remove&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    default void forEachRemaining(Consumer&lt;? super E&gt; action) &#123;</span><br><span class="line">        Objects.requireNonNull(action);</span><br><span class="line">        while (hasNext())</span><br><span class="line">            action.accept(next());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h3 id="ListIterator"><a href="#ListIterator" class="headerlink" title="ListIterator"></a>ListIterator</h3><p>ListIterator继承自Iterator，除了父接口原有的方法<strong>hasNext()</strong>、<strong>next()</strong>外，还申明了新的查询操作<strong>hasPrevious()</strong>、<strong>previous()</strong>、<strong>nextIndex()</strong>、<strong>previousIndex()</strong>，以及修改操作<strong>remove()</strong>、<strong>set()</strong>、<strong>add()</strong>。相关操作见下图<br><img src="/images/java-3-0.png" alt="&quot;ListIterator&quot;"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">package java.util;</span><br><span class="line">public interface ListIterator&lt;E&gt; extends Iterator&lt;E&gt; &#123;</span><br><span class="line">    // Query Operations</span><br><span class="line"></span><br><span class="line">    // 继承自父类</span><br><span class="line">    boolean hasNext();</span><br><span class="line"></span><br><span class="line">    // 继承自父类</span><br><span class="line">    E next();</span><br><span class="line"></span><br><span class="line">    // 是否有前一元素</span><br><span class="line">    boolean hasPrevious();</span><br><span class="line"></span><br><span class="line">    // 返回前一元素</span><br><span class="line">    E previous();</span><br><span class="line"></span><br><span class="line">    // 返回当前iterator的下标</span><br><span class="line">    int nextIndex();</span><br><span class="line"></span><br><span class="line">    // 返回当前iterator的前一下标，如果当前下标为0，前一下标为-1</span><br><span class="line">    int previousIndex();</span><br><span class="line"></span><br><span class="line">    // Modification Operations</span><br><span class="line"></span><br><span class="line">    // 删除元素</span><br><span class="line">    // remove当前元素必须先next()，否则remove的是前一元素</span><br><span class="line">    // 若iterator下标为0，直接remove抛出IllegalStateException异常</span><br><span class="line">    void remove();</span><br><span class="line"></span><br><span class="line">    // 替换元素</span><br><span class="line">    // 同remove，set当前元素前必须先next，否则set的是前一元素</span><br><span class="line">    // 若iterator下标为0，直接set抛出IllegalStateException异常</span><br><span class="line">    void set(E e);</span><br><span class="line"></span><br><span class="line">    // 插入元素，在该iterator的位置add</span><br><span class="line">    void add(E e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2017/02/10/Java集合框架学习1/" itemprop="url">
-                  Java集合框架学习(1)——概览
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2017-02-10T15:12:21+08:00" content="2017-02-10">
-              2017-02-10
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <hr>
-<p>从源码入手学习Java集合框架，选用的JDK版本是1.8.0_111。首先当然是理清java.util下的各个集合类与接口的关系。整理了一下，如下图所示，关系应该比较清晰了吧。<br><img src="/images/java-2-0.png" alt="&quot;Collection&quot;"><br>当然经历了几个JDK版本的变化，集合框架也越来越庞大，最基本的东西却是没怎么变。<br>核心是<strong>以collection为父类的接口</strong>和<strong>以AbstractCollection为父类的抽象类</strong>，从这两部分入手，顺藤摸瓜，就可以理清整个框架的脉络，然后结合各个具体集合的实现来温习学习过的数据结构和算法。<br>比较奇怪的一点是Iterable接口是在java.lang中，而不是在java.util中。为什么Collection不直接继承Iterator呢？有这么一种说法：<br>JDK的作者之所以采用Iterator设计模式来设计，因为如果Collection直接从Iterator继承，那么Collection的实现类必须直接实现hasNext, next, remove方法。这么做有以下缺点：</p>
-<ul>
-<li>这么做会造成代码混乱，迭代代码与Collection本身实现代码混淆在一起，造成阅读困难，而且有方法重复，比如remove，不能做到迭代与本身实现分离。</li>
-<li>在Collection实现类中必须包含当前cursor指针，在并发时处理相当尴尬。</li>
-<li>访问接口不统一，Collection从Iterable继承的话，在迭代时只需拿到其Iterator(内部类实现)，用统一的对象迭代，而且多个迭代器可以做到互不干扰。</li>
-</ul>
-<p>从接口看，整体可以分为两大类：Collection和Map。因为Map表示的是关联式容器。接下来，将从比较独立的Iterator来进行分析。</p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1278,21 +1286,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
