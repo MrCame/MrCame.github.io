@@ -34,7 +34,7 @@
 
 
 
-  <meta name="keywords" content="Java," />
+  <meta name="keywords" content="Leetcode," />
 
 
 
@@ -43,16 +43,19 @@
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
 
 
-<meta name="description" content="学习各种集合容器最好先从基本接口入手，之前在《Java集合框架学习(1)——概览》中已经梳理清楚了各个类和接口的脉络，现在就从最基本的Collection来看一下：12345678910111213141516171819202122232425262728293031public interface Collection&amp;lt;E&amp;gt; extends Iterable&amp;lt;E&amp;gt; &amp;">
+<meta name="description" content="题目要求：给定一个非负的整型数组，元素a[i]代表坐标(i, a[i])，得到一组每个点到x轴的垂线，选出两条垂线和x轴构成水箱，求围成的最大的面积。
+思路：左右两个指针扫描数组，计算面积。假设找到最佳的两条线为left，right，易知left左边没有比left更高的垂线，right右边没有比right更高的垂线，即最佳的组合在当前候选的left和right的范围内。收缩底边长度，增大高，当l">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java集合框架学习(5)——Collection接口和Iterable接口">
-<meta property="og:url" content="http://yoursite.com/2017/03/12/Java集合框架学习5/index.html">
+<meta property="og:title" content="Leetcode-11 Container With Most Water">
+<meta property="og:url" content="http://yoursite.com/2017/05/03/Leetcode11/index.html">
 <meta property="og:site_name" content="Welcome to My World">
-<meta property="og:description" content="学习各种集合容器最好先从基本接口入手，之前在《Java集合框架学习(1)——概览》中已经梳理清楚了各个类和接口的脉络，现在就从最基本的Collection来看一下：12345678910111213141516171819202122232425262728293031public interface Collection&amp;lt;E&amp;gt; extends Iterable&amp;lt;E&amp;gt; &amp;">
-<meta property="og:updated_time" content="2017-03-14T05:25:44.057Z">
+<meta property="og:description" content="题目要求：给定一个非负的整型数组，元素a[i]代表坐标(i, a[i])，得到一组每个点到x轴的垂线，选出两条垂线和x轴构成水箱，求围成的最大的面积。
+思路：左右两个指针扫描数组，计算面积。假设找到最佳的两条线为left，right，易知left左边没有比left更高的垂线，right右边没有比right更高的垂线，即最佳的组合在当前候选的left和right的范围内。收缩底边长度，增大高，当l">
+<meta property="og:updated_time" content="2017-05-03T13:34:39.054Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java集合框架学习(5)——Collection接口和Iterable接口">
-<meta name="twitter:description" content="学习各种集合容器最好先从基本接口入手，之前在《Java集合框架学习(1)——概览》中已经梳理清楚了各个类和接口的脉络，现在就从最基本的Collection来看一下：12345678910111213141516171819202122232425262728293031public interface Collection&amp;lt;E&amp;gt; extends Iterable&amp;lt;E&amp;gt; &amp;">
+<meta name="twitter:title" content="Leetcode-11 Container With Most Water">
+<meta name="twitter:description" content="题目要求：给定一个非负的整型数组，元素a[i]代表坐标(i, a[i])，得到一组每个点到x轴的垂线，选出两条垂线和x轴构成水箱，求围成的最大的面积。
+思路：左右两个指针扫描数组，计算面积。假设找到最佳的两条线为left，right，易知left左边没有比left更高的垂线，right右边没有比right更高的垂线，即最佳的组合在当前候选的left和right的范围内。收缩底边长度，增大高，当l">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -64,7 +67,7 @@
 
 
 
-  <title> Java集合框架学习(5)——Collection接口和Iterable接口 | Welcome to My World </title>
+  <title> Leetcode-11 Container With Most Water | Welcome to My World </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -189,7 +192,7 @@
             
             
               
-                Java集合框架学习(5)——Collection接口和Iterable接口
+                Leetcode-11 Container With Most Water
               
             
           </h1>
@@ -198,8 +201,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2017-03-12T15:05:58+08:00" content="2017-03-12">
-              2017-03-12
+            <time itemprop="dateCreated" datetime="2017-05-03T21:12:55+08:00" content="2017-05-03">
+              2017-05-03
             </time>
           </span>
 
@@ -208,8 +211,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">Leetcode</span>
                   </a>
                 </span>
 
@@ -238,12 +241,9 @@
 
       
         <span itemprop="articleBody"><hr>
-<p>学习各种集合容器最好先从基本接口入手，之前在<a href="http://mrcame.github.io/2017/02/10/Java%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A01/" target="_blank" rel="external">《Java集合框架学习(1)——概览》</a>中已经梳理清楚了各个类和接口的脉络，现在就从最基本的Collection来看一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public interface Collection&lt;E&gt; extends Iterable&lt;E&gt; &#123;</span><br><span class="line">	</span><br><span class="line">    int size();  // 返回集合中元素数量，超过最大数量后返回Integer.MAX_VALUE</span><br><span class="line"></span><br><span class="line">    boolean isEmpty();  // 集合是否为空</span><br><span class="line"></span><br><span class="line">    boolean contains(Object o);  // 集合是否包含特定元素</span><br><span class="line">    </span><br><span class="line">    Iterator&lt;E&gt; iterator();  // 返回该集合的迭代器</span><br><span class="line"></span><br><span class="line">    Object[] toArray();  // 返回一个包含集合中所有元素的数组</span><br><span class="line"></span><br><span class="line">    // 泛型方法用类型变量声明，在方法的修饰符后，返回类型的前面</span><br><span class="line">    &lt;T&gt; T[] toArray(T[] a);  // 同toArray()</span><br><span class="line">    </span><br><span class="line">    boolean add(E e);  // 向集合中添加元素，返回是否添加成功</span><br><span class="line">    </span><br><span class="line">    boolean remove(Object o);  // 删除集合中的特定元素，返回是否删除成功</span><br><span class="line"></span><br><span class="line">    boolean containsAll(Collection&lt;?&gt; c);  // 是否包含特定集合中的全部元素(是否为子集)</span><br><span class="line"></span><br><span class="line">    boolean addAll(Collection&lt;? extends E&gt; c);  // 是否成功添加特定集合中的全部元素</span><br><span class="line"></span><br><span class="line">    boolean removeAll(Collection&lt;?&gt; c);  // 是否删除特定集合中的全部元素</span><br><span class="line"></span><br><span class="line">    boolean retainAll(Collection&lt;?&gt; c);  // 是否包含特定集合中的部分元素(是否有交集)</span><br><span class="line"></span><br><span class="line">    void clear();  // 删除集合中所有元素</span><br><span class="line"></span><br><span class="line">    // ...省略了几个default方法和Object方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这样来看基本的集合操作就一目了然，需要注意的是toArray方法，有两个重构的方法，下面来看一些细节：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();   </span><br><span class="line">list.add(1);  </span><br><span class="line">Integer[] i1 = (Integer[]) list.toArray();  // 造型异常</span><br><span class="line">Integer[] i2 = (Integer[]) list.toArray(new Integer[0]);  // Ok</span><br></pre></td></tr></table></figure></p>
-<p>运行时会报java.lang.ClassCastException。看了一下ArrayList中toArray的实现，在不带参数的toArray方法里：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">// 不带参数的toArray</span><br><span class="line">public Object[] toArray() &#123;</span><br><span class="line">    return Arrays.copyOf(elementData, size);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 带参数的toArray</span><br><span class="line">public &lt;T&gt; T[] toArray(T[] a) &#123;</span><br><span class="line">    if (a.length &lt; size)</span><br><span class="line">        return (T[]) Arrays.copyOf(elementData, size, a.getClass());</span><br><span class="line">    System.arraycopy(elementData, 0, a, 0, size);</span><br><span class="line">    if (a.length &gt; size)</span><br><span class="line">        a[size] = null;</span><br><span class="line">    return a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Arrays.copyOf</span><br><span class="line">public static &lt;T&gt; T[] copyOf(T[] original, int newLength) &#123;</span><br><span class="line">    return (T[]) copyOf(original, newLength, original.getClass());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// copyOf</span><br><span class="line">public static &lt;T,U&gt; T[] copyOf(U[] original, int newLength, Class&lt;? extends T[]&gt; newType) &#123;</span><br><span class="line">    @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">    T[] copy = ((Object)newType == (Object)Object[].class)  // 主要是这里</span><br><span class="line">        ? (T[]) new Object[newLength]</span><br><span class="line">        : (T[]) Array.newInstance(newType.getComponentType(), newLength);</span><br><span class="line">    System.arraycopy(original, 0, copy, 0,</span><br><span class="line">                     Math.min(original.length, newLength));</span><br><span class="line">    return copy;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>采用无参的toArray，在三目运算中直接返回Object数组，此时进行转型是不安全的下溯造型(Downcasting)，会产生ClassCastException，这也就是上述问题的原因了。<br>采用有参的toArray，newType.getCommponentType()返回数组内容的类型，根据该类型构造对应类型的数组copy，于是不会有问题。<br>Collection继承了Iterable接口，接下来再看一下这个接口：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">package java.lang;</span><br><span class="line">public interface Iterable&lt;T&gt; &#123;</span><br><span class="line">    </span><br><span class="line">    Iterator&lt;T&gt; iterator();  // 返回一个迭代器</span><br><span class="line"></span><br><span class="line">    // ...省略了几个default方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>文档中是这样说的，只要实现了这个接口，就可以使用for-each循环来遍历目标对象。需要注意的是，Iterable这个接口比较特殊，不在java.util中。</p>
-<p>下一篇来学习一下继承了Collection接口的三个基本接口——List、Set、Queue。</p>
+<p>题目要求：给定一个非负的整型数组，元素a[i]代表坐标(i, a[i])，得到一组每个点到x轴的垂线，选出两条垂线和x轴构成水箱，求围成的最大的面积。</p>
+<p>思路：<br>左右两个指针扫描数组，计算面积。假设找到最佳的两条线为left，right，易知left左边没有比left更高的垂线，right右边没有比right更高的垂线，即最佳的组合在当前候选的left和right的范围内。收缩底边长度，增大高，当left的高度大于right的，right向左扫描，反之left向右扫描，求出最大面积。</p>
+<p>代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class Solution &#123;</span><br><span class="line">    public int maxArea(int[] height) &#123;</span><br><span class="line">        int N = height.length;</span><br><span class="line">        if (N &lt; 2)</span><br><span class="line">            return 0;</span><br><span class="line">        int maxArea = 0;</span><br><span class="line">        int left = 0;</span><br><span class="line">        int right = N - 1;</span><br><span class="line">        while (left &lt; right) &#123;</span><br><span class="line">            int currArea = (right - left) * Math.min(height[left], height[right]);</span><br><span class="line">            maxArea = Math.max(maxArea, currArea);</span><br><span class="line">            if (height[left] &gt; height[right])</span><br><span class="line">                right--;</span><br><span class="line">            else</span><br><span class="line">                left++;</span><br><span class="line">        &#125;</span><br><span class="line">        return maxArea;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 </span>
       
     </div>
@@ -252,7 +252,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Java/" rel="tag">#Java</a>
+            <a href="/tags/Leetcode/" rel="tag">#Leetcode</a>
           
         </div>
       
@@ -261,17 +261,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/02/27/Java集合框架学习4/" rel="next" title="Java集合框架学习(4)——ArrayList中的modCount变量">
-                <i class="fa fa-chevron-left"></i> Java集合框架学习(4)——ArrayList中的modCount变量
+              <a href="/2017/04/30/Leetcode4/" rel="next" title="Leetcode-4 Median of Two Sorted Arrays">
+                <i class="fa fa-chevron-left"></i> Leetcode-4 Median of Two Sorted Arrays
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/13/Java集合框架学习6/" rel="prev" title="Java集合框架学习(6)——List接口">
-                Java集合框架学习(6)——List接口 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>

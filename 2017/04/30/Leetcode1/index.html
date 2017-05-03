@@ -47,8 +47,8 @@
 示例：nums = [2, 7, 11, 15], target = 9，因为nums[0] + nums[1] = 2 + 7 = 9,所以返回[0, 1]
 思路：
 
-传统的暴力方法，两次遍历数组，求出所有二元组的和，复杂度O($ n^2 $)
-使用Map，数值(key)-索引(value)，遍历一次">
+传统的暴力方法，两次遍历数组，求出所有二元组的和，复杂度O(n^2)
+使用Map，数值(key)-索引(value)，遍历一次数组，根">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode-1 Two Sum">
 <meta property="og:url" content="http://yoursite.com/2017/04/30/Leetcode1/index.html">
@@ -57,17 +57,17 @@
 示例：nums = [2, 7, 11, 15], target = 9，因为nums[0] + nums[1] = 2 + 7 = 9,所以返回[0, 1]
 思路：
 
-传统的暴力方法，两次遍历数组，求出所有二元组的和，复杂度O($ n^2 $)
-使用Map，数值(key)-索引(value)，遍历一次">
-<meta property="og:updated_time" content="2017-04-30T14:02:21.316Z">
+传统的暴力方法，两次遍历数组，求出所有二元组的和，复杂度O(n^2)
+使用Map，数值(key)-索引(value)，遍历一次数组，根">
+<meta property="og:updated_time" content="2017-05-03T13:21:25.717Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode-1 Two Sum">
 <meta name="twitter:description" content="题目要求：给定一个数组nums以及一个数target，求出和为target的两个元素的索引。
 示例：nums = [2, 7, 11, 15], target = 9，因为nums[0] + nums[1] = 2 + 7 = 9,所以返回[0, 1]
 思路：
 
-传统的暴力方法，两次遍历数组，求出所有二元组的和，复杂度O($ n^2 $)
-使用Map，数值(key)-索引(value)，遍历一次">
+传统的暴力方法，两次遍历数组，求出所有二元组的和，复杂度O(n^2)
+使用Map，数值(key)-索引(value)，遍历一次数组，根">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -257,7 +257,7 @@
 <p>示例：nums = [2, 7, 11, 15], target = 9，因为nums[0] + nums[1] = 2 + 7 = 9,所以返回[0, 1]</p>
 <p>思路：</p>
 <ol>
-<li>传统的暴力方法，两次遍历数组，求出所有二元组的和，复杂度O($ n^2 $)</li>
+<li>传统的暴力方法，两次遍历数组，求出所有二元组的和，复杂度O(n^2)</li>
 <li>使用Map，数值(key)-索引(value)，遍历一次数组，根据当前nums[i]在Map中查找target-nums[i]</li>
 </ol>
 <p>代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import java.util.Arrays;</span><br><span class="line">public class Solution &#123;</span><br><span class="line">    public int[] twoSum(int[] nums, int target) &#123;</span><br><span class="line">        int N = nums.length;</span><br><span class="line">        if (N &lt; 2)</span><br><span class="line">            return null;</span><br><span class="line">        int[] result = new int[2];</span><br><span class="line">        Map&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();</span><br><span class="line">        for (int i = 0; i &lt; N; i++) &#123;</span><br><span class="line">            if (map.containsKey(target-nums[i]) &#123;</span><br><span class="line">                result[0] = map.get(target-num[i]);</span><br><span class="line">                result[1] = i;</span><br><span class="line">            &#125;</span><br><span class="line">            map.put(nums[i], i);</span><br><span class="line">        &#125;</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -353,7 +353,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">35</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
