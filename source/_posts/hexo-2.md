@@ -8,6 +8,12 @@ categories: "Hexo"
 现在大部分时间使用公司电脑，于是搞一下。
 主要参考这个[解决办法](https://www.zhihu.com/question/21193762)，master分支上是生成的页面文件，hexo分支上是源文件，设置hexo为默认分支。
 遇到的第一个问题就是多个git账号，参考这个[解决办法](https://www.jianshu.com/p/b02645fff791)。
+这里有个小小的坑，就是之前设置了git config —global，在hexo deploy时会使用全局配置的用户名进行，需要在yml文件里deploy配置的仓库地址改一下，改成~/.ssh/config里配置的github别名
+比如config中github host别名github
+yml改之前 `repository: git@github.com:MrCame/MrCame.github.io.git`
+yml改后`repository: git@github:MrCame/MrCame.github.io.git`
+这样就会使用配置后的用户名进行deploy
+
 其次就是不要用hexo init命令。原因是当前目录已经建立了git仓库环境, hexo init会覆盖到当前的git环境，重建一个新的，这样和我们的私有Hexo源码仓库脱离了联系。
 最后，由于在yml文件已经配置了deploy的branch是master，所以执行hexo d时还是会将页面文件保存至master，而源文件需要手动push到hexo分支上。
 
