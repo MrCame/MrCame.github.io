@@ -16,6 +16,7 @@ CLH（Craig, Landin, and Hagersten）锁常用于实现自旋锁，AQS使用一�
 AQS使用双向队列，每一个Node都代表一个线程，有status属性，标记着线程是否应该被阻塞，prev指针指向前个节点，next指针（图中没有画出）指向后续节点，head和tail不言而喻
 
 ```java
+/** AbstractQueuedSynchronizer#Node.java **/
 static final class Node {
     // 处于共享模式
     static final Node SHARED = new Node();
@@ -77,7 +78,7 @@ static final class Node {
 }
 ```
 
-接下来再看一下AQS的域，特别要注意这里的state，表示同步状态，而不是线程的等待状态。
+接下来再看一下AQS定义的域，特别要注意这里的`state`，表示同步状态，而不是上文中的线程等待状态`waitStatus`。
 
 ```java
     // 头节点，通过setHead方法修改，等待状态不能是CANCELLED
@@ -90,6 +91,14 @@ static final class Node {
     private volatile int state;
 
     static final long spinForTimeoutThreshold = 1000L;
+
+    protected final int getState() {
+        return state;
+    }
+
+    protected final void setState(int newState) {
+        state = newState;
+    }
 ```
 
 AQS的一些包装UnSafe的CAS操作
@@ -97,14 +106,23 @@ AQS的一些包装UnSafe的CAS操作
 ```java
     private static final Unsafe unsafe = Unsafe.getUnsafe();
     private static final long stateOffset;
-    // ...省略
+    private static final long waitStatusOffset;
+    // ...省略 headOffset、tailOffset、nextOffset
 
     static {
         try {
             stateOffset = unsafe.objectFieldOffset
                 (AbstractQueuedSynchronizer.class.getDeclaredField("state"));
-            // ...省略
+            waitStatusOffset = unsafe.objectFieldOffset
+                (Node.class.getDeclaredField("waitStatus"));
+            // ...省略 headOffset、tailOffset、nextOffset
+          
         } catch (Exception ex) { throw new Error(ex); }
+    }
+
+    // CAS同步状态
+    protected final boolean compareAndSetState(int expect, int update) {
+        return unsafe.compareAndSwapInt(this, stateOffset, expect, update);
     }
  
     // 入队时如果队空CAS头节点
@@ -133,7 +151,7 @@ AQS的一些包装UnSafe的CAS操作
     }
 ```
 
-题外话补充一下，因为UnSafe做了安全验证，只允许信任的JDK调用，如果使用如上所示的`Unsafe.getUnsafe()`或者直接实例化，那么会抛`Caused by: java.lang.SecurityException: Unsafe`的异常，可以通过反射其内部的`theUnsafe`的域来进行实例化。
+【题外话】补充一下，因为UnSafe做了安全验证，只允许信任的JDK调用，如果使用如上所示的`Unsafe.getUnsafe()`或者直接实例化，那么会抛`Caused by: java.lang.SecurityException: Unsafe`的异常，可以通过反射其内部的`theUnsafe`的域来进行实例化。
 
 ```java
     Field f = Unsafe.class.getDeclaredField("theUnsafe"); //Internal reference
