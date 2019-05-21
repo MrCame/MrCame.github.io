@@ -5,7 +5,7 @@ tags: "Java"
 categories: "Java"
 ---
 
-上一篇 [AQS源码解析（1）](http://mrcame.github.io/2019/05/10/AQS-1/)已经介绍了AQS的数据结构。在这篇，将从J.U.C里的许多基于AQS实现的同步工具出发，看一看AQS到底提供了哪些功能。
+上一篇 [AQS源码解析(1)](http://mrcame.github.io/2019/05/10/AQS-1/)已经介绍了AQS的数据结构。在这篇，将从J.U.C里的许多基于AQS实现的同步工具出发，看一看AQS到底提供了哪些功能。
 比如`Lock lock = new ReentrantLock()`，默认是非公平锁的实现，使用`lock()`、`unlock()`进行同步，先来看一下如何加锁。
 
 ```java
@@ -49,7 +49,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
 }
 ```
 
-看代码还是很清晰的，核心就在`acquire()`这个方法中。这个方法是在父类，也就是AQS内定义实现的，`tryAcquire()`在AQS内只给了定义，具体实现还是在子类中。
+看代码还是很清晰的，核心就在`acquire()`中。这个方法是在父类AQS内定义实现的，而`tryAcquire()`在AQS内只给了定义，具体实现还是在子类中。
 
 ```java
 /** AbstractQueuedSynchronizer.java **/
@@ -67,8 +67,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
 以`ReentrantLock`为例，内部类`Sync`的子类`FairSync`和`NonFairSync`分别实现了公平锁与非公平锁。这时能清楚看到，在AQS中用来表示同步状态的`state`，会随着每次`acquire()`而从`0`开始累加。同理每次`release()`会减少直到为`0`，当`state == 0`可以认为资源都被释放，公平锁需要把资源让给等待更久的线程。如果当前线程已经持有资源，可以继续增加`state`，无需重新等待竞争，这就是可重入的意义。
 
 ```java
-/** ReentrantLock#FairSync.java **/
-// 公平锁tryAcquire实现
+/** ReentrantLock#FairSync.java 公平锁tryAcquire实现 **/
 static final class FairSync extends Sync {
     protected final boolean tryAcquire(int acquires) {
         final Thread current = Thread.currentThread();
@@ -141,7 +140,7 @@ abstract static class Sync extends AbstractQueuedSynchronizer {
         }
         // 快速方式失败，自旋入队
         enq(node);
-        return node;  // 返回新节点
+        return node;  // 返回先前节点
     }
 
     private Node enq(final Node node) {
@@ -229,7 +228,7 @@ abstract static class Sync extends AbstractQueuedSynchronizer {
             compareAndSetNext(pred, predNext, null);
         } else {  // 不是队尾
             // 先前节点同时如下满足条件：不是头节点、状态是SIGNAL或者可以变为SIGNAL、绑定了线程
-            // 将其后续节点
+            // 将其pred节点的next域置为该节点的后续节点
             int ws;
             if (pred != head &&
                 ((ws = pred.waitStatus) == Node.SIGNAL ||
@@ -247,7 +246,6 @@ abstract static class Sync extends AbstractQueuedSynchronizer {
     }
 ```
 
-未完待续
-
-
+在看源码时有一个问题困扰着我，为什么在`shouldParkAfterFailedAcquire`时一定是从尾向头去找，而不是反过来呢？
+至此，对于`ReentrantLock`的`lock()`的实现，还剩一步`unparkSuccessor()`来唤醒后续节点，这个留在接下来要学习的`unlock()`实现中来分析。
 
