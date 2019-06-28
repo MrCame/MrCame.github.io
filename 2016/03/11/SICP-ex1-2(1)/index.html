@@ -1,0 +1,709 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head><meta name="generator" content="Hexo 3.9.0">
+  
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+  
+    <link href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+<link rel="stylesheet" type="text/css" href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0">
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.2">
+
+
+
+
+  <meta name="keywords" content="SICP解题集,">
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2">
+
+
+<meta name="description" content="第一章 构造过程抽象1.2 过程与它们所产生的计算EX 1.21smallest-divisor程序如下 12345678(define (smallest-divisor n)	(find-divisor n 2))(define (find-divisor n test-divisor)	(cond ((&amp;gt; (square test-divisor) n) n)		  ((divides">
+<meta name="keywords" content="SICP解题集">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SICP 1.2节习题(2)">
+<meta property="og:url" content="http://yoursite.com/2016/03/11/SICP-ex1-2(1)/index.html">
+<meta property="og:site_name" content="Welcome to My World">
+<meta property="og:description" content="第一章 构造过程抽象1.2 过程与它们所产生的计算EX 1.21smallest-divisor程序如下 12345678(define (smallest-divisor n)	(find-divisor n 2))(define (find-divisor n test-divisor)	(cond ((&amp;gt; (square test-divisor) n) n)		  ((divides">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/ex1-22.png">
+<meta property="og:image" content="http://yoursite.com/images/ex1-23.png">
+<meta property="og:image" content="http://yoursite.com/images/ex1-24.png">
+<meta property="og:image" content="http://yoursite.com/images/ex1-27.png">
+<meta property="og:image" content="http://yoursite.com/images/ex1-28.png">
+<meta property="og:updated_time" content="2019-06-28T08:43:00.331Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SICP 1.2节习题(2)">
+<meta name="twitter:description" content="第一章 构造过程抽象1.2 过程与它们所产生的计算EX 1.21smallest-divisor程序如下 12345678(define (smallest-divisor n)	(find-divisor n 2))(define (find-divisor n test-divisor)	(cond ((&amp;gt; (square test-divisor) n) n)		  ((divides">
+<meta name="twitter:image" content="http://yoursite.com/images/ex1-22.png">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'always'
+  };
+</script>
+
+
+
+  <title> SICP 1.2节习题(2) | Welcome to My World </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to My World</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                SICP 1.2节习题(2)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-03-11T15:42:13+08:00" content="2016-03-11">
+              2016-03-11
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
+                    <span itemprop="name">SICP解题集</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h1 id="第一章-构造过程抽象"><a href="#第一章-构造过程抽象" class="headerlink" title="第一章 构造过程抽象"></a>第一章 构造过程抽象</h1><h2 id="1-2-过程与它们所产生的计算"><a href="#1-2-过程与它们所产生的计算" class="headerlink" title="1.2 过程与它们所产生的计算"></a>1.2 过程与它们所产生的计算</h2><h3 id="EX-1-21"><a href="#EX-1-21" class="headerlink" title="EX 1.21"></a>EX 1.21</h3><p>smallest-divisor程序如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(define (smallest-divisor n)</span><br><span class="line">	(find-divisor n 2))</span><br><span class="line">(define (find-divisor n test-divisor)</span><br><span class="line">	(cond ((&gt; (square test-divisor) n) n)</span><br><span class="line">		  ((divides? test-divisor n) test-divisor)</span><br><span class="line">		  (else (find-divisor n (+ test-divisor 1)))))</span><br><span class="line">(define (divides? a b)</span><br><span class="line">	(= (remainder b a) 0))</span><br></pre></td></tr></table></figure>
+
+<pre><code>(smallest-divisor 199)        ;answer is 199
+(smallest-divisor 1999)        ;answer is 1999
+(smallest-divisor 19999)    ;answer is 7</code></pre><h3 id="EX-1-22"><a href="#EX-1-22" class="headerlink" title="EX 1.22"></a>EX 1.22</h3><p>解决这个问题，可以把问题划分成几个子问题来解决，这也是SICP这本书所教授的核心问题职业——如何将复杂问题分解</p>
+<blockquote>
+<p>如何生成连续奇数？<br>如何描述大于某数x的前i个素数？<br>如何判断素数？<br>如何计算程序运行时间？</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">;生成奇数</span><br><span class="line">(define (odd-generator x)</span><br><span class="line">	(if (odd? x)</span><br><span class="line">		(+ x 2)</span><br><span class="line">		(+ x 1)))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">;大于x的前i个素数</span><br><span class="line">(define (continue-prime i x)</span><br><span class="line">	(cond ((= i 0) (display &quot;These are all primes&quot;))</span><br><span class="line">		  ((prime? x)</span><br><span class="line">			(display x)</span><br><span class="line">			(newline)</span><br><span class="line">			(continue-prime (- i 1) (odd-generator x)))</span><br><span class="line">		  (else (continue-prime i (odd-generator x)))))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">;判断素数,可以采用33页最基本的方法</span><br><span class="line">(define (prime? n)</span><br><span class="line">	(define (smallest-divisor n)</span><br><span class="line">		(find-divisor n 2))</span><br><span class="line">	(define (find-divisor n test-divisor)</span><br><span class="line">		(cond ((&gt; (square test-divisor) n) n)</span><br><span class="line">			  ((divides? test-divisor n) test-divisor)</span><br><span class="line">			  (else (find-divisor n (+ test-divisor 1)))))</span><br><span class="line">	(define (divides? a b)</span><br><span class="line">		(= (remainder b a) 0))</span><br><span class="line">	(= n (smallest-divisor n)))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;运行时间计算</span><br><span class="line">;(runtime)返回的是秒,(real-time-clock)返回毫秒</span><br><span class="line">;最终的search-for程序:</span><br><span class="line">(define (search-for-primes x)</span><br><span class="line">	(let ((start-time (real-time-clock)))</span><br><span class="line">	(continue-prime 3 x)</span><br><span class="line">	(- (real-time-clock) start-time)))</span><br></pre></td></tr></table></figure>
+
+<p>结果<br><img src="/images/ex1-22.png" alt="“1-22”"></p>
+<p>结果分析放在1.24，显然并不遵循预期的结果</p>
+<h3 id="EX-1-23"><a href="#EX-1-23" class="headerlink" title="EX 1.23"></a>EX 1.23</h3><p>首先定义一个新的prime过程——new prime</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(define (new-prime? n)</span><br><span class="line">	(define (next x)</span><br><span class="line">		(if (= x 2)</span><br><span class="line">		    3</span><br><span class="line">		    (+ x 2)))</span><br><span class="line">	(define (smallest-divisor n)</span><br><span class="line">		(find-divisor n 2))</span><br><span class="line">	(define (find-divisor n test-divisor)</span><br><span class="line">		(cond ((&gt; (square test-divisor) n) n)</span><br><span class="line">			  ((divides? test-divisor n) test-divisor)</span><br><span class="line">			  (else (find-divisor n (next test-divisor)))))</span><br><span class="line">	(define (divides? a b)</span><br><span class="line">		(= (remainder b a) 0))</span><br><span class="line">	(= n (smallest-divisor n)))</span><br></pre></td></tr></table></figure>
+
+<p>然后用这个新的素数判断过程重写continue-prime</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(define (continue-newprime i x)</span><br><span class="line">	(cond ((= i 0) (display &quot;These are all primes&quot;))</span><br><span class="line">		  ((new-prime? x)</span><br><span class="line">			(display x)</span><br><span class="line">			(newline)</span><br><span class="line">			(continue-prime (- i 1) (odd-generator x)))</span><br><span class="line">		  (else (continue-prime i (odd-generator x)))))</span><br></pre></td></tr></table></figure>
+
+<p>最后重写search-for方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(define (search-for-newprimes x)</span><br><span class="line">	(let ((start-time (real-time-clock)))</span><br><span class="line">	(continue-newprime 3 x)</span><br><span class="line">	(- (real-time-clock) start-time)))</span><br></pre></td></tr></table></figure>
+
+<p>当然，scheme里新绑定的过程会覆盖原来的，可以局部替换为新的过程，为了更明显一些，都重写了这些过程<br>结果<br><img src="/images/ex1-23.png" alt="“1-23”"></p>
+<p>结果分析放在1.24，显然也并不遵循预期的结果</p>
+<h3 id="EX-1-24"><a href="#EX-1-24" class="headerlink" title="EX 1.24"></a>EX 1.24</h3><p>同1.23。使用费马定理来判断是否为素数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">(define (fast-prime? n times)</span><br><span class="line">  (define (expmod base exp m)</span><br><span class="line">    (cond ((= exp 0) 1)</span><br><span class="line">        ((even? exp)</span><br><span class="line">         (remainder (square (expmod base (/ exp 2) m)) m))</span><br><span class="line">        (else</span><br><span class="line">         (remainder (* base (expmod base (- exp 1) m)) m))))</span><br><span class="line">  (define (fermat-test n)</span><br><span class="line">    (define (try-it a)</span><br><span class="line">      (= (expmod a n n) a))</span><br><span class="line">    (try-it (+ 1 (random (- n 1)))))</span><br><span class="line">  (cond ((= times 0) true)</span><br><span class="line">        ((fermat-test n) (fast-prime? n (- times 1)))</span><br><span class="line">        (else false)))</span><br><span class="line"></span><br><span class="line">(define (expmod base exp m)</span><br><span class="line">  (cond ((= exp 0) 1)</span><br><span class="line">        ((even? exp)</span><br><span class="line">         (remainder (square (expmod base (/ exp 2) m)) m))</span><br><span class="line">        (else</span><br><span class="line">         (remainder (* base (expmod base (- exp 1) m)) m))))</span><br></pre></td></tr></table></figure>
+
+<p>重写continue-prime和search-for</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(define (continue-fastprime i x)</span><br><span class="line">	(cond ((= i 0) (display &quot;These are all primes&quot;))</span><br><span class="line">		  ((fast-prime? x 100)</span><br><span class="line">			(display x)</span><br><span class="line">			(newline)</span><br><span class="line">			(continue-prime (- i 1) (odd-generator x)))</span><br><span class="line">		  (else (continue-prime i (odd-generator x)))))</span><br><span class="line">(define (search-for-fastprimes x)</span><br><span class="line">	(let ((start-time (real-time-clock)))</span><br><span class="line">	(continue-fastprime 3 x)</span><br><span class="line">	(- (real-time-clock) start-time)))</span><br></pre></td></tr></table></figure>
+
+<p>结果<br><img src="/images/ex1-24.png" alt="“1-24”"></p>
+<p>结果分析,1.22,1.23,1.24三个例子中，可以明显看到，随着问题复杂度的增加，用时并不按照理论耗时增长。结果可能有以下原因，机器的差异，运行环境的差异，资源的占用情况，编译器优化等等，都会影响到程序的运行速度。然而，随着复杂度逐渐加大，可以看到，复杂度更低的算法效率更高。</p>
+<h3 id="EX-1-25"><a href="#EX-1-25" class="headerlink" title="EX 1.25"></a>EX 1.25</h3><p>Alyssa的程序理论上更快，但是实际操作中发现，当底数和幂都很大的时候，使用fast-expt计算速度非常慢，而且占用大量CPU资源。究其原因，书中34页的expmod程序，每一次幂的结果都会进行remainder操作，从而将幂控制在一个合理的范围内，防止溢出。</p>
+<h3 id="EX-1-26"><a href="#EX-1-26" class="headerlink" title="EX 1.26"></a>EX 1.26</h3><p>显然，Louis的程序在偶次幂时，两次调用expmod。也看到有这样的分析：</p>
+<pre><code>Louis的expmod使得原来的线性递归变成了具有两个分支的树形递归
+计算量是原来expmod复杂度的平方，即Θ(logn)的平方，即Θ(n)
+而prime?的复杂度是Θ(sqrt n)，所以比prime?还慢</code></pre><h3 id="EX-1-27"><a href="#EX-1-27" class="headerlink" title="EX 1.27"></a>EX 1.27</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">;是否同余</span><br><span class="line">(define (same-remainder? a n)</span><br><span class="line">	(= (expmod a n n) a))</span><br><span class="line"></span><br><span class="line">(define (carmichael n)</span><br><span class="line">	(iter 1 n))</span><br><span class="line">(define (iter a n)</span><br><span class="line">	(cond ((= a n) &quot;YES&quot;)</span><br><span class="line">		  ((same-remainder? a n) (iter (+ a 1) n))</span><br><span class="line">		  (else &quot;NO&quot;)))</span><br></pre></td></tr></table></figure>
+
+<pre><code>(carmichael 561)
+(carmichael 1105)
+(carmichael 1729)
+(carmichael 2465)
+(carmichael 2821)
+(carmichael 6601)</code></pre><p>以上几个数均骗过了费马检查</p>
+<p>结果<br><img src="/images/ex1-27.png" alt="“1-27”"></p>
+<h3 id="EX-1-28"><a href="#EX-1-28" class="headerlink" title="EX 1.28"></a>EX 1.28</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">;求一个数是否是非凡平方根,即非零非n-1的数x，x平方模n结果为1</span><br><span class="line">(define (special-square-root? x n)</span><br><span class="line">	(and (= (remainder (square x) n) 1) </span><br><span class="line">		 (not (= x 0))</span><br><span class="line">		 (not (= x (- n 1)))))</span><br><span class="line"></span><br><span class="line">;改进expmod过程,增加判断非凡平方根</span><br><span class="line">(define (expmod base exp m)</span><br><span class="line">	(cond ((= exp 0) 1)</span><br><span class="line">		  ((special-square-root? base m) 0)</span><br><span class="line">		  ((even? exp)</span><br><span class="line">			(remainder (square (expmod base (/ exp 2) m)) m))</span><br><span class="line">		  (else</span><br><span class="line">			(remainder (* (expmod base (- exp 1) m) base) m))))</span><br><span class="line"></span><br><span class="line">;随机取一个数a,并且a&lt;n</span><br><span class="line">(define (rand-smaller-than-n n)</span><br><span class="line">	(let ((x (random n)))</span><br><span class="line">	(if (not (= x 0))</span><br><span class="line">		x</span><br><span class="line">		(rand-smaller-than-n n))))</span><br><span class="line"></span><br><span class="line">;Miller-Rabin测试</span><br><span class="line">(define (miller-rabin-test n)</span><br><span class="line">	(let ((times n))</span><br><span class="line">		(define (miller-prime? n times)</span><br><span class="line">				  (cond ((= times 0) true)</span><br><span class="line">				  ((= (expmod (rand-smaller-than-n n) (- n 1) n) 1) (miller-prime? n (- times 1)))</span><br><span class="line">				  (else false)))</span><br><span class="line">		(miller-prime? n times)))</span><br></pre></td></tr></table></figure>
+
+<pre><code>(miller-rabin-test 561)
+(miller-rabin-test 1105)
+(miller-rabin-test 1729)
+(miller-rabin-test 2465)
+(miller-rabin-test 2821)
+(miller-rabin-test 6601)
+(miller-rabin-test 13)
+(miller-rabin-test 19)
+(miller-rabin-test 23)</code></pre><p>结果<br><img src="/images/ex1-28.png" alt="“1-28”"></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SICP解题集/" rel="tag">#SICP解题集</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/07/SICP-ex1-2/" rel="next" title="SICP 1.2节习题(1)">
+                <i class="fa fa-chevron-left"></i> SICP 1.2节习题(1)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/15/others/" rel="prev" title="随笔">
+                随笔 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/uploads/avatar.jpg" alt="Carl John" itemprop="image">
+          <p class="site-author-name" itemprop="name">Carl John</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description"></p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">43</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第一章-构造过程抽象"><span class="nav-number">1.</span> <span class="nav-text">第一章 构造过程抽象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-过程与它们所产生的计算"><span class="nav-number">1.1.</span> <span class="nav-text">1.2 过程与它们所产生的计算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#EX-1-21"><span class="nav-number">1.1.1.</span> <span class="nav-text">EX 1.21</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EX-1-22"><span class="nav-number">1.1.2.</span> <span class="nav-text">EX 1.22</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EX-1-23"><span class="nav-number">1.1.3.</span> <span class="nav-text">EX 1.23</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EX-1-24"><span class="nav-number">1.1.4.</span> <span class="nav-text">EX 1.24</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EX-1-25"><span class="nav-number">1.1.5.</span> <span class="nav-text">EX 1.25</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EX-1-26"><span class="nav-number">1.1.6.</span> <span class="nav-text">EX 1.26</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EX-1-27"><span class="nav-number">1.1.7.</span> <span class="nav-text">EX 1.27</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EX-1-28"><span class="nav-number">1.1.8.</span> <span class="nav-text">EX 1.28</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Carl John</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.2" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+
+      motionIntegrator.bootstrap();
+    });
+  </script>
+
+  
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
