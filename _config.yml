@@ -72,7 +72,7 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repository: git@github.com:MrCame/MrCame.github.io.git
+  repository: git@github:MrCame/MrCame.github.io.git
   branch: master
   name: MrCame
   email: mr.caojiawang@gmail.com
