@@ -188,6 +188,104 @@
             
             
               
+                <a class="post-title-link" href="/2017/02/11/Java集合框架学习2/" itemprop="url">
+                  Java集合框架学习(2)——Iterator
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2017-02-11T13:20:36+08:00" content="2017-02-11">
+              2017-02-11
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <hr>
+<h3 id="Iterator"><a href="#Iterator" class="headerlink" title="Iterator"></a>Iterator</h3><p><strong>default</strong>修饰符是Java8中新的概念，在Java8发布时，需要Java在现有实现架构的下能往接口里增加新方法。引入Default方法，可以在优化接口的同时，避免跟现有实现架构的兼容问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">package java.util;</span><br><span class="line"></span><br><span class="line">import java.util.function.Consumer;</span><br><span class="line"></span><br><span class="line">public interface Iterator&lt;E&gt; &#123;</span><br><span class="line"></span><br><span class="line">    // 是否有下一元素</span><br><span class="line">    boolean hasNext();</span><br><span class="line"></span><br><span class="line">    // 返回下一元素</span><br><span class="line">    E next();</span><br><span class="line"></span><br><span class="line">	// Default方法是指，在接口内部包含了一些默认的方法实现</span><br><span class="line">	// 也就是接口中可以包含方法体，这打破了Java之前版本对接口的语法限制</span><br><span class="line">    // 从而使得接口在进行扩展的时候，不会破坏与接口相关的实现类代码。</span><br><span class="line">    default void remove() &#123;</span><br><span class="line">        throw new UnsupportedOperationException(&quot;remove&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    default void forEachRemaining(Consumer&lt;? super E&gt; action) &#123;</span><br><span class="line">        Objects.requireNonNull(action);</span><br><span class="line">        while (hasNext())</span><br><span class="line">            action.accept(next());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="ListIterator"><a href="#ListIterator" class="headerlink" title="ListIterator"></a>ListIterator</h3><p>ListIterator继承自Iterator，除了父接口原有的方法<strong>hasNext()</strong>、<strong>next()</strong>外，还申明了新的查询操作<strong>hasPrevious()</strong>、<strong>previous()</strong>、<strong>nextIndex()</strong>、<strong>previousIndex()</strong>，以及修改操作<strong>remove()</strong>、<strong>set()</strong>、<strong>add()</strong>。相关操作见下图<br><img src="/images/java-3-0.png" alt="&quot;ListIterator&quot;"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">package java.util;</span><br><span class="line">public interface ListIterator&lt;E&gt; extends Iterator&lt;E&gt; &#123;</span><br><span class="line">    // Query Operations</span><br><span class="line"></span><br><span class="line">    // 继承自父类</span><br><span class="line">    boolean hasNext();</span><br><span class="line"></span><br><span class="line">    // 继承自父类</span><br><span class="line">    E next();</span><br><span class="line"></span><br><span class="line">    // 是否有前一元素</span><br><span class="line">    boolean hasPrevious();</span><br><span class="line"></span><br><span class="line">    // 返回前一元素</span><br><span class="line">    E previous();</span><br><span class="line"></span><br><span class="line">    // 返回当前iterator的下标</span><br><span class="line">    int nextIndex();</span><br><span class="line"></span><br><span class="line">    // 返回当前iterator的前一下标，如果当前下标为0，前一下标为-1</span><br><span class="line">    int previousIndex();</span><br><span class="line"></span><br><span class="line">    // Modification Operations</span><br><span class="line"></span><br><span class="line">    // 删除元素</span><br><span class="line">    // remove当前元素必须先next()，否则remove的是前一元素</span><br><span class="line">    // 若iterator下标为0，直接remove抛出IllegalStateException异常</span><br><span class="line">    void remove();</span><br><span class="line"></span><br><span class="line">    // 替换元素</span><br><span class="line">    // 同remove，set当前元素前必须先next，否则set的是前一元素</span><br><span class="line">    // 若iterator下标为0，直接set抛出IllegalStateException异常</span><br><span class="line">    void set(E e);</span><br><span class="line"></span><br><span class="line">    // 插入元素，在该iterator的位置add</span><br><span class="line">    void add(E e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2017/02/10/Java集合框架学习1/" itemprop="url">
                   Java集合框架学习(1)——概览
                 </a>
@@ -1301,106 +1399,6 @@
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2016/04/21/SICP-ex2-1(2)/" itemprop="url">
-                  SICP 2.1节习题(2)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-04-21T20:09:17+08:00" content="2016-04-21">
-              2016-04-21
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
-                    <span itemprop="name">SICP解题集</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h1 id="第二章-构造数据抽象"><a href="#第二章-构造数据抽象" class="headerlink" title="第二章 构造数据抽象"></a>第二章 构造数据抽象</h1><h2 id="2-1-数据抽象引导"><a href="#2-1-数据抽象引导" class="headerlink" title="2.1 数据抽象引导"></a>2.1 数据抽象引导</h2><h3 id="EX-2-7"><a href="#EX-2-7" class="headerlink" title="EX 2.7"></a>EX 2.7</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(define (upper-bound x) (cdr x))</span><br><span class="line"></span><br><span class="line">(define (lower-bound x) (car x))</span><br><span class="line"></span><br><span class="line">(define (make-interval a b) (cons a b))</span><br><span class="line"></span><br><span class="line">(define test (make-interval 1 2))</span><br></pre></td></tr></table></figure>
-
-<h3 id="EX-2-8"><a href="#EX-2-8" class="headerlink" title="EX 2.8"></a>EX 2.8</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(define (sub-interval x y)</span><br><span class="line">  (make-interval (- (lower-bound x) (lower-bound y))</span><br><span class="line">                 (- (upper-bound x) (upper-bound y))))</span><br></pre></td></tr></table></figure>
-
-<h3 id="EX-2-9"><a href="#EX-2-9" class="headerlink" title="EX 2.9"></a>EX 2.9</h3><pre><code>显而易见，若两个区间分别为(1,2) (3,4)，被加宽度为0.5
-对于加：(4,6)，宽度为0.5+0.5=1
-对于减：(-2,-2),宽度为0.5-0.5=0
-对于乘：p1=3 p2=4 p3=6 p4=8，(3,8), 宽度为2.5
-对于除：第一个区间乘上第二个区间的倒数，p1=1/4 p2=1/3 p3=1/2 p4=2/3，(1/4,2/3)，宽度为5/24</code></pre><h3 id="EX-2-10"><a href="#EX-2-10" class="headerlink" title="EX 2.10"></a>EX 2.10</h3><pre><code>显然，如果两个区间分别为(0,1)，(1,2)
-对于除：取倒数的时候可能会出现分母为0的情况
-如果区间横跨0，区间取倒数的时候会出现上界小于下界的情况，(-1,2)取倒数后(1/2, -1)</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(define (new-div-interval x y)</span><br><span class="line">  (let ((y1 (lower-bound y))</span><br><span class="line">        (y2 (upper-bound y)))</span><br><span class="line">    (cond ((or (= y1 0) (= y2 0)) (display &quot;error&quot;))</span><br><span class="line">          ((&lt; y1 0) (display &quot;error&quot;))</span><br><span class="line">          (else</span><br><span class="line">           (mul-interval x</span><br><span class="line">                         (make-interval (/ 1.0 y1)</span><br><span class="line">                                        (/ 1.0 y2)))))))</span><br></pre></td></tr></table></figure>
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1443,14 +1441,14 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">43</span>
+              <span class="site-state-item-count">44</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
