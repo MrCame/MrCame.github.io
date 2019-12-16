@@ -43,19 +43,19 @@
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2">
 
 
-<meta name="description" content="六大原则：  SRP：单一职责。只有一个原因引起变化 LSP：里氏替换。所有引用基类的地方必须能透明地使用子类对象 子类可以实现父类的抽象方法，但不能覆盖父类的非抽象方法 子类中可以增加自己特有的方法 子类重载父类方法时，入参要比父类入参更宽 子类实现父类方法时，返回值要比父类更严格   DIP：依赖倒置。依赖抽象而不是细节，面向接口编程，模块之间解耦 ISP：接口隔离。客户端不应该依赖它不需要的">
+<meta name="description" content="六大原则：  SRP(Single Responsibility Principle)——单一职责。只有一个原因引起变化 LSP(Substitution Principle)——里氏替换。所有引用基类的地方必须能透明地使用子类对象 子类可以实现父类的抽象方法，但不能覆盖父类的非抽象方法 子类中可以增加自己特有的方法 子类重载父类方法时，入参要比父类入参更宽 子类实现父类方法时，返回值要比父类更严">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式-1">
 <meta property="og:url" content="http://yoursite.com/2019/11/05/design-pattern-1/index.html">
 <meta property="og:site_name" content="Welcome to My World">
-<meta property="og:description" content="六大原则：  SRP：单一职责。只有一个原因引起变化 LSP：里氏替换。所有引用基类的地方必须能透明地使用子类对象 子类可以实现父类的抽象方法，但不能覆盖父类的非抽象方法 子类中可以增加自己特有的方法 子类重载父类方法时，入参要比父类入参更宽 子类实现父类方法时，返回值要比父类更严格   DIP：依赖倒置。依赖抽象而不是细节，面向接口编程，模块之间解耦 ISP：接口隔离。客户端不应该依赖它不需要的">
+<meta property="og:description" content="六大原则：  SRP(Single Responsibility Principle)——单一职责。只有一个原因引起变化 LSP(Substitution Principle)——里氏替换。所有引用基类的地方必须能透明地使用子类对象 子类可以实现父类的抽象方法，但不能覆盖父类的非抽象方法 子类中可以增加自己特有的方法 子类重载父类方法时，入参要比父类入参更宽 子类实现父类方法时，返回值要比父类更严">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/design-pattern-1-1.jpg">
-<meta property="og:updated_time" content="2019-11-19T14:44:02.200Z">
+<meta property="og:updated_time" content="2019-12-16T14:09:46.746Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式-1">
-<meta name="twitter:description" content="六大原则：  SRP：单一职责。只有一个原因引起变化 LSP：里氏替换。所有引用基类的地方必须能透明地使用子类对象 子类可以实现父类的抽象方法，但不能覆盖父类的非抽象方法 子类中可以增加自己特有的方法 子类重载父类方法时，入参要比父类入参更宽 子类实现父类方法时，返回值要比父类更严格   DIP：依赖倒置。依赖抽象而不是细节，面向接口编程，模块之间解耦 ISP：接口隔离。客户端不应该依赖它不需要的">
+<meta name="twitter:description" content="六大原则：  SRP(Single Responsibility Principle)——单一职责。只有一个原因引起变化 LSP(Substitution Principle)——里氏替换。所有引用基类的地方必须能透明地使用子类对象 子类可以实现父类的抽象方法，但不能覆盖父类的非抽象方法 子类中可以增加自己特有的方法 子类重载父类方法时，入参要比父类入参更宽 子类实现父类方法时，返回值要比父类更严">
 <meta name="twitter:image" content="http://yoursite.com/images/design-pattern-1-1.jpg">
 
 
@@ -243,18 +243,18 @@
       
         <span itemprop="articleBody"><p>六大原则：</p>
 <ul>
-<li>SRP：单一职责。只有一个原因引起变化</li>
-<li>LSP：里氏替换。所有引用基类的地方必须能透明地使用子类对象<ul>
+<li>SRP(Single Responsibility Principle)——单一职责。只有一个原因引起变化</li>
+<li>LSP(Substitution Principle)——里氏替换。所有引用基类的地方必须能透明地使用子类对象<ul>
 <li>子类可以实现父类的抽象方法，但不能覆盖父类的非抽象方法</li>
 <li>子类中可以增加自己特有的方法</li>
 <li>子类重载父类方法时，入参要比父类入参更宽</li>
 <li>子类实现父类方法时，返回值要比父类更严格</li>
 </ul>
 </li>
-<li>DIP：依赖倒置。依赖抽象而不是细节，面向接口编程，模块之间解耦</li>
-<li>ISP：接口隔离。客户端不应该依赖它不需要的接口</li>
-<li>LOD：迪米特法则。对象之间耦合少。但是这种解耦是有限度的，否则会产生大量的跳转类。若一个类通过跳转两次以上去访问另一个类，则就要重构了。注意，需要适度考虑这个原则。</li>
-<li>OCP：开闭原则。对扩展开放，对修改关闭，其实是一个核心思想，前5个原则遵守的好，开闭原则自然就遵守的好了。</li>
+<li>DIP(Dependency Inversion Principle)——依赖倒置。依赖抽象而不是细节，面向接口编程，模块之间解耦</li>
+<li>ISP(Interface Segregation Principle)——接口隔离。客户端不应该依赖它不需要的接口</li>
+<li>LOD(Law Of Demeter)——迪米特法则。对象之间耦合少。但是这种解耦是有限度的，否则会产生大量的跳转类。若一个类通过跳转两次以上去访问另一个类，则就要重构了。注意，需要适度考虑这个原则。</li>
+<li>OCP(Open Closed Principle)——开闭原则。对扩展开放，对修改关闭，其实是一个核心思想，前5个原则遵守的好，开闭原则自然就遵守的好了。</li>
 </ul>
 <p>按照使用场景，设计模式分为三大类：</p>
 <ul>
