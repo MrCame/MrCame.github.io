@@ -188,6 +188,163 @@
             
             
               
+                <a class="post-title-link" href="/2017/02/22/Java集合框架学习3/" itemprop="url">
+                  Java集合框架学习(3)——ArrayList
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2017-02-22T09:51:24+08:00" content="2017-02-22">
+              2017-02-22
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <hr>
+<p>ArrayList是Java集合框架里很常用的一个数据结构，底层用数组实现数据存储，所以基本上都是对数据的操作。<br><img src="/images/java-4-0.png" alt="&quot;ArrayList&quot;"></p>
+<h3 id="一些成员变量"><a href="#一些成员变量" class="headerlink" title="一些成员变量"></a>一些成员变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 默认数组容量</span><br><span class="line">private static final int DEFAULT_CAPACITY = 10;</span><br><span class="line"></span><br><span class="line">// 底层数组</span><br><span class="line">transient Object[] elementData;</span><br><span class="line"></span><br><span class="line">// ArrayList包含的元素数量</span><br><span class="line">private int size;</span><br></pre></td></tr></table></figure>
+
+<p>其中，transient是Java的关键字。Java的serialization提供了一种持久化对象实例的机制。当持久化对象时，可能有一个特殊的对象数据成员，我们不想用serialization机制来保存它。为了在一个特定对象的一个域上关闭serialization，可以在这个域前加上关键字transient，用来表示一个域不是该对象串行化的一部分。当一个对象被串行化的时候，transient型变量的值不包括在串行化的表示中，然而非transient型的变量是被包括进去的。  </p>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p>ArrayList提供了三个构造函数</p>
+<ul>
+<li>ArrayList(int initialCapacity)：构造一个具有指定初始容量的空列表。</li>
+<li>ArrayList()：默认构造函数,默认为空，DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {}。</li>
+<li>ArrayList(Collection&lt;? extends E&gt; c)：构造一个包含指定 collection 的元素的列表，这些元素是按照该 collection 的迭代器返回它们的顺序排列的。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public ArrayList(int initialCapacity) &#123;</span><br><span class="line">    if (initialCapacity &gt; 0) &#123;</span><br><span class="line">        this.elementData = new Object[initialCapacity];</span><br><span class="line">    &#125; else if (initialCapacity == 0) &#123;</span><br><span class="line">        this.elementData = EMPTY_ELEMENTDATA;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        throw new IllegalArgumentException(&quot;Illegal Capacity: &quot;+</span><br><span class="line">                                           initialCapacity);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public ArrayList() &#123;</span><br><span class="line">    this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public ArrayList(Collection&lt;? extends E&gt; c) &#123;</span><br><span class="line">    elementData = c.toArray();</span><br><span class="line">    if ((size = elementData.length) != 0) &#123;</span><br><span class="line">        // c.toArray might (incorrectly) not return Object[] (see 6260652)</span><br><span class="line">        if (elementData.getClass() != Object[].class)</span><br><span class="line">            elementData = Arrays.copyOf(elementData, size, Object[].class);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // replace with empty array.</span><br><span class="line">        this.elementData = EMPTY_ELEMENTDATA;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>在声明一个ArrayList时</p>
+<ul>
+<li><p><strong>ArrayList alist = new ArrayList()</strong>  用到了ArrayList的特性</p>
+</li>
+<li><p><strong>List list = new ArrayList()</strong>  通用性更强，可直接替换为其他List接口的实现</p>
+<h3 id="主要API"><a href="#主要API" class="headerlink" title="主要API"></a>主要API</h3></li>
+<li><p>size()，元素数量，复杂度O(1)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public int size() &#123;</span><br><span class="line">    return size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>isEmpty()，判断是否为空，复杂度O(1)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public boolean isEmpty() &#123;</span><br><span class="line">    return size == 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>contains()，判断是否包括特定元素，复杂度O(n)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public boolean contains(Object o) &#123;</span><br><span class="line">    return indexOf(o) &gt;= 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>主要是indexOf(Object o)方法，实现了O(n)复杂度的线性查找，遍历数组，若找到则返回索引i，最坏情况遍历到最后才找到。因为ArrayList是顺序存储，如果知道存储顺序的话，可以选择用lastIndexOf(Object o)倒序遍历。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public int indexOf(Object o) &#123;</span><br><span class="line">	if (o == null) &#123;</span><br><span class="line">		for (int i = 0; i &lt; size; i++)</span><br><span class="line">			if (elementData[i] == null)</span><br><span class="line">				return i;</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		for (int i = 0; i &lt; size; i++)</span><br><span class="line">			if (o.equals(elementData[i]))</span><br><span class="line">				return i;</span><br><span class="line">	&#125;</span><br><span class="line">	return -1;</span><br><span class="line">&#125;</span><br><span class="line">   public int lastIndexOf(Object o) &#123;</span><br><span class="line">       if (o == null) &#123;</span><br><span class="line">           for (int i = size-1; i &gt;= 0; i--)</span><br><span class="line">               if (elementData[i]==null)</span><br><span class="line">                   return i;</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           for (int i = size-1; i &gt;= 0; i--)</span><br><span class="line">               if (o.equals(elementData[i]))</span><br><span class="line">                   return i;</span><br><span class="line">       &#125;</span><br><span class="line">       return -1;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>get(int index)，得到指定位置的元素，复杂度O(1)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public E get(int index) &#123;</span><br><span class="line">    rangeCheck(index); // 检查索引越界情况</span><br><span class="line"></span><br><span class="line">    return elementData(index);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>set(int index, E element)，替换指定位置的元素，复杂度O(1)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public E set(int index, E element) &#123;</span><br><span class="line">    rangeCheck(index); // 检查索引越界情况</span><br><span class="line"></span><br><span class="line">    E oldValue = elementData(index);</span><br><span class="line">    elementData[index] = element;</span><br><span class="line">    return oldValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>add(E e)，在末尾添加元素，复杂度O(1)<br>ensureCapacityInternal()方法判断是否需要扩容，grow()负责扩容操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public boolean add(E e) &#123;</span><br><span class="line">    ensureCapacityInternal(size + 1);  // Increments modCount!!</span><br><span class="line">    elementData[size++] = e;</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line">   private void ensureCapacityInternal(int minCapacity) &#123;</span><br><span class="line">       if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) &#123;</span><br><span class="line">           minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);</span><br><span class="line">       &#125;</span><br><span class="line">       ensureExplicitCapacity(minCapacity);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   private void ensureExplicitCapacity(int minCapacity) &#123;</span><br><span class="line">       modCount++;</span><br><span class="line">       // 所需最小容量大于当前数组容量，扩容</span><br><span class="line">       if (minCapacity - elementData.length &gt; 0) </span><br><span class="line">           grow(minCapacity);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   private void grow(int minCapacity) &#123;</span><br><span class="line">       int oldCapacity = elementData.length;</span><br><span class="line">	// 扩容为原来的1.5倍</span><br><span class="line">       int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);</span><br><span class="line">	// 扩容后仍不够</span><br><span class="line">       if (newCapacity - minCapacity &lt; 0)</span><br><span class="line">           newCapacity = minCapacity;</span><br><span class="line">       if (newCapacity - MAX_ARRAY_SIZE &gt; 0)</span><br><span class="line">           newCapacity = hugeCapacity(minCapacity);</span><br><span class="line">       // minCapacity is usually close to size, so this is a win:</span><br><span class="line">       elementData = Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="/images/java-4-1.png" alt="&quot;grow&quot;"></p>
+<ul>
+<li><p>add(int index, E element)，在指定位置添加元素，复杂度O(n)<br>需要将该位置后的所有元素向后移动一位，复杂度取决于数组规模</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public void add(int index, E element) &#123;</span><br><span class="line">    rangeCheckForAdd(index);</span><br><span class="line"></span><br><span class="line">    ensureCapacityInternal(size + 1);  // Increments modCount!!</span><br><span class="line">    System.arraycopy(elementData, index, elementData, index + 1,</span><br><span class="line">                     size - index);</span><br><span class="line">    size++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>remove(int index) 删除并取得指定位置的元素，复杂度O(n)<br>需要将该位置后的所有元素向前移动一位，复杂度取决于数组规模</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public E remove(int index) &#123;</span><br><span class="line">    rangeCheck(index);</span><br><span class="line"></span><br><span class="line">    modCount++;</span><br><span class="line">    E oldValue = elementData(index);</span><br><span class="line"></span><br><span class="line">    int numMoved = size - index - 1;  // 需要向前移动一位的元素长度</span><br><span class="line">    if (numMoved &gt; 0)</span><br><span class="line">        System.arraycopy(elementData, index+1, elementData, index,</span><br><span class="line">                         numMoved);</span><br><span class="line">    elementData[--size] = null; // 清除该位置的引用，让GC起作用</span><br><span class="line"></span><br><span class="line">    return oldValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>关于Java GC这里需要特别说明一下，有了垃圾收集器并不意味着一定不会有内存泄漏。对象能否被GC的依据是是否还有引用指向它，上面代码中如果不手动赋 <strong><em>null</em></strong> 值，除非对应的位置被其他元素覆盖，否则原来的对象就一直不会被回收。</p>
+<ul>
+<li><p>remove(Object o) 删除一个元素，复杂度O(n)<br>需要遍历数组查找第一个满足条件的元素，然后把后面的元素向前前进一位</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public boolean remove(Object o) &#123;</span><br><span class="line">    if (o == null) &#123;</span><br><span class="line">        for (int index = 0; index &lt; size; index++)</span><br><span class="line">            if (elementData[index] == null) &#123;</span><br><span class="line">                fastRemove(index);</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        for (int index = 0; index &lt; size; index++)</span><br><span class="line">            if (o.equals(elementData[index])) &#123;</span><br><span class="line">                fastRemove(index);</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>addAll()<br>一次性添加多个元素，根据位置不同也有两个把本，一个是在末尾添加的 <strong>addAll(Collection&lt;? extends E&gt; c)</strong> 方法，一个是从指定位置开始插入的 <strong>addAll(int index, Collection&lt;? extends E&gt; c)</strong> 方法。跟 <strong>add()</strong> 方法类似，在插入之前也需要进行空间检查，如果需要则自动扩容；如果从指定位置插入，也会存在移动元素的情况。 <strong>addAll()</strong> 的时间复杂度不仅跟插入元素的多少有关，也跟插入的位置相关。</p>
+</li>
+<li><p>removeAll(Collection&lt;?&gt; c)<br>删除指定collection中包含的所有元素，即求两个集合的差集，A-B。</p>
+</li>
+<li><p>retainAll(Collection&lt;?&gt; c)<br>保留指定collection中包含的所有元素，即求两个集合的交集，A∩B。</p>
+</li>
+</ul>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2017/02/11/Java集合框架学习2/" itemprop="url">
                   Java集合框架学习(2)——Iterator
                 </a>
@@ -1264,141 +1421,6 @@
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2016/04/21/SICP-ex2-2(1)/" itemprop="url">
-                  SICP 2.2节习题(1)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-04-21T20:11:25+08:00" content="2016-04-21">
-              2016-04-21
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
-                    <span itemprop="name">SICP解题集</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h1 id="第二章-构造数据抽象"><a href="#第二章-构造数据抽象" class="headerlink" title="第二章 构造数据抽象"></a>第二章 构造数据抽象</h1><h2 id="2-2-层次性数据和闭包性质"><a href="#2-2-层次性数据和闭包性质" class="headerlink" title="2.2 层次性数据和闭包性质"></a>2.2 层次性数据和闭包性质</h2><h3 id="EX-2-17"><a href="#EX-2-17" class="headerlink" title="EX 2.17"></a>EX 2.17</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">;返回列表尾元素</span><br><span class="line">(define (last-pair x)</span><br><span class="line">  (if (null? (cdr x))</span><br><span class="line">      x</span><br><span class="line">      (last-pair (cdr x))))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">;测试</span><br><span class="line">(last-pair (list 1 2 3 4))</span><br></pre></td></tr></table></figure>
-
-<h3 id="EX-2-18"><a href="#EX-2-18" class="headerlink" title="EX 2.18"></a>EX 2.18</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;反转列表</span><br><span class="line">(define (reverse x)</span><br><span class="line">  (define (iter remain result)</span><br><span class="line">    (if (null? remain)</span><br><span class="line">        result</span><br><span class="line">        (iter (cdr remain) (cons (car remain) result))))</span><br><span class="line">  (iter x &apos;()))</span><br></pre></td></tr></table></figure>
-
-<h3 id="EX-2-19"><a href="#EX-2-19" class="headerlink" title="EX 2.19"></a>EX 2.19</h3><p>题目本身并不难，只要看过“换零钱”的程序，根据分治思想，分成使用的币种和为未使用的币种，两部分分别是list的car和cdr</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">;源程序</span><br><span class="line">(define (cc amount coin-values)</span><br><span class="line">  (cond ((= amount 0) 1)</span><br><span class="line">        ((or (&lt; amount 0) (no-more? coin-values)) 0)</span><br><span class="line">        (else (+ (cc amount (except-first-denomination coin-values))</span><br><span class="line">                 (cc (- amount (first-denomination coin-values)) coin-values)))))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;补全程序</span><br><span class="line">(define (first-denomination coin-values)</span><br><span class="line">  (car coin-values))</span><br><span class="line">(define (except-first-denomination coin-values)</span><br><span class="line">  (cdr coin-values))</span><br><span class="line">(define (no-more? coin-values)</span><br><span class="line">  (null? coin-values))</span><br></pre></td></tr></table></figure>
-
-<h3 id="EX-2-20"><a href="#EX-2-20" class="headerlink" title="EX 2.20"></a>EX 2.20</h3><p>一般的思路是利用循环遍历列表，逐个判断元素的奇偶性，当该项符合要求时加入新的list中<br>这里的思路是抽象出一种通用的过程filter，体现了动态语言的特性，将过程(函数)作为参数传递</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">;P78 filter的定义</span><br><span class="line">(define (filter predicate sequence)</span><br><span class="line">  (cond ((null? sequence) &apos;())</span><br><span class="line">        ((predicate (car sequence))</span><br><span class="line">         (cons (car sequence) (filter predicate (cdr sequence))))</span><br><span class="line">        (else (filter predicate (cdr sequence)))))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">;一种same-parity  </span><br><span class="line">(define (same-parity x . y)</span><br><span class="line">  (cond ((odd? x) (filter odd? (cons x y)))</span><br><span class="line">        ((even? x) (filter even? (cons x y)))</span><br><span class="line">        (else (display &quot;x error&quot;))))</span><br><span class="line"></span><br><span class="line">;一种same-parity的简洁定义</span><br><span class="line">(define (same-parity x . y)</span><br><span class="line">  (filter (if (odd? x)</span><br><span class="line">              odd?</span><br><span class="line">              even?)</span><br><span class="line">          (cons x y)))</span><br></pre></td></tr></table></figure>
-
-<h3 id="EX-2-21"><a href="#EX-2-21" class="headerlink" title="EX 2.21"></a>EX 2.21</h3><p>不难补全代码<br>第一种定义：对car项做平方，cdr项继续迭代回过程中<br>第二种定义：根据map的定义，形式参数是操作类型和被操作的项即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">;一种square-list的定义</span><br><span class="line">(define (square-list1 items)</span><br><span class="line">  (if (null? items)</span><br><span class="line">      &apos;()</span><br><span class="line">      (cons (square (car items))</span><br><span class="line">            (square-list1 (cdr items)))))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">;另一种square-list的定义</span><br><span class="line">(define (square-list2 items)</span><br><span class="line">  (map square items))</span><br></pre></td></tr></table></figure>
-
-<h3 id="EX-2-22"><a href="#EX-2-22" class="headerlink" title="EX 2.22"></a>EX 2.22</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">;原始程序(未交换cons参数)</span><br><span class="line">(define (square-list items)</span><br><span class="line">  (define (iter things answer)</span><br><span class="line">    (if (null? things)</span><br><span class="line">        answer</span><br><span class="line">        (iter (cdr things)</span><br><span class="line">              (cons (square (car things))</span><br><span class="line">                    answer))))</span><br><span class="line">  (iter items &apos;()))</span><br></pre></td></tr></table></figure>
-
-<p>分析如下：</p>
-<pre><code>(square-list (list 1 2 3))                    -&gt;
-(iter (1 2 3) &apos;())                            -&gt;
-(iter (2 3) (cons 1 &apos;()))                    -&gt;
-(iter (3) (cons 4 (cons 1 &apos;())))            -&gt;
-(iter &apos;() (cons 9 (cons 4 (cons 1 &apos;()))))    -&gt;    (cons 9 (cons 4 (cons 1 &apos;())))) = (list 9 4 1)
-(9 4 1)</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">;原始程序(交换cons参数)</span><br><span class="line">(define (square-list items)</span><br><span class="line">  (define (iter things answer)</span><br><span class="line">    (if (null? things)</span><br><span class="line">        answer</span><br><span class="line">        (iter (cdr things)</span><br><span class="line">              (cons answer</span><br><span class="line">                    (square (car things))))))</span><br><span class="line">  (iter items &apos;()))</span><br></pre></td></tr></table></figure>
-
-<p>分析如下：</p>
-<pre><code>(square-list (list 1 2 3))                    -&gt;
-(iter (1 2 3) &apos;())                             -&gt;
-(iter (2 3) (cons &apos;() 1))                    -&gt;
-(iter (3) (cons (cons &apos;() 1) 4))            -&gt;
-(iter &apos;() (cons (cons (cons &apos;() 1) 4) 3))    -&gt;    (cons (cons (cons &apos;() 1) 4) 3) = (((() . 1) . 4) . 9)
-(((() . 1) . 4) . 9)</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">;正确程序</span><br><span class="line">(define (square-list items)</span><br><span class="line">  (define (iter things answer)</span><br><span class="line">    (if (null? things)</span><br><span class="line">        (reverse answer)</span><br><span class="line">        (iter (cdr things)</span><br><span class="line">              (cons (square (car things))</span><br><span class="line">                    answer))))</span><br><span class="line">  (iter items &apos;()))</span><br></pre></td></tr></table></figure>
-
-<p>分析如下：</p>
-<pre><code>(square-list (list 1 2 3))                    -&gt;
-(iter (1 2 3) &apos;())                            -&gt;
-(iter (2 3) (cons 1 &apos;()))                    -&gt;
-(iter (3) (cons 4 (cons 1 &apos;())))            -&gt;
-(iter &apos;() (cons 9 (cons 4 (cons 1 &apos;()))))    -&gt;    (cons 9 (cons 4 (cons 1 &apos;()))) = (list 9 4 1)
-(list 1 4 9)</code></pre><h3 id="EX-2-23"><a href="#EX-2-23" class="headerlink" title="EX 2.23"></a>EX 2.23</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">;类似于map的定义，返回逻辑值</span><br><span class="line">(define (for-each proc items)</span><br><span class="line">  (if (null? items)</span><br><span class="line">      #f</span><br><span class="line">      (cons (proc (car items))</span><br><span class="line">            (for-each proc (cdr items)))))</span><br></pre></td></tr></table></figure>
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1441,7 +1463,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">44</span>
+              <span class="site-state-item-count">45</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
