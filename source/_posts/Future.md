@@ -61,11 +61,11 @@ Callable提供了带返回值的子线程执行结果，Future提供了获取子
 
 ```java
     public static void main(String... args) {
-        //对jdk提供的线程池进行修饰，用于返回ListenabledFuture
+        // 对jdk提供的线程池进行修饰，用于返回ListenabledFuture
         ListeningExecutorService executorService = MoreExecutors
                 .listeningDecorator(Executors.newCachedThreadPool());
 
-        //  提交一个Callable，返回ListenableFuture
+        // 提交一个Callable，返回ListenableFuture
         final ListenableFuture<Integer> listenableFuture = executorService.submit(() -> {
             System.out.println("call execute..");
             TimeUnit.SECONDS.sleep(1);

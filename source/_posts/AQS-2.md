@@ -226,7 +226,8 @@ abstract static class Sync extends AbstractQueuedSynchronizer {
         // 如果该节点是队尾，将先前节点设置为队尾，然后将其next域置空
         if (node == tail && compareAndSetTail(node, pred)) {
             compareAndSetNext(pred, predNext, null);
-        } else {  // 不是队尾
+        } else {  
+            // 不是队尾
             // 先前节点同时如下满足条件：不是头节点、状态是SIGNAL或者可以变为SIGNAL、绑定了线程
             // 将其pred节点的next域置为该节点的后续节点
             int ws;

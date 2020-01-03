@@ -42,7 +42,7 @@ static final class Node {
     // 注意：该节点的先前节点如果是CANCELLED的，就往前找第一个非CANCELLED的，肯定能找到一个，因为至少头节点就不是CANCELLED。
     volatile Node prev;
 
-    // 注意：只有该节点成为尾节点时才会给先前节点的next域赋值
+    // 注意：只有该节点成为尾节点时才会给先前节点的next域赋值。也就是说，next为null不代表这是尾节点。
     volatile Node next;
 
     // 节点绑定线程
@@ -79,6 +79,8 @@ static final class Node {
 ```
 
 接下来再看一下AQS定义的域，特别要注意这里的`state`，表示同步状态，而不是上文中的线程等待状态`waitStatus`。
+
+> AQS内部通过一个int类型的state字段表示同步状态，状态的具体含义可以子类来定义，例如ReentrantLock中用state表示线程重入的次数，Semaphore表示可用的许可的数量等。使用int是由于int能够应对大部分的场景，而long在很多平台需要使用额外锁来保证一致性的读取。[(引用自他山之石)](https://liuzhengyang.github.io/2017/05/12/aqs/)
 
 ```java
     // 头节点，通过setHead方法修改，等待状态不能是CANCELLED
