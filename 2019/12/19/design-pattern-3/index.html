@@ -34,7 +34,7 @@
 
 
 
-  <meta name="keywords" content="Leetcode,">
+  <meta name="keywords" content="Java,">
 
 
 
@@ -43,18 +43,20 @@
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2">
 
 
-<meta name="description" content="题目要求：给定一个非负的整型数组，元素a[i]代表坐标(i, a[i])，得到一组每个点到x轴的垂线，选出两条垂线和x轴构成水箱，求围成的最大的面积。 思路：左右两个指针扫描数组，计算面积。假设找到最佳的两条线为left，right，易知left左边没有比left更高的垂线，right右边没有比right更高的垂线，即最佳的组合在当前候选的left和right的范围内。收缩底边长度，增大高，当l">
-<meta name="keywords" content="Leetcode">
+<meta name="description" content="工厂方法模式  工厂类 1234567891011121314151617181920// 抽象工厂类abstract class Factory &amp;#123;    public abstract Product produce();&amp;#125;// 具体工厂A——生产Aclass Factory AF extends Factory &amp;#123;    @Override    public">
+<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Leetcode-11 Container With Most Water">
-<meta property="og:url" content="http://yoursite.com/2017/05/03/Leetcode11/index.html">
+<meta property="og:title" content="设计模式-3（工厂方法模式）">
+<meta property="og:url" content="http://yoursite.com/2019/12/19/design-pattern-3/index.html">
 <meta property="og:site_name" content="Welcome to My World">
-<meta property="og:description" content="题目要求：给定一个非负的整型数组，元素a[i]代表坐标(i, a[i])，得到一组每个点到x轴的垂线，选出两条垂线和x轴构成水箱，求围成的最大的面积。 思路：左右两个指针扫描数组，计算面积。假设找到最佳的两条线为left，right，易知left左边没有比left更高的垂线，right右边没有比right更高的垂线，即最佳的组合在当前候选的left和right的范围内。收缩底边长度，增大高，当l">
+<meta property="og:description" content="工厂方法模式  工厂类 1234567891011121314151617181920// 抽象工厂类abstract class Factory &amp;#123;    public abstract Product produce();&amp;#125;// 具体工厂A——生产Aclass Factory AF extends Factory &amp;#123;    @Override    public">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-28T08:43:00.330Z">
+<meta property="og:image" content="http://yoursite.com/images/design-pattern-factory-method.jpg">
+<meta property="og:updated_time" content="2020-01-03T12:53:19.016Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Leetcode-11 Container With Most Water">
-<meta name="twitter:description" content="题目要求：给定一个非负的整型数组，元素a[i]代表坐标(i, a[i])，得到一组每个点到x轴的垂线，选出两条垂线和x轴构成水箱，求围成的最大的面积。 思路：左右两个指针扫描数组，计算面积。假设找到最佳的两条线为left，right，易知left左边没有比left更高的垂线，right右边没有比right更高的垂线，即最佳的组合在当前候选的left和right的范围内。收缩底边长度，增大高，当l">
+<meta name="twitter:title" content="设计模式-3（工厂方法模式）">
+<meta name="twitter:description" content="工厂方法模式  工厂类 1234567891011121314151617181920// 抽象工厂类abstract class Factory &amp;#123;    public abstract Product produce();&amp;#125;// 具体工厂A——生产Aclass Factory AF extends Factory &amp;#123;    @Override    public">
+<meta name="twitter:image" content="http://yoursite.com/images/design-pattern-factory-method.jpg">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -66,7 +68,7 @@
 
 
 
-  <title> Leetcode-11 Container With Most Water | Welcome to My World </title>
+  <title> 设计模式-3（工厂方法模式） | Welcome to My World </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -191,7 +193,7 @@
             
             
               
-                Leetcode-11 Container With Most Water
+                设计模式-3（工厂方法模式）
               
             
           </h1>
@@ -200,8 +202,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2017-05-03T21:12:55+08:00" content="2017-05-03">
-              2017-05-03
+            <time itemprop="dateCreated" datetime="2019-12-19T23:00:01+08:00" content="2019-12-19">
+              2019-12-19
             </time>
           </span>
 
@@ -210,8 +212,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">Leetcode</span>
+                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Design Pattern</span>
                   </a>
                 </span>
 
@@ -239,11 +241,31 @@
       
 
       
-        <span itemprop="articleBody"><hr>
-<p>题目要求：给定一个非负的整型数组，元素a[i]代表坐标(i, a[i])，得到一组每个点到x轴的垂线，选出两条垂线和x轴构成水箱，求围成的最大的面积。</p>
-<p>思路：<br>左右两个指针扫描数组，计算面积。假设找到最佳的两条线为left，right，易知left左边没有比left更高的垂线，right右边没有比right更高的垂线，即最佳的组合在当前候选的left和right的范围内。收缩底边长度，增大高，当left的高度大于right的，right向左扫描，反之left向右扫描，求出最大面积。</p>
-<p>代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class Solution &#123;</span><br><span class="line">    public int maxArea(int[] height) &#123;</span><br><span class="line">        int N = height.length;</span><br><span class="line">        if (N &lt; 2)</span><br><span class="line">            return 0;</span><br><span class="line">        int maxArea = 0;</span><br><span class="line">        int left = 0;</span><br><span class="line">        int right = N - 1;</span><br><span class="line">        while (left &lt; right) &#123;</span><br><span class="line">            int currArea = (right - left) * Math.min(height[left], height[right]);</span><br><span class="line">            maxArea = Math.max(maxArea, currArea);</span><br><span class="line">            if (height[left] &gt; height[right])</span><br><span class="line">                right--;</span><br><span class="line">            else</span><br><span class="line">                left++;</span><br><span class="line">        &#125;</span><br><span class="line">        return maxArea;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></span>
+        <span itemprop="articleBody"><p>工厂方法模式</p>
+<p><img src="/images/design-pattern-factory-method.jpg" alt="&quot;factory-method&quot;"></p>
+<p>工厂类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 抽象工厂类</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Factory</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> Product <span class="title">produce</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体工厂A——生产A</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Factory</span> <span class="title">AF</span> <span class="keyword">extends</span> <span class="title">Factory</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Product <span class="title">produce</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> A();</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体工厂B——生产B</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Factory</span> <span class="title">BF</span> <span class="keyword">extends</span> <span class="title">Factory</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Product <span class="title">produce</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> B();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>产品类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 抽象产品类</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Product</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品类A</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Product</span> <span class="title">A</span> <span class="keyword">extends</span> <span class="title">Product</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"product A"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品类B</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Product</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">Product</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"product B"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String... args)</span> </span>&#123;</span><br><span class="line">        Factory af = <span class="keyword">new</span> AF();</span><br><span class="line">        Product a = af.produce();</span><br><span class="line">        a.show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<h4 id="简单工厂模式与OOP原则"><a href="#简单工厂模式与OOP原则" class="headerlink" title="简单工厂模式与OOP原则"></a>简单工厂模式与OOP原则</h4><h5 id="已遵循的原则"><a href="#已遵循的原则" class="headerlink" title="已遵循的原则"></a>已遵循的原则</h5><ul>
+<li>依赖倒置原则</li>
+<li>迪米特法则</li>
+<li>里氏替换原则</li>
+<li>接口隔离原则</li>
+<li>单一职责原则（每个工厂只负责创建自己的具体产品，没有简单工厂中的逻辑判断）</li>
+<li>开闭原则（增加新的产品，不像简单工厂那样需要修改已有的工厂，而只需增加相应的具体工厂类）</li>
+</ul>
+<h5 id="未遵循的原则"><a href="#未遵循的原则" class="headerlink" title="未遵循的原则"></a>未遵循的原则</h5><ul>
+<li>开闭原则（虽然工厂对修改关闭了，但更换产品时，客户代码还是需要修改）</li>
+</ul>
+</blockquote>
+</span>
       
     </div>
 
@@ -251,7 +273,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Leetcode/" rel="tag">#Leetcode</a>
+            <a href="/tags/Java/" rel="tag">#Java</a>
           
         </div>
       
@@ -260,17 +282,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/30/Leetcode4/" rel="next" title="Leetcode-4 Median of Two Sorted Arrays">
-                <i class="fa fa-chevron-left"></i> Leetcode-4 Median of Two Sorted Arrays
+              <a href="/2019/12/17/design-pattern-2/" rel="next" title="设计模式-2（简单工厂模式）">
+                <i class="fa fa-chevron-left"></i> 设计模式-2（简单工厂模式）
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/05/04/Leetcode15/" rel="prev" title="Leetcode-15 Three Sum">
-                Leetcode-15 Three Sum <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -377,7 +395,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#简单工厂模式与OOP原则"><span class="nav-number">1.</span> <span class="nav-text">简单工厂模式与OOP原则</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#已遵循的原则"><span class="nav-number">1.1.</span> <span class="nav-text">已遵循的原则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#未遵循的原则"><span class="nav-number">1.2.</span> <span class="nav-text">未遵循的原则</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

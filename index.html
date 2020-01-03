@@ -188,8 +188,122 @@
             
             
               
+                <a class="post-title-link" href="/2019/12/19/design-pattern-3/" itemprop="url">
+                  设计模式-3（工厂方法模式）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2019-12-19T23:00:01+08:00" content="2019-12-19">
+              2019-12-19
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Design Pattern</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>工厂方法模式</p>
+<p><img src="/images/design-pattern-factory-method.jpg" alt="&quot;factory-method&quot;"></p>
+<p>工厂类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 抽象工厂类</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Factory</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> Product <span class="title">produce</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体工厂A——生产A</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Factory</span> <span class="title">AF</span> <span class="keyword">extends</span> <span class="title">Factory</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Product <span class="title">produce</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> A();</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体工厂B——生产B</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Factory</span> <span class="title">BF</span> <span class="keyword">extends</span> <span class="title">Factory</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Product <span class="title">produce</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> B();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>产品类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 抽象产品类</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Product</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品类A</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Product</span> <span class="title">A</span> <span class="keyword">extends</span> <span class="title">Product</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"product A"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品类B</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Product</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">Product</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"product B"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String... args)</span> </span>&#123;</span><br><span class="line">        Factory af = <span class="keyword">new</span> AF();</span><br><span class="line">        Product a = af.produce();</span><br><span class="line">        a.show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<h4 id="简单工厂模式与OOP原则"><a href="#简单工厂模式与OOP原则" class="headerlink" title="简单工厂模式与OOP原则"></a>简单工厂模式与OOP原则</h4><h5 id="已遵循的原则"><a href="#已遵循的原则" class="headerlink" title="已遵循的原则"></a>已遵循的原则</h5><ul>
+<li>依赖倒置原则</li>
+<li>迪米特法则</li>
+<li>里氏替换原则</li>
+<li>接口隔离原则</li>
+<li>单一职责原则（每个工厂只负责创建自己的具体产品，没有简单工厂中的逻辑判断）</li>
+<li>开闭原则（增加新的产品，不像简单工厂那样需要修改已有的工厂，而只需增加相应的具体工厂类）</li>
+</ul>
+<h5 id="未遵循的原则"><a href="#未遵循的原则" class="headerlink" title="未遵循的原则"></a>未遵循的原则</h5><ul>
+<li>开闭原则（虽然工厂对修改关闭了，但更换产品时，客户代码还是需要修改）</li>
+</ul>
+</blockquote>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2019/12/17/design-pattern-2/" itemprop="url">
-                  设计模式-2
+                  设计模式-2（简单工厂模式）
                 </a>
               
             
@@ -241,7 +355,7 @@
         
           <span itemprop="articleBody">
             
-              <p>工厂模式</p>
+              <p>简单工厂模式</p>
 <p><img src="/images/design-pattern-simple-factory.jpg" alt="&quot;simple-factory&quot;"></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">speed</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -251,6 +365,18 @@
 
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Driver</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 可以根据配置文件来读取产品名称</span></span><br><span class="line">        XMLConfiguration config = <span class="keyword">new</span> XMLConfiguration(<span class="string">"car.xml"</span>);</span><br><span class="line">        String productName = config.getString(<span class="string">"BMW"</span>);</span><br><span class="line">        Car car = Factory.produce(productName);</span><br><span class="line">        car.speed();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<blockquote>
+<h4 id="简单工厂模式与OOP原则"><a href="#简单工厂模式与OOP原则" class="headerlink" title="简单工厂模式与OOP原则"></a><strong>简单工厂模式与OOP原则</strong></h4><h5 id="已遵守的原则"><a href="#已遵守的原则" class="headerlink" title="已遵守的原则"></a>已遵守的原则</h5><ul>
+<li>依赖倒置原则</li>
+<li>迪米特法则</li>
+<li>里氏替换原则</li>
+<li>接口隔离原则</li>
+</ul>
+<h5 id="未遵循的原则"><a href="#未遵循的原则" class="headerlink" title="未遵循的原则"></a>未遵循的原则</h5><ul>
+<li>开闭原则（如上文所述，利用配置文件+反射或者注解可以避免这一点）</li>
+<li>单一职责原则（工厂类即要负责逻辑判断又要负责实例创建）</li>
+</ul>
+</blockquote>
 
             
           </span>
@@ -1199,103 +1325,6 @@
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2017/05/04/Leetcode15/" itemprop="url">
-                  Leetcode-15 Three Sum
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2017-05-04T21:45:56+08:00" content="2017-05-04">
-              2017-05-04
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">Leetcode</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <hr>
-<p>题目要求：给定一个数组nums，找出和为0的所有三元组集合。</p>
-<p>示例：nums = [-1, 0, 1, 2, -1, -4]，和为0的三元组集合 = [[-1, 0, 1], [-1, -1, 2]]。</p>
-<p>思路：将数组排序后，指针指定一个元素后，对该元素之后的元素进行2sum运算，考虑到不能有重复结果，所以需要跳过重复元素。</p>
-<p>代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">import java.util.Arrays;</span><br><span class="line"></span><br><span class="line">public class Solution &#123;</span><br><span class="line">    public List&lt;List&lt;Integer&gt;&gt; threeSum(int[] nums) &#123;</span><br><span class="line">        int N = nums.length;</span><br><span class="line">        List&lt;List&lt;Integer&gt;&gt; result = new ArraysList&lt;&gt;();</span><br><span class="line">        if (nums == null || N == 0 || N &lt; 3)</span><br><span class="line">            return result;</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt; N-2; i++) &#123;</span><br><span class="line">            // 跳过重复元素</span><br><span class="line">            if (i &gt; 0 &amp;&amp; num[i-1] == nums[i])</span><br><span class="line">                continue;</span><br><span class="line">            int left = i + 1;</span><br><span class="line">            int right = N - 1;</span><br><span class="line">            int target = -nums[i];</span><br><span class="line">            // 对之后的元素进行2sum</span><br><span class="line">            twoSum(nums, left, right, target, result);</span><br><span class="line">        &#125;</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void twoSum(int[] nums, int left, int right, int target, List&lt;List&lt;Integer&gt;&gt; result) &#123;</span><br><span class="line">        while (left &lt; right) &#123;</span><br><span class="line">            if (nums[left] + nums[right] == target) &#123;</span><br><span class="line">                List&lt;Integer&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">                list.add(-target);</span><br><span class="line">                list.add(nums[left]);</span><br><span class="line">                list.add(nums[right]);</span><br><span class="line">                result.add(list);</span><br><span class="line"></span><br><span class="line">                left++;</span><br><span class="line">                right--;</span><br><span class="line"></span><br><span class="line">                // 从左边跳过重复元素</span><br><span class="line">                while (left &lt; right &amp;&amp; nums[left-1] == nums[left])</span><br><span class="line">                    left++;</span><br><span class="line">                // 从右边跳过重复元素</span><br><span class="line">                while (left &lt; right &amp;&amp; nums[right] == nums[right+1])</span><br><span class="line">                    right--;</span><br><span class="line">            &#125;</span><br><span class="line">            // 和小于target，增大left的值</span><br><span class="line">            else if (nums[left] + nums[right] &lt; target)</span><br><span class="line">                left++;</span><br><span class="line">            // 和大于target，减小right的值</span><br><span class="line">            else</span><br><span class="line">                right--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1338,7 +1367,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1387,7 +1416,7 @@
       <div class="footer-inner"> <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

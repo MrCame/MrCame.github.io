@@ -43,19 +43,19 @@
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2">
 
 
-<meta name="description" content="工厂模式  123abstract class Car &amp;#123;    public abstract void speed();&amp;#125;  12345678910111213public class BMW extends Car &amp;#123;    @Override    public void speed() &amp;#123;        // do something    &amp;#1">
+<meta name="description" content="简单工厂模式  123abstract class Car &amp;#123;    public abstract void speed();&amp;#125;  12345678910111213public class BMW extends Car &amp;#123;    @Override    public void speed() &amp;#123;        // do something    &amp;">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="设计模式-2">
+<meta property="og:title" content="设计模式-2（简单工厂模式）">
 <meta property="og:url" content="http://yoursite.com/2019/12/17/design-pattern-2/index.html">
 <meta property="og:site_name" content="Welcome to My World">
-<meta property="og:description" content="工厂模式  123abstract class Car &amp;#123;    public abstract void speed();&amp;#125;  12345678910111213public class BMW extends Car &amp;#123;    @Override    public void speed() &amp;#123;        // do something    &amp;#1">
+<meta property="og:description" content="简单工厂模式  123abstract class Car &amp;#123;    public abstract void speed();&amp;#125;  12345678910111213public class BMW extends Car &amp;#123;    @Override    public void speed() &amp;#123;        // do something    &amp;">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/design-pattern-simple-factory.jpg">
-<meta property="og:updated_time" content="2019-12-17T14:54:40.522Z">
+<meta property="og:updated_time" content="2019-12-30T02:04:44.678Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="设计模式-2">
-<meta name="twitter:description" content="工厂模式  123abstract class Car &amp;#123;    public abstract void speed();&amp;#125;  12345678910111213public class BMW extends Car &amp;#123;    @Override    public void speed() &amp;#123;        // do something    &amp;#1">
+<meta name="twitter:title" content="设计模式-2（简单工厂模式）">
+<meta name="twitter:description" content="简单工厂模式  123abstract class Car &amp;#123;    public abstract void speed();&amp;#125;  12345678910111213public class BMW extends Car &amp;#123;    @Override    public void speed() &amp;#123;        // do something    &amp;">
 <meta name="twitter:image" content="http://yoursite.com/images/design-pattern-simple-factory.jpg">
 
 
@@ -68,7 +68,7 @@
 
 
 
-  <title> 设计模式-2 | Welcome to My World </title>
+  <title> 设计模式-2（简单工厂模式） | Welcome to My World </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -193,7 +193,7 @@
             
             
               
-                设计模式-2
+                设计模式-2（简单工厂模式）
               
             
           </h1>
@@ -241,7 +241,7 @@
       
 
       
-        <span itemprop="articleBody"><p>工厂模式</p>
+        <span itemprop="articleBody"><p>简单工厂模式</p>
 <p><img src="/images/design-pattern-simple-factory.jpg" alt="&quot;simple-factory&quot;"></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">speed</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -251,6 +251,18 @@
 
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Driver</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 可以根据配置文件来读取产品名称</span></span><br><span class="line">        XMLConfiguration config = <span class="keyword">new</span> XMLConfiguration(<span class="string">"car.xml"</span>);</span><br><span class="line">        String productName = config.getString(<span class="string">"BMW"</span>);</span><br><span class="line">        Car car = Factory.produce(productName);</span><br><span class="line">        car.speed();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<blockquote>
+<h4 id="简单工厂模式与OOP原则"><a href="#简单工厂模式与OOP原则" class="headerlink" title="简单工厂模式与OOP原则"></a><strong>简单工厂模式与OOP原则</strong></h4><h5 id="已遵守的原则"><a href="#已遵守的原则" class="headerlink" title="已遵守的原则"></a>已遵守的原则</h5><ul>
+<li>依赖倒置原则</li>
+<li>迪米特法则</li>
+<li>里氏替换原则</li>
+<li>接口隔离原则</li>
+</ul>
+<h5 id="未遵循的原则"><a href="#未遵循的原则" class="headerlink" title="未遵循的原则"></a>未遵循的原则</h5><ul>
+<li>开闭原则（如上文所述，利用配置文件+反射或者注解可以避免这一点）</li>
+<li>单一职责原则（工厂类即要负责逻辑判断又要负责实例创建）</li>
+</ul>
+</blockquote>
 </span>
       
     </div>
@@ -275,6 +287,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/19/design-pattern-3/" rel="prev" title="设计模式-3（工厂方法模式）">
+                设计模式-3（工厂方法模式） <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -339,7 +355,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -381,7 +397,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#简单工厂模式与OOP原则"><span class="nav-number">1.</span> <span class="nav-text">简单工厂模式与OOP原则</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#已遵守的原则"><span class="nav-number">1.1.</span> <span class="nav-text">已遵守的原则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#未遵循的原则"><span class="nav-number">1.2.</span> <span class="nav-text">未遵循的原则</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
@@ -399,7 +415,7 @@
       <div class="footer-inner"> <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

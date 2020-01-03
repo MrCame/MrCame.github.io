@@ -188,6 +188,134 @@
             
             
               
+                <a class="post-title-link" href="/2016/04/21/SICP-ex2-2(2)/" itemprop="url">
+                  SICP 2.2节习题(2)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-04-21T21:01:07+08:00" content="2016-04-21">
+              2016-04-21
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/SICP解题集/" itemprop="url" rel="index">
+                    <span itemprop="name">SICP解题集</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h1 id="第二章-构造数据抽象"><a href="#第二章-构造数据抽象" class="headerlink" title="第二章 构造数据抽象"></a>第二章 构造数据抽象</h1><h2 id="2-2-层次性数据和闭包性质"><a href="#2-2-层次性数据和闭包性质" class="headerlink" title="2.2 层次性数据和闭包性质"></a>2.2 层次性数据和闭包性质</h2><h3 id="EX-2-24"><a href="#EX-2-24" class="headerlink" title="EX 2.24"></a>EX 2.24</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(define 2-24 (list 1 (list 2 (list 3 4))))</span><br></pre></td></tr></table></figure>
+
+<p>解释器打印出：</p>
+<pre><code>(1 (2 (3 4)))</code></pre><p>盒子指针结构：</p>
+<p><img src="/images/ex2-24.jpg" alt="“ex2-24”"></p>
+<h3 id="EX-2-25"><a href="#EX-2-25" class="headerlink" title="EX 2.25"></a>EX 2.25</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(define a1 (list 1 3 (cons 5 7) 9))</span><br><span class="line">(define 2-25-1</span><br><span class="line">  (cdr (car (cdr (cdr a1)))))	;(cdr (car (cdr (cdr a1)))) 等价于 (cdaddr a1)</span><br><span class="line"></span><br><span class="line">(define a2 (list (list 7)))</span><br><span class="line">(define 2-25-2</span><br><span class="line">  (car (car a2)))	;(car (car a2)) 等价于 (caar a2)</span><br><span class="line"></span><br><span class="line">(define a3 (list 1 (list 2 (list 3 (list 4 (list 5 (list 6 7)))))))</span><br><span class="line">(define 2-25-3</span><br><span class="line">  (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr a3)))))))))))))	;等价于 (cadadr (cadadr (cadadr a3)))</span><br></pre></td></tr></table></figure>
+
+<h3 id="EX-2-26"><a href="#EX-2-26" class="headerlink" title="EX 2.26"></a>EX 2.26</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(define x (list 1 2 3))</span><br><span class="line">(define y (list 4 5 6))</span><br></pre></td></tr></table></figure>
+
+<p>打印结果如下：</p>
+<pre><code>(append x y) -&gt; (1 2 3 4 5 6)
+(cons x y) -&gt; ((1 2 3) 4 5 6)
+(list x y) -&gt; ((1 2 3) (4 5 6))</code></pre><h3 id="EX-2-27"><a href="#EX-2-27" class="headerlink" title="EX 2.27"></a>EX 2.27</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;原始reverse</span><br><span class="line">(define (reverse x)</span><br><span class="line">  (define (iter rest result)</span><br><span class="line">    (if (null? rest)</span><br><span class="line">        result</span><br><span class="line">        (iter (cdr rest) (cons (car rest) result))))</span><br><span class="line">  (iter x &apos;()))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">;处理二叉树、三叉树等,如(list (list 2 1) (list 4 3) (list 6 5))</span><br><span class="line">(define (deep-reverse x)</span><br><span class="line">  (define (iter rest result)</span><br><span class="line">    (if (null? rest)</span><br><span class="line">        result</span><br><span class="line">        (iter (cdr rest)</span><br><span class="line">              (cons (if (pair? (car rest))</span><br><span class="line">                        (deep-reverse (car rest))</span><br><span class="line">                        (car rest))</span><br><span class="line">                    result))))</span><br><span class="line">  (iter x &apos;()))</span><br><span class="line"></span><br><span class="line">;一种更好的算法</span><br><span class="line">(define (better-deep-reverse x)</span><br><span class="line">  (if (pair? x)</span><br><span class="line">      (reverse (map better-deep-reverse x))</span><br><span class="line">      x))</span><br></pre></td></tr></table></figure>
+
+<h3 id="EX-2-28"><a href="#EX-2-28" class="headerlink" title="EX 2.28"></a>EX 2.28</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(define (fringe x)</span><br><span class="line">  (cond ((null? x) &apos;())</span><br><span class="line">        ((not (pair? x)) (list x))</span><br><span class="line">        (else (append (fringe (car x))	    ;left branch</span><br><span class="line">                      (fringe (cdr x))))))	;right branch</span><br></pre></td></tr></table></figure>
+
+<h3 id="EX-2-29"><a href="#EX-2-29" class="headerlink" title="EX 2.29"></a>EX 2.29</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">;原始构造函数</span><br><span class="line">(define (make-mobile left right)</span><br><span class="line">  (list left right))</span><br><span class="line">(define (make-branch length structure)</span><br><span class="line">  (list length structure))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">;测试程序</span><br><span class="line">(define lfbran (make-branch 1 2))</span><br><span class="line">(define rtbran (make-branch 2 (make-mobile (make-branch 3 4) (make-branch 5 6))))</span><br><span class="line">(define test-mobile (make-mobile lfbran rtbran))</span><br></pre></td></tr></table></figure>
+
+<h4 id="a-根据原始构造函数，不难写出选择函数"><a href="#a-根据原始构造函数，不难写出选择函数" class="headerlink" title="a) 根据原始构造函数，不难写出选择函数"></a>a) 根据原始构造函数，不难写出选择函数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(define (left-branch mobile)</span><br><span class="line">  (car mobile))</span><br><span class="line">(define (right-branch mobile)</span><br><span class="line">  (cadr mobile))</span><br><span class="line">(define (branch-length branch)</span><br><span class="line">  (car branch))</span><br><span class="line">(define (branch-structure branch)</span><br><span class="line">  (cadr branch))</span><br></pre></td></tr></table></figure>
+
+<h4 id="b-total-weight-计算活动体总重量，递归地求和左右分支的总重量"><a href="#b-total-weight-计算活动体总重量，递归地求和左右分支的总重量" class="headerlink" title="b) total-weight 计算活动体总重量，递归地求和左右分支的总重量"></a>b) total-weight 计算活动体总重量，递归地求和左右分支的总重量</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(define (total-weight mobile)</span><br><span class="line">  (+ (branch-weight (left-branch mobile))</span><br><span class="line">     (branch-weight (right-branch mobile))))</span><br><span class="line"></span><br><span class="line">(define (branch-weight branch)  ;计算分支重量</span><br><span class="line">  (if (pair? (branch-structure branch))  ;是否吊着活动体</span><br><span class="line">      (total-weight (branch-structure branch))</span><br><span class="line">      (branch-structure branch)))</span><br></pre></td></tr></table></figure>
+
+<h4 id="c-check-balance-检查二叉活动体是否平衡，递归判断左右分支是否平衡"><a href="#c-check-balance-检查二叉活动体是否平衡，递归判断左右分支是否平衡" class="headerlink" title="c) check-balance 检查二叉活动体是否平衡，递归判断左右分支是否平衡"></a>c) check-balance 检查二叉活动体是否平衡，递归判断左右分支是否平衡</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">(define (cal-torque branch)  ;计算分支力矩</span><br><span class="line">  (* (branch-length branch) (branch-weight branch)))</span><br><span class="line"></span><br><span class="line">(define (check-balance mobile)</span><br><span class="line">  (if (null? mobile)</span><br><span class="line">      #t</span><br><span class="line">      (let ((left (left-branch mobile))</span><br><span class="line">            (right (right-branch mobile)))</span><br><span class="line">        (and (torque-equal? left right)</span><br><span class="line">             (branch-balance? left)</span><br><span class="line">             (branch-balance? right)))))</span><br><span class="line"></span><br><span class="line">(define (torque-equal? lfbranch rtbranch)  ;力矩是否相等</span><br><span class="line">  (= (cal-torque lfbranch) (cal-torque rtbranch)))</span><br><span class="line"></span><br><span class="line">(define (branch-balance? branch)  ;分支是否平衡</span><br><span class="line">  (if (pair? (branch-structure branch))  ;是否吊着活动体</span><br><span class="line">      (check-balance (branch-structure branch))</span><br><span class="line">      #t))</span><br></pre></td></tr></table></figure>
+
+<h4 id="d-这就是数据抽象的好处-改变构造方式-我们只需要修改相应的选择函数"><a href="#d-这就是数据抽象的好处-改变构造方式-我们只需要修改相应的选择函数" class="headerlink" title="d) 这就是数据抽象的好处,改变构造方式,我们只需要修改相应的选择函数"></a>d) 这就是数据抽象的好处,改变构造方式,我们只需要修改相应的选择函数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(define (new-left-branch mobile)</span><br><span class="line">  (car mobile))</span><br><span class="line">(define (new-right-branch mobile)</span><br><span class="line">  (cdr mobile))</span><br><span class="line">(define (new-branch-length branch)</span><br><span class="line">  (car branch))</span><br><span class="line">(define (new-branch-structure branch)</span><br><span class="line">  (cdr branch))</span><br></pre></td></tr></table></figure>
+
+<h3 id="EX-2-30"><a href="#EX-2-30" class="headerlink" title="EX 2.30"></a>EX 2.30</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">;直接定义</span><br><span class="line">(define (square-tree1 tree)</span><br><span class="line">  (cond ((null? tree) &apos;())</span><br><span class="line">        ((not (pair? tree)) (square tree))</span><br><span class="line">        (else (cons (square-tree1 (car tree))</span><br><span class="line">                    (square-tree1 (cdr tree))))))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;map和递归定义</span><br><span class="line">(define (square-tree2 tree)</span><br><span class="line">  (map (lambda (sub-tree)</span><br><span class="line">         (if (pair? sub-tree)</span><br><span class="line">             (square-tree2 sub-tree)</span><br><span class="line">             (square sub-tree)))</span><br><span class="line">       tree))</span><br></pre></td></tr></table></figure>
+
+<h3 id="EX-2-31"><a href="#EX-2-31" class="headerlink" title="EX 2.31"></a>EX 2.31</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(define (tree-map proc items)</span><br><span class="line">  (cond ((null? items) &apos;())</span><br><span class="line">        ((not (pair? items)) (proc items))</span><br><span class="line">        (else (cons (tree-map proc (car items))</span><br><span class="line">                    (tree-map proc (cdr items))))))</span><br><span class="line">(define (square-tree3 tree)</span><br><span class="line">  (tree-map square tree))</span><br></pre></td></tr></table></figure>
+
+<h3 id="EX-2-32"><a href="#EX-2-32" class="headerlink" title="EX 2.32"></a>EX 2.32</h3><p>求集合S的子集，就是求(cdr S)和(cdr S)里的每个元素append (car S)<br>例如S：(list 1 2 3)，子集是(() (3) (2) (2 3) (1) (1 3) (1 2) (1 2 3))<br>先求(2 3)的子集，(() (3) (2) (2 3))，然后给每个append 1<br>具体递归分析如下：</p>
+<p><img src="/images/ex2-32.jpg" alt="“ex2-32”"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(define (subsets s)</span><br><span class="line">  (if (null? s)</span><br><span class="line">      (list &apos;())</span><br><span class="line">      (let ((rest (subsets (cdr s))))</span><br><span class="line">        (append rest (map (lambda (x) (cons (car s) x))</span><br><span class="line">                           rest)))))</span><br></pre></td></tr></table></figure>
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2016/04/21/SICP-ex2-2(1)/" itemprop="url">
                   SICP 2.2节习题(1)
                 </a>
@@ -1276,102 +1404,6 @@ x</code></pre><p>代入具体的数字</p>
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2016/03/15/others/" itemprop="url">
-                  随笔
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-03-15T20:30:13+08:00" content="2016-03-15">
-              2016-03-15
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/生活/" itemprop="url" rel="index">
-                    <span itemprop="name">生活</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h1 id="随笔"><a href="#随笔" class="headerlink" title="随笔"></a>随笔</h1><p>就记录两句话吧，“急事缓办”，“切勿交浅言深”</p>
-<p>好像几年过去了还是到了这个日子会有紧张与不安，也说不清是为什么，也许更多的是内心的挣扎作祟吧。越来越多的自我怀疑，放弃一件坚持很久但却不可能的事情仿佛像是戒毒一般，刚刚狠狠下定的决心，转眼间就被抹去。然而深究这样反复不定的原因，竟然还只与自己有关，并无他人之故。每当想到这里便也释怀一些，从一开始就是自己的肆意妄为但又连累他人，沉迷于幻想之中难以自拔。</p>
-<p>再次见面内心仍然会起波澜，表面上的平静如水只是掩盖了底下的波澜起伏。好奇对方的变化，关切近日的踪迹，但其实都是无济于事的，只是需要反复告诉自己这些，加深记忆吧。</p>
-<p>也不知道为什么会有逃避的冲动，不敢直面，恐惧？紧张？担心？还没有分清，换而言之，问题还是不够了解自己，又关对方何事，苦笑一声便就此作罢吧。</p>
-<p>还会起波澜，便是未曾放下；仍会想起，便是存于心间。可悲可叹，解铃还须系铃人，但是自己却系了死结。</p>
-<p>无论是弱懦、害怕、紧张、胆怯、痴情、懒惰亦或是其他什么样子的，都是在这具肉体上所承载的，接纳自己的软肋，面对它们，内心反而更轻松一些，而这就是人，优点与缺点都很明显的生物。</p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1414,7 +1446,7 @@ x</code></pre><p>代入具体的数字</p>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1463,7 +1495,7 @@ x</code></pre><p>代入具体的数字</p>
       <div class="footer-inner"> <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>
