@@ -7,7 +7,7 @@ categories: "Design Pattern"
 
 工厂方法模式
 
-!["factory-method"](/images/design-pattern-simple-factory.jpg)
+!["factory-method"](/images/design-pattern-factory-method.jpg)
 
 工厂类
 
