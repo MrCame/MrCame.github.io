@@ -188,6 +188,108 @@
             
             
               
+                <a class="post-title-link" href="/2020/06/03/design-pattern-5/" itemprop="url">
+                  设计模式-5（原型模式）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2020-06-03T22:25:14+08:00" content="2020-06-03">
+              2020-06-03
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Design Pattern</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>原型模式</p>
+<p><img src="/images/design-pattern-prototype.jpg" alt="&quot;prototype&quot;"></p>
+<p>原型模式通过复制原型（prototype）获得创建新对象的能力，原型本身就是个工厂。用于隔离类的使用者和具体类型之间的耦合关系，隐藏了对象创建的细节，避免了调用过多参数的构造方法而带来的性能影响。与抽象工厂方法的却别在于重在自身的复制。</p>
+<p>原型接口，自行实现clone，也可以是实现Cloneable的抽象类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Prototype</span> </span>&#123;</span><br><span class="line">    <span class="function">Object <span class="title">clone</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcretePrototypeA</span> <span class="keyword">implements</span> <span class="title">Prototype</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">clone</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ConcretePrototypeA();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcretePrototypeB</span> <span class="keyword">implements</span> <span class="title">Prototype</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">clone</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ConcretePrototypeB();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String... args)</span> </span>&#123;</span><br><span class="line">        Prototype </span><br><span class="line">                prototype1 = <span class="keyword">new</span> ConcretePrototypeA(),</span><br><span class="line">                prototype2 = <span class="keyword">new</span> ConcretePrototypeB();</span><br><span class="line">        ConcretePrototypeA concretePrototypeA = (ConcretePrototypeA) prototype1.clone();</span><br><span class="line">        ConcretePrototypeB concretePrototypeB = (ConcretePrototypeB) prototype2.clone();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2020/05/27/design-pattern-4/" itemprop="url">
                   设计模式-4（抽象工厂模式）
                 </a>
@@ -1199,142 +1301,6 @@
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2019/05/10/Java-Time-API/" itemprop="url">
-                  Java Time API
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2019-05-10T14:57:18+08:00" content="2019-05-10">
-              2019-05-10
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <p>一、java.util<br>java.util 包提供了 Date 类来封装当前的日期和时间。 Date 类提供两个构造函数来实例化 Date 对象。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当前日期，输出：Fri May 10 14:15:23 CST 2019</span></span><br><span class="line">System.out.println(<span class="keyword">new</span> Date()); </span><br><span class="line"></span><br><span class="line"><span class="comment">// 格式化日期，输出：2019-05-10 14:18:03</span></span><br><span class="line">System.out.println(<span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>).format(<span class="keyword">new</span> Date()));  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 字符串日期解析，输出：Sun May 05 12:30:05 CST 2019</span></span><br><span class="line">String dateStr = <span class="string">"2019-05-05 12:30:05"</span>;</span><br><span class="line">System.out.println(<span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>).parse(dateStr));</span><br></pre></td></tr></table></figure>
-
-<p>二、java.time<br>这个包是在Java8中引入的。在Java 8之前，所有关于时间和日期的API都存在各种使用方面的缺陷，主要有：</p>
-<ol>
-<li>Java的<code>java.util.Date</code>和<code>java.util.Calendar</code>类易用性差，不支持时区，而且他们都不是线程安全的；</li>
-<li>用于格式化日期的类<code>DateFormat</code>被放在<code>java.text</code>包中，它是一个抽象类，所以我们需要实例化一个<code>SimpleDateFormat</code>对象来处理日期格式化，并且<code>DateFormat</code>也是非线程安全，这意味着如果你在多线程程序中调用同一个<code>DateFormat</code>对象，会得到意想不到的结果。</li>
-<li>对日期的计算方式繁琐，而且容易出错，因为月份是从0开始的，从<code>Calendar</code>中获取的月份需要加一才能表示当前月份。</li>
-</ol>
-<p>增加的API：</p>
-<ol>
-<li><p>LocalDate 表示一个具体的日期，不包含具体的时间和时区信息。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">LocalDate now = LocalDate.now();                    <span class="comment">// 当前日期</span></span><br><span class="line">LocalDate localDate = LocalDate.of(<span class="number">2017</span>, <span class="number">1</span>, <span class="number">4</span>);     <span class="comment">// 初始化一个日期：2017-01-04</span></span><br><span class="line"><span class="keyword">int</span> year = localDate.getYear();                     <span class="comment">// 年份：2017</span></span><br><span class="line">Month month = localDate.getMonth();                 <span class="comment">// 月份：JANUARY</span></span><br><span class="line"><span class="keyword">int</span> dayOfMonth = localDate.getDayOfMonth();         <span class="comment">// 月份中的第几天：4</span></span><br><span class="line">DayOfWeek dayOfWeek = localDate.getDayOfWeek();     <span class="comment">// 一周的第几天：WEDNESDAY</span></span><br><span class="line"><span class="keyword">int</span> length = localDate.lengthOfMonth();             <span class="comment">// 月份的天数：31</span></span><br><span class="line"><span class="keyword">boolean</span> leapYear = localDate.isLeapYear();          <span class="comment">// 是否为闰年：false</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>LocalTime 表示一句包含具体时间的日期</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">LocalTime localTime = LocalTime.of(<span class="number">17</span>, <span class="number">23</span>, <span class="number">52</span>);     <span class="comment">// 初始化一个时间：17:23:52</span></span><br><span class="line"><span class="keyword">int</span> hour = localTime.getHour();                     <span class="comment">// 时：17</span></span><br><span class="line"><span class="keyword">int</span> minute = localTime.getMinute();                 <span class="comment">// 分：23</span></span><br><span class="line"><span class="keyword">int</span> second = localTime.getSecond();                 <span class="comment">// 秒：52</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>LocalDateTime 是LocalDate和LocalTime的结合</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">LocalDateTime ldt1 = LocalDateTime.of(<span class="number">2017</span>, Month.JANUARY, <span class="number">4</span>, <span class="number">17</span>, <span class="number">23</span>, <span class="number">52</span>);</span><br><span class="line">LocalDate localDate = LocalDate.of(<span class="number">2017</span>, Month.JANUARY, <span class="number">4</span>);</span><br><span class="line">LocalTime localTime = LocalTime.of(<span class="number">17</span>, <span class="number">23</span>, <span class="number">52</span>);</span><br><span class="line">LocalDateTime ldt2 = localDate.atTime(localTime);</span><br><span class="line"></span><br><span class="line"><span class="comment">// LocalDate与LocalTime的转化</span></span><br><span class="line">LocalDate date = ldt1.toLocalDate();</span><br><span class="line">LocalTime time = ldt1.toLocalTime();</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Instant 表示一个精确到纳秒的时间戳，<code>System.currentTimeMillis()</code>只精确到毫秒</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当前时间戳</span></span><br><span class="line">Instant now = Instant.now()</span><br><span class="line"></span><br><span class="line"><span class="comment">// ofEpochSecond()方法的第一个参数为秒，第二个参数为纳秒</span></span><br><span class="line"><span class="comment">// 表示从1970-01-01 00:00:00开始后两分钟的10万纳秒的时刻</span></span><br><span class="line"><span class="comment">// 输出1970-01-01T00:02:00.000100Z</span></span><br><span class="line">Instant instant = Instant.ofEpochSecond(<span class="number">120</span>, <span class="number">100000</span>);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Duration 表示一个精确到纳秒的时间段</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 2017-01-05 10:07:00</span></span><br><span class="line">LocalDateTime from = LocalDateTime.of(<span class="number">2017</span>, Month.JANUARY, <span class="number">5</span>, <span class="number">10</span>, <span class="number">7</span>, <span class="number">0</span>);    </span><br><span class="line"></span><br><span class="line"><span class="comment">// 2017-02-05 10:07:00</span></span><br><span class="line">LocalDateTime to = LocalDateTime.of(<span class="number">2017</span>, Month.FEBRUARY, <span class="number">5</span>, <span class="number">10</span>, <span class="number">7</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 表示从 2017-01-05 10:07:00 到 2017-02-05 10:07:00 这段时间</span></span><br><span class="line">Duration duration = Duration.between(from, to);     </span><br><span class="line"></span><br><span class="line"><span class="keyword">long</span> days = duration.toDays();              <span class="comment">// 这段时间的总天数</span></span><br><span class="line"><span class="keyword">long</span> hours = duration.toHours();            <span class="comment">// 这段时间的小时数</span></span><br><span class="line"><span class="keyword">long</span> minutes = duration.toMinutes();        <span class="comment">// 这段时间的分钟数</span></span><br><span class="line"><span class="keyword">long</span> seconds = duration.getSeconds();       <span class="comment">// 这段时间的秒数</span></span><br><span class="line"><span class="keyword">long</span> milliSeconds = duration.toMillis();    <span class="comment">// 这段时间的毫秒数</span></span><br><span class="line"><span class="keyword">long</span> nanoSeconds = duration.toNanos();      <span class="comment">// 这段时间的纳秒数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过of()方法创建，接受一个时间段长度，和一个时间单位作为参数</span></span><br><span class="line">Duration duration1 = Duration.of(<span class="number">5</span>, ChronoUnit.DAYS);       <span class="comment">// 5天</span></span><br><span class="line">Duration duration2 = Duration.of(<span class="number">1000</span>, ChronoUnit.MILLIS);  <span class="comment">// 1000毫秒</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Period 表示以年月日来衡量时间段</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 长度为2年3个月6天的时间段</span></span><br><span class="line">Period period = Period.of(<span class="number">2</span>, <span class="number">3</span>, <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line">/ /通过between()方法创建，只接收LocalDate类型的参数</span><br><span class="line"><span class="comment">// 2017-01-05 到 2017-02-05 这段时间</span></span><br><span class="line">Period period = Period.between(</span><br><span class="line">                LocalDate.of(<span class="number">2017</span>, <span class="number">1</span>, <span class="number">5</span>),</span><br><span class="line">                LocalDate.of(<span class="number">2017</span>, <span class="number">2</span>, <span class="number">5</span>));</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<p>相关操作：</p>
-<ol>
-<li><p>与原有API的转化</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Date转LocalDate</span></span><br><span class="line">Date date = <span class="keyword">new</span> Date();</span><br><span class="line">LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>增加和减少日期</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">LocalDate date = LocalDate.of(<span class="number">2017</span>, <span class="number">1</span>, <span class="number">5</span>);          <span class="comment">// 2017-01-05</span></span><br><span class="line"></span><br><span class="line">LocalDate date1 = date.withYear(<span class="number">2016</span>);              <span class="comment">// 修改为 2016-01-05</span></span><br><span class="line">LocalDate date2 = date.withMonth(<span class="number">2</span>);                <span class="comment">// 修改为 2017-02-05</span></span><br><span class="line">LocalDate date3 = date.withDayOfMonth(<span class="number">1</span>);           <span class="comment">// 修改为 2017-01-01</span></span><br><span class="line"></span><br><span class="line">LocalDate date4 = date.plusYears(<span class="number">1</span>);                <span class="comment">// 增加一年 2018-01-05</span></span><br><span class="line">LocalDate date5 = date.minusMonths(<span class="number">2</span>);              <span class="comment">// 减少两个月 2016-11-05</span></span><br><span class="line">LocalDate date6 = date.plus(<span class="number">5</span>, ChronoUnit.DAYS);    <span class="comment">// 增加5天 2017-01-10</span></span><br><span class="line"></span><br><span class="line">LocalDate date7 = date.with(nextOrSame(DayOfWeek.SUNDAY));      <span class="comment">// 返回下一个距离当前时间最近的星期日</span></span><br><span class="line">LocalDate date9 = date.with(lastInMonth(DayOfWeek.SATURDAY));   <span class="comment">// 返回本月最后一个星期六</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>格式化日期</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">LocalDateTime dateTime = LocalDateTime.now();</span><br><span class="line">String strDate1 = dateTime.format(DateTimeFormatter.BASIC_ISO_DATE);    <span class="comment">// 20170105</span></span><br><span class="line">String strDate2 = dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE);    <span class="comment">// 2017-01-05</span></span><br><span class="line">String strDate3 = dateTime.format(DateTimeFormatter.ISO_LOCAL_TIME);    <span class="comment">// 14:20:16.998</span></span><br><span class="line">String strDate4 = dateTime.format(DateTimeFormatter.ofPattern(<span class="string">"yyyy-MM-dd"</span>));   <span class="comment">// 2017-01-05</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 今天是：2017年 一月 05日 星期四</span></span><br><span class="line">String strDate5 = dateTime.format(DateTimeFormatter.ofPattern(<span class="string">"今天是：YYYY年 MMMM DD日 E"</span>, Locale.CHINESE)); </span><br><span class="line"></span><br><span class="line">String strDate6 = <span class="string">"2017-01-05"</span>;</span><br><span class="line">String strDate7 = <span class="string">"2017-01-05 12:30:05"</span>;</span><br><span class="line"></span><br><span class="line">LocalDate date = LocalDate.parse(strDate6, DateTimeFormatter.ofPattern(<span class="string">"yyyy-MM-dd"</span>));</span><br><span class="line">LocalDateTime dateTime1 = LocalDateTime.parse(strDate7, DateTimeFormatter.ofPattern(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>));</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>时区与历法，见参考，这里不贴了</p>
-</li>
-</ol>
-<p>参考<br>[1] <a href="https://lw900925.github.io/java/java8-newtime-api.html" target="_blank" rel="noopener">Java 8新特性（四）：新的时间和日期API</a><br>[2] <a href="[http://www.importnew.com/14140.html](http://www.importnew.com/14140.html)">Java8 日期/时间（Date Time）API指南</a><br>[3] <a href="https://www.runoob.com/java/java-date-time.html" target="_blank" rel="noopener">Java 日期时间</a></p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1377,7 +1343,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">47</span>
+              <span class="site-state-item-count">48</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
