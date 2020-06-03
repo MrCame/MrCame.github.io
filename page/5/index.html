@@ -188,6 +188,142 @@
             
             
               
+                <a class="post-title-link" href="/2016/03/16/play(1)/" itemprop="url">
+                  Play Framework环境搭建
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-03-16T13:38:22+08:00" content="2016-03-16">
+              2016-03-16
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/搭建环境/" itemprop="url" rel="index">
+                    <span itemprop="name">搭建环境</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h1 id="Play-Framework-笔记-1"><a href="#Play-Framework-笔记-1" class="headerlink" title="Play Framework 笔记(1)"></a>Play Framework 笔记(1)</h1><p>从去年七月开始进入实验室，一直使用的就是Play Framework来进行Web开发，慢慢的应该总结一些东西，免得以后忘记。</p>
+<p>先说说<a href="https://www.playframework.com/" target="_blank" rel="noopener">Play</a>这个框架吧，使用了一段时间，直观的感觉是：</p>
+<ul>
+<li>MVC架构很清晰，Model层针对数据封装、数据库操作，Controller层负责响应各个请求，View层主要就是一些Html的东西来呈现在浏览器上。</li>
+<li>Debug之后可以在浏览器上直接看到error</li>
+</ul>
+<p>以下援引自<a href="https://en.wikipedia.org/wiki/Play_Framework" target="_blank" rel="noopener">Wiki</a></p>
+<blockquote>
+<p>Play is an open source web application framework, written in Scala and Java, which follows the model–view–controller (mvc) architectural pattern. It aims to optimize developer productivity by using convention over configuration, hot code reloading and display of errors in the browser.<br>Support for the Scala programming language has been available since version 1.1 of the framework.In version 2.0, the framework core was rewritten in Scala. Build and deployment was migrated to SBT, and templates use Scala instead of Groovy.</p>
+</blockquote>
+<p>一个软件工程的术语<a href="https://en.wikipedia.org/wiki/Convention_over_configuration" target="_blank" rel="noopener">convention over configuration</a></p>
+<blockquote>
+<p>约定优于配置(convention over configuration)，也称作按约定编程，是一种软件设计范式，旨在减少软件开发人员需做决定的数量，获得简单的好处，而又不失灵活性。<br>本质是说，开发人员仅需规定应用中不符约定的部分。例如，如果模型中有个名为Sale的类，那么数据库中对应的表就会默认命名为sales。只有在偏离这一约定时，例如将该表命名为”products_sold”，才需写有关这个名字的配置。</p>
+</blockquote>
+<p>一开始配环境的时候，被人告知应该装一个typesafe-activator，很懵逼的是不知道这个玩意儿和Play框架有什么关系，继续google。发现typesafe这公司已经更名为<a href="https://www.lightbend.com/" target="_blank" rel="noopener">Lightbend</a>了，当然这并没有什么影响。继续看看他们的<a href="https://www.lightbend.com/activator/download" target="_blank" rel="noopener">Activator</a></p>
+<blockquote>
+<p>Activator is the Lightbend Reactive Platform’s build and tutorial tool</p>
+</blockquote>
+<p>看起来Activator是一个构建工具的样子，在<a href="https://www.playframework.com/documentation/2.5.x/Installing" target="_blank" rel="noopener">Play</a>可以看到教程，如何使用Lightbend Activator安装Play，以及一些相关的配置需求。最开始接触的Play 2.2,现在version已经到了2.5，感觉已经有点跟不上节奏了快。大致扫了一眼新版本的配置，相比之前越来越简洁了，activator也有UI界面，可以新建各个项目，当然Play项目也是可以的。<br>看了一下Lightbend的官网，这个公司做的东西也有一点意思，他们的产品Lightbend Reactive Platform包括以下几个</p>
+<ul>
+<li>ConductR</li>
+<li>Monitoring</li>
+<li>Lagom</li>
+<li>Apache Spark</li>
+</ul>
+<p>Spark还算知道一点点，前三个完全是很陌生的东西了，随便查了一下，有这样的内容</p>
+<blockquote>
+<p>《Lagom：一个新的微服务框架》——Lightbend，也就是Akka背后的公司，最近发布了一款开源的微服务框架Lagom，它构建在他们的Reactive平台之上，尤其是使用了Play框架和Akka的家族产品，并添加了ConductR用于部署。</p>
+</blockquote>
+<p>对<a href="https://en.wikipedia.org/wiki/Typesafe_Inc." target="_blank" rel="noopener">Typesafe(Lightbend)</a>这个公司看了一下</p>
+<blockquote>
+<p>Typesafe (now Lightbend) is a company founded by Martin Odersky, the creator of the Scala programming language, Jonas Bonér, the creator of the Akka middleware, and Paul Phillips in 2011. It provides an Open source platform for building Reactive applications for the JVM, consisting of the Play Framework, Akka middleware and Scala programming language—with additional supporting products and development tools such as the Scala IDE for Eclipse, the Slick database query and access library for Scala and the sbt build tool. Typesafe also provides training, consulting and commercial support on the platform.<br>Typesafe is one of the main contributors of Reactive Streams.</p>
+</blockquote>
+<p>这里有几个点值得关注</p>
+<ul>
+<li>Akka: 简化并发问题的开源工具包</li>
+<li>Reactive: Reactive Programming, 一种面向数据流和变化传播的编程范式</li>
+<li>sbt: 构建Scala和Java项目的工具，类似于Maven和Ant</li>
+</ul>
+<p>言归正传，Play的工程结构这样的，MVC层次分明。<br><img src="/images/play1.png" alt="“play”"></p>
+<p>在一开始配置play2.2的时候，遇到的主要的问题有</p>
+<ul>
+<li>集成在Intellij 13中</li>
+<li>依赖的jar包很多</li>
+</ul>
+<p>我采用的办法是使用Activator直接new play application，再导入Intellij中。所依赖的jar包很多，只能从公司的服务器上把ivy仓库全部download下来覆盖本地。<br>后来用了intellij 14、15版本，对于Scala、playframework的集成好多了，直接装个Scala plugin，ivy一覆盖就行。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2016/03/15/others/" itemprop="url">
                   随笔
                 </a>
@@ -977,7 +1113,7 @@ r3 = (r r1 r2)
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-count">47</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

@@ -188,6 +188,118 @@
             
             
               
+                <a class="post-title-link" href="/2020/05/27/design-pattern-4/" itemprop="url">
+                  设计模式-4（抽象工厂模式）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2020-05-27T23:06:55+08:00" content="2020-05-27">
+              2020-05-27
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Design Pattern</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>抽象工厂模式</p>
+<p><img src="/images/design-pattern-abstract-factory.jpg" alt="&quot;abstract-factory&quot;"></p>
+<p>核心思想：向客户端提供一个接口，使得客户端在不必指定具体产品的情况下，创建多个产品族中的产品对象</p>
+<p>与工厂方法模式的区别：工厂方法模式中一种工厂只能创建一种具体产品。而在抽象工厂模式中一种具体工厂可以创建多个种类的具体产品</p>
+<p>抽象产品（CPU、主板）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Cpu</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">calculate</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MainBoard</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">installCPU</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体CPU产品</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// AMD CPU</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AmdCpu</span> <span class="keyword">implements</span> <span class="title">Cpu</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> pins = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AmdCpu</span><span class="params">(<span class="keyword">int</span> pins)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.pins = pins;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">calculate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"AMD CPU 的针脚数"</span> + pins);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// INTEL CPU</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IntelCpu</span> <span class="keyword">implements</span> <span class="title">Cpu</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> pins = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">IntelCpu</span><span class="params">(<span class="keyword">int</span> pins)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.pins = pins;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">calculate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Intel CPU 的针脚数"</span> + pins);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体主板产品</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// AMD主板</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AmdMainBoard</span> <span class="keyword">implements</span> <span class="title">MainBoard</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> cpuHoles = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AmdMainBoard</span><span class="params">(<span class="keyword">int</span> cpuHoles)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.cpuHoles = cpuHoles;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">installCPU</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"AMD主板的CPU插槽孔数是："</span> + cpuHoles);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// INTEL主板</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IntelMainBoard</span> <span class="keyword">implements</span> <span class="title">MainBoard</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> cpuHoles = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">IntelMainBoard</span><span class="params">(<span class="keyword">int</span> cpuHoles)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.cpuHoles = cpuHoles;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">installCPU</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Intel主板的CPU插槽孔数："</span> + cpuHoles);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>抽象工厂类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AbstractFactory</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Cpu <span class="title">createCpu</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> MainBoard <span class="title">createMainBoard</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体工厂类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// AMD工厂</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AmdFactory</span> <span class="keyword">implements</span> <span class="title">AbstractFactory</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Cpu <span class="title">createCpu</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> AmdCpu(<span class="number">938</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> MainBoard <span class="title">createMainBoard</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> AmdMainBoard(<span class="number">938</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// INTEL工厂</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IntelFactory</span> <span class="keyword">implements</span> <span class="title">AbstractFactory</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Cpu <span class="title">createCpu</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> IntelCpu(<span class="number">755</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> MainBoard <span class="title">createMainBoard</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> IntelMainBoard(<span class="number">755</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ComputerEngineer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Cpu cpu = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> MainBoard mainboard = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String... args)</span> </span>&#123;</span><br><span class="line">        AbstractFactory</span><br><span class="line">                amdFactory   = <span class="keyword">new</span> AmdFactory(),</span><br><span class="line">                intelFactory = <span class="keyword">new</span> IntelFactory();</span><br><span class="line">        ComputerEngineer engineer = <span class="keyword">new</span> ComputerEngineer();</span><br><span class="line">        engineer.makeComputer(amdFactory);</span><br><span class="line">        engineer.makeComputer(intelFactory);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">makeComputer</span><span class="params">(AbstractFactory af)</span> </span>&#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 组装机器的基本步骤</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="comment">//1:首先准备好装机所需要的配件</span></span><br><span class="line">        prepareHardwares(af);</span><br><span class="line">        <span class="comment">//2:组装机器</span></span><br><span class="line">        <span class="comment">//3:测试机器</span></span><br><span class="line">        <span class="comment">//4：交付客户</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">prepareHardwares</span><span class="params">(AbstractFactory af)</span></span>&#123;</span><br><span class="line">        <span class="comment">//这里要去准备CPU和主板的具体实现，为了示例简单，这里只准备这两个</span></span><br><span class="line">        <span class="comment">//可是，装机工程师并不知道如何去创建，怎么办呢？</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//直接找相应的工厂获取</span></span><br><span class="line">        <span class="keyword">this</span>.cpu = af.createCpu();</span><br><span class="line">        <span class="keyword">this</span>.mainboard = af.createMainBoard();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//测试配件是否好用</span></span><br><span class="line">        <span class="keyword">this</span>.cpu.calculate();</span><br><span class="line">        <span class="keyword">this</span>.mainboard.installCPU();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2019/12/19/design-pattern-3/" itemprop="url">
                   设计模式-3（工厂方法模式）
                 </a>
@@ -1223,108 +1335,6 @@
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2019/05/07/hexo-2/" itemprop="url">
-                  换电脑后Hexo更新
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2019-05-07T11:58:18+08:00" content="2019-05-07">
-              2019-05-07
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">Hexo</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <p>现在大部分时间使用公司电脑，于是搞一下。<br>主要参考这个<a href="https://www.zhihu.com/question/21193762" target="_blank" rel="noopener">解决办法</a>，master分支上是生成的页面文件，hexo分支上是源文件，设置hexo为默认分支。<br>遇到的第一个问题就是多个git账号，参考这个<a href="https://www.jianshu.com/p/b02645fff791" target="_blank" rel="noopener">解决办法</a>，主要思路是在ssh中增加一个config文件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 别名，可以随便取</span><br><span class="line">Host github</span><br><span class="line">    User git</span><br><span class="line">    Hostname github.com</span><br><span class="line">    IdentityFile ~/.ssh/github_id_rsa</span><br><span class="line"></span><br><span class="line">Host gitlab</span><br><span class="line">    User git</span><br><span class="line">    Hostname gitlab.xxx.com</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
-
-<p>这里有个小小的坑，就是之前设置了git config —global，在hexo deploy时会使用全局配置的用户名进行，需要在hexo的项目中配置局部设置。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> git config user.name "A"</span><br><span class="line"><span class="meta">$</span> git config user.email "A@gmail.com"</span><br></pre></td></tr></table></figure>
-
-<p>这样就会使用配置后的局部用户名进行push。</p>
-<p>其次就是不要用hexo init命令。原因是当前目录已经建立了git仓库环境, hexo init会覆盖到当前的git环境，重建一个新的，这样和我们的私有Hexo源码仓库脱离了联系。<br>最后，由于在yml文件已经配置了deploy的branch是master，所以执行hexo d时还是会将页面文件保存至master，而源文件需要手动push到hexo分支上。</p>
-<p>一些hexo常用命令：<br><code>hexo new newpage  # 新建</code><br><code>hexo g  # 生成</code><br><code>hexo s  # 本地预览</code><br><code>hexo d  # 部署</code></p>
-<p>另外，在mac上发现了一款markdown神器——<a href="https://typora.io/" target="_blank" rel="noopener">typora</a><br>注意一下，直接使用回车会有空行，使用shift+回车就可以没有空行了。</p>
-<p>一些typora常用快捷键：<br>超链接  <code>⌘ + k</code><br>代码块 <code>⌃ + `</code></p>
-<p>ps1: <a href="https://sspai.com/post/36242" target="_blank" rel="noopener">mac技术符号输入</a><br>ps2: 如果两个重音符<code>`</code>中间的内容也包含重音符，则在最外层需要用<strong>两个连续重音符</strong>夹起来</p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1367,7 +1377,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-count">47</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
