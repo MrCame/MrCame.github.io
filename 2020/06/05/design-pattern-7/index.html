@@ -34,7 +34,7 @@
 
 
 
-  <meta name="keywords" content="Leetcode,">
+  <meta name="keywords" content="Java,">
 
 
 
@@ -43,18 +43,18 @@
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2">
 
 
-<meta name="description" content="题目要求：给定两个有序数组nums1、nums2，找到合并后数组的中位数。 示例：nums1 = [1, 3]，nums2 = [2]，中位数2.0 思路：  传统思路，将两个数组合并起来再排序，找到中位数。 将问题扩展为在两个有序数组中找到合并后第K个数的问题。  代码： 1234567891011121314151617181920212223242526272829303132333435">
-<meta name="keywords" content="Leetcode">
+<meta name="description" content="单例模式 懒汉式——线程不安全 12345678910public class Singleton0 &amp;#123;    private static Singleton0 singleton0;    private Singleton0() &amp;#123;&amp;#125;    public static Singleton0 getInstance() &amp;#123;        if (sing">
+<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Leetcode-4 Median of Two Sorted Arrays">
-<meta property="og:url" content="http://yoursite.com/2017/04/30/Leetcode4/index.html">
+<meta property="og:title" content="设计模式-7（单例模式）">
+<meta property="og:url" content="http://yoursite.com/2020/06/05/design-pattern-7/index.html">
 <meta property="og:site_name" content="Welcome to My World">
-<meta property="og:description" content="题目要求：给定两个有序数组nums1、nums2，找到合并后数组的中位数。 示例：nums1 = [1, 3]，nums2 = [2]，中位数2.0 思路：  传统思路，将两个数组合并起来再排序，找到中位数。 将问题扩展为在两个有序数组中找到合并后第K个数的问题。  代码： 1234567891011121314151617181920212223242526272829303132333435">
+<meta property="og:description" content="单例模式 懒汉式——线程不安全 12345678910public class Singleton0 &amp;#123;    private static Singleton0 singleton0;    private Singleton0() &amp;#123;&amp;#125;    public static Singleton0 getInstance() &amp;#123;        if (sing">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-28T08:43:00.331Z">
+<meta property="og:updated_time" content="2020-06-05T13:04:32.428Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Leetcode-4 Median of Two Sorted Arrays">
-<meta name="twitter:description" content="题目要求：给定两个有序数组nums1、nums2，找到合并后数组的中位数。 示例：nums1 = [1, 3]，nums2 = [2]，中位数2.0 思路：  传统思路，将两个数组合并起来再排序，找到中位数。 将问题扩展为在两个有序数组中找到合并后第K个数的问题。  代码： 1234567891011121314151617181920212223242526272829303132333435">
+<meta name="twitter:title" content="设计模式-7（单例模式）">
+<meta name="twitter:description" content="单例模式 懒汉式——线程不安全 12345678910public class Singleton0 &amp;#123;    private static Singleton0 singleton0;    private Singleton0() &amp;#123;&amp;#125;    public static Singleton0 getInstance() &amp;#123;        if (sing">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -66,7 +66,7 @@
 
 
 
-  <title> Leetcode-4 Median of Two Sorted Arrays | Welcome to My World </title>
+  <title> 设计模式-7（单例模式） | Welcome to My World </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -191,7 +191,7 @@
             
             
               
-                Leetcode-4 Median of Two Sorted Arrays
+                设计模式-7（单例模式）
               
             
           </h1>
@@ -200,8 +200,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2017-04-30T22:07:09+08:00" content="2017-04-30">
-              2017-04-30
+            <time itemprop="dateCreated" datetime="2020-06-05T20:15:24+08:00" content="2020-06-05">
+              2020-06-05
             </time>
           </span>
 
@@ -210,8 +210,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">Leetcode</span>
+                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Design Pattern</span>
                   </a>
                 </span>
 
@@ -239,19 +239,25 @@
       
 
       
-        <span itemprop="articleBody"><hr>
-<p>题目要求：给定两个有序数组nums1、nums2，找到合并后数组的中位数。</p>
-<p>示例：nums1 = [1, 3]，nums2 = [2]，中位数2.0</p>
-<p>思路：</p>
-<ol>
-<li>传统思路，将两个数组合并起来再排序，找到中位数。</li>
-<li>将问题扩展为在两个有序数组中找到合并后第K个数的问题。</li>
-</ol>
-<p>代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">// 采用第二种思路</span><br><span class="line">public class Solution &#123;</span><br><span class="line">    public double findMedianSortedArrays(int[] nums1, int[] nums2) &#123;</span><br><span class="line">        int m = nums1.length;</span><br><span class="line">        int n = nums2.length;</span><br><span class="line">        int total = m + n;</span><br><span class="line">        // 奇数</span><br><span class="line">        if (total % 2 != 0) &#123;</span><br><span class="line">            return findKth(nums1, 0, m-1, nums2, 0, n-1, total/2 + 1);  // 第total/2+1个元素 </span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            double x = findKth(nums1, 0, m-1, nums2, 0, n-1, total/2);</span><br><span class="line">            double y = findKth(nums1, 0, m-1, nums2, 0, n-1, total/2 + 1);</span><br><span class="line">            return (x + y) / 2;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //  指针从1开始计数</span><br><span class="line">    private double findKth(int[] a, int aLeft, int aRight, int[] b, int bLeft, int bRight, int k) &#123;</span><br><span class="line">        int m = aRight - aLeft + 1;  // 当前a的扫描长度</span><br><span class="line">        int n = bRight - bLeft + 1;  // 当前b的扫描长度</span><br><span class="line">        if (m &gt; n)</span><br><span class="line">            return findKth(b, bLeft, bRight, a, aLeft, aRight, k);</span><br><span class="line">        if (m == 0)</span><br><span class="line">            return b[k-1];</span><br><span class="line">        if (k == 1)</span><br><span class="line">            return Math.min(a[aLeft], b[bLeft]);</span><br><span class="line"></span><br><span class="line">        int partA = Math.min(m, k/2);  // a的指针偏移量</span><br><span class="line">        int partB = k - partA;  // a指针偏移了partA，在合并后的数组中，b指针偏移k-partA</span><br><span class="line"></span><br><span class="line">        // a和b哪个偏移后的数值小，说明Kth大于哪个，证明见下文。则可忽略小于偏移量的那些元素。</span><br><span class="line">        if (a[aLeft + partA - 1] &gt; b[bLeft + partB - 1])</span><br><span class="line">            return findKth(a, aLeft, aRight, b, bLeft+partB, bRight, k-partB);</span><br><span class="line">        else if (a[aLeft + partA - 1] &lt; b[bLeft + partB -1])</span><br><span class="line">            return findKth(a, aLeft+partA, aRight, b, bLeft, bRight, k-partA);</span><br><span class="line">        else</span><br><span class="line">            // a[aLeft+partA-1] == b[bLeft+partB-1]，找到Kth</span><br><span class="line">            return a[aLeft + partA - 1];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <span itemprop="articleBody"><p>单例模式</p>
+<p>懒汉式——线程不安全</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton0</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton0 singleton0;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton0</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton0 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (singleton0 == <span class="keyword">null</span>) &#123;</span><br><span class="line">            singleton0 = <span class="keyword">new</span> Singleton0();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> singleton0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>分析：考虑一种情况，假设a和b的个数都大于k/2，设p=k/2-1，如果a[p] &lt; b[p]，则合并后Kth &gt; a[p]<br>证明：用反证法，假设当a[p] &lt; b[p]时，kth &lt; a[p]，不妨令a[p]是合并后第k+1个数。于是，a中有p个数小于a[p]，由假设知b中最多只有p个数小于a[p]，所以总共有2p=k-2个数小于a[p]。a[p]是第k+1个数并且a[p]之前有k-2个数，这是矛盾的，故得证Kth &gt; a[p]。<br>同理，当a[p] &gt; b[p]时，Kth &gt; b[p]，当a[p] == b[p]时，Kth==a[p]==b[p]</p>
-<p>在求Kth时，从相对更短的数组入手来计算偏移量p，主要是比较偏移后元素的大小。如果是上文中假设的情况，则直接取k/2，否则取数组长度，即Math.min(k/2, m)。</p>
+<p>懒汉式——线程安全，但浪费内存</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton1</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton1 singleton1;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton1</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Singleton1 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (singleton1 == <span class="keyword">null</span>) &#123;</span><br><span class="line">            singleton1 = <span class="keyword">new</span> Singleton1();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> singleton1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>饿汉式——线程安全，但浪费内存</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton2</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton2 singleton2 = <span class="keyword">new</span> Singleton2();</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton2</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton2 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> singleton2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>登记式/静态内部类——推荐</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton3</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> Singleton3 singleton3 = <span class="keyword">new</span> Singleton3();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton3</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton3 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.singleton3;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>双检锁（DCL）——推荐</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton4</span> </span>&#123;</span><br><span class="line">    <span class="comment">// volatile禁止指令重排序</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton4 singleton4;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton4</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton4 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (singleton4 == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton4.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (singleton4 == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    singleton4 = <span class="keyword">new</span> Singleton4();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> singleton4;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>枚举——推荐</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Singleton5 &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">whatSoEverMethod</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line">    <span class="comment">// 该方法非必须</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton5 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 </span>
       
     </div>
@@ -260,7 +266,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Leetcode/" rel="tag">#Leetcode</a>
+            <a href="/tags/Java/" rel="tag">#Java</a>
           
         </div>
       
@@ -269,17 +275,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/30/Leetcode1/" rel="next" title="Leetcode-1 Two Sum">
-                <i class="fa fa-chevron-left"></i> Leetcode-1 Two Sum
+              <a href="/2020/06/04/design-pattern-6/" rel="next" title="设计模式-6（建造者模式）">
+                <i class="fa fa-chevron-left"></i> 设计模式-6（建造者模式）
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/05/03/Leetcode11/" rel="prev" title="Leetcode-11 Container With Most Water">
-                Leetcode-11 Container With Most Water <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>

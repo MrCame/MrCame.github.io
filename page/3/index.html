@@ -188,6 +188,118 @@
             
             
               
+                <a class="post-title-link" href="/2017/03/15/Java集合框架学习7/" itemprop="url">
+                  Java集合框架学习(7)——Queue接口和Deque接口
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2017-03-15T00:24:13+08:00" content="2017-03-15">
+              2017-03-15
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <hr>
+<p>上一篇已经讲解了List接口的一些内容，现在继续看一下Collection的另一个子接口Queue，以及Queue的子接口Deque。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public interface Queue&lt;E&gt; extends Collection&lt;E&gt; &#123;</span><br><span class="line">    </span><br><span class="line">    // 继承自Collection</span><br><span class="line">    boolean add(E e);  // 在队列中插入特定元素</span><br><span class="line">    </span><br><span class="line">    boolean offer(E e);  // 在队列中插入特定元素</span><br><span class="line">    </span><br><span class="line">    E remove();  // 删除并取得队列头元素</span><br><span class="line">    </span><br><span class="line">    E poll();  // 删除并取得队列头元素</span><br><span class="line">    </span><br><span class="line">    E element();  // 从头部取得元素但不删除</span><br><span class="line">    </span><br><span class="line">    E peek();  // 从头部取得元素但不删除</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>声明的这些方法中，只有Collection是继承自Collection接口的。</p>
+<ul>
+<li>add与offer的不同之处在于：在容量受限的队列中，offer方法比add方法更好，因为add在插入失败时仅仅抛出异常</li>
+<li>remove与poll的不同之处在于：如果队列为空，remove将抛出异常，poll返回null</li>
+<li>element与peek的不同之处在于：如果队列为空，element将抛出异常，peek返回null</li>
+</ul>
+<p>Deque是双端队列(double ended queue)的缩写，大部分Deque用于不固定元素数量的情形，当然也支持容量受限的情形。和Queue接口一样，Deque的插入、删除以及获取元素的操作都有两种形式，当操作失败时，前一种形式抛出异常，后一种形式返回特殊值(null或者false)。后一种形式的插入操作用于容量受限的Deque实现，而在大多数情况中，插入操作不会失败。</p>
+<table><caption>Deque方法总结</caption><tbody><tr><td></td><td align="CENTER" colspan="2"> <b>首元素 (头)</b></td><td align="CENTER" colspan="2"> <b>尾元素 (尾)</b></td></tr> <tr> <td></td> <td align="CENTER"><em>抛出异常</em></td><td align="CENTER"><em>特殊值</em></td><td align="CENTER"><em>抛出异常</em></td><td align="CENTER"><em>特殊值</em></td></tr><tr><td><b>插入</b></td><td>void addFirst(E e)</td><td>boolean offerFirst(E e)</td><td>void addLast(E e)</td><td>boolean offerLast(E e)</td></tr><tr><td><b>删除</b></td><td>E removeFirst()</td><td>E pollFirst()</td><td>E removeLast()</td><td>E pollLast()</td></tr><tr><td><b>获取</b></td><td>E getFirst()</td><td>E peekFirst()</td><td>E getLast()</td><td>E peekLast()</td></tr></tbody></table>
+
+<p>Deque用做队列时，表现为FIFO(先入先出)，从队尾进入，从队首删除，与Queue中的一些方法等价：</p>
+<table><caption>Queue和Deque方法比较</caption><tr><td align="CENTER"><b>Queue方法</b></td><td align="CENTER"><b>等价的Deque方法</b></td></tr><tr><td>boolean add(E e)</td><td>void addLast(E e)</td></tr><tr><td>boolean offer(E e)</td><td>boolean offerLast(E e)</td></tr><tr><td>E remove()</td><td>E removeFirst()</td></tr><tr><td>E poll()</td><td>E pollFirst()</td></tr><tr><td>E element()</td><td>E getFirst()</td></tr><tr><td>E peek()</td><td>E peekFirst()</td></tr></table>
+
+<p>用做栈时，表现为LIFO(后入先出)，入栈和出栈都是从队首，与Stack中的一些方法等价：</p>
+<table><caption>Deque和Stack方法比较</caption><tr><td align="center"><b>Stack方法</b></td><td align="center"><b>等价的Deque方法</b></td></tr><tr><td>E push(E e)</td><td>void addFirst(E e)</td></tr><tr><td>E pop()</td><td>E removeFirst()</td></tr><tr><td>E peek()</td><td>E peekFirst()</td></tr></table>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public interface Deque&lt;E&gt; extends Queue&lt;E&gt; &#123;</span><br><span class="line"></span><br><span class="line">    // Deque方法总结中提到的12个方法</span><br><span class="line">    </span><br><span class="line">    boolean removeFirstOccurrence(Object o);  // 删除第一个出现的特定元素，没有该元素不发生改变</span><br><span class="line"></span><br><span class="line">    boolean removeLastOccurrence(Object o);  // 删除最后一个出现的特定元素，没有该元素不发生改变</span><br><span class="line"></span><br><span class="line">    // 继承自Queue的6个方法</span><br><span class="line"></span><br><span class="line">    // *** Stack methods ***</span><br><span class="line">    void push(E e);  // 入栈</span><br><span class="line"></span><br><span class="line">    E pop();  // 出栈</span><br><span class="line"></span><br><span class="line">    // *** Collection methods ***</span><br><span class="line">    // 继承自Collection的remove、contain、size、iterator方法</span><br><span class="line"></span><br><span class="line">    Iterator&lt;E&gt; descendingIterator();  // 返回反向迭代器，和iterator相反，实现从两端访问元素</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Deque接口提供了两个删除内部元素的方法，removeFirstOccurrence、removeLastOccurrence，可以避免只能从首或尾操作的麻烦。与List不同，Deque不支持通过索引的方式访问元素。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2017/03/13/Java集合框架学习6/" itemprop="url">
                   Java集合框架学习(6)——List接口
                 </a>
@@ -1237,102 +1349,6 @@
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2016/05/05/hexo-1/" itemprop="url">
-                  Hexo的NexT主题默认显示侧边栏
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2016-05-05T00:15:01+08:00" content="2016-05-05">
-              2016-05-05
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">Hexo</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <p>用Hexo的Next主题有一段时间了，但是发觉边框栏即便设置了 <code>sidebar: always</code>，也不能自动展开</p>
-<p>在网上查了查，找到了<a href http: www.jianshu.com p 29589e303f4d"">解决办法</a></p>
-<p>在 <code>\themes\next\source\js\motion_global.js</code> 做如下修改：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sidebarToggle: function (integrator) &#123;</span><br><span class="line">    sidebarToggleMotion.init();</span><br><span class="line">    integrator.next();</span><br><span class="line">    // 可以不加if直接显示</span><br><span class="line">    // 加if的话，要在主题配置文件里面修改 sidebar: always</span><br><span class="line">    if (CONFIG.sidebar === &apos;always&apos;) &#123;</span><br><span class="line">       // 模拟点击一下侧边栏按钮</span><br><span class="line">       sidebarToggleMotion.clickHandler();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>哈哈，边框栏可以自动展开啦！开心</p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1375,7 +1391,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-count">50</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
