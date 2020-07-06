@@ -1,46 +1,46 @@
 <!doctype html>
 <html class="theme-next use-motion theme-next-mist">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   
 
-<meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
 
 
-  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5">
 
 
 
   
-    <link href='//fonts.lug.ustc.edu.cn/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
-<link rel="stylesheet" type="text/css" href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" />
+<link rel="stylesheet" type="text/css" href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0">
 
-<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.2"/>
-
-
-
-
-  <meta name="keywords" content="Hexo,next" />
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.2">
 
 
 
 
+  <meta name="keywords" content="Hexo,next">
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2">
 
 
 <meta property="og:type" content="website">
@@ -92,7 +92,7 @@
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">Welcome to My World</span>
       <span class="logo-line-after"><i></i></span>
@@ -119,7 +119,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-home"></i> <br>
             
             首页
           </a>
@@ -129,7 +129,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
             
-              <i class="menu-item-icon fa fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-th"></i> <br>
             
             分类
           </a>
@@ -139,7 +139,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-archive"></i> <br>
             
             归档
           </a>
@@ -149,7 +149,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-tags"></i> <br>
             
             标签
           </a>
@@ -188,6 +188,106 @@
             
             
               
+                <a class="post-title-link" href="/2019/05/16/AQS-3/" itemprop="url">
+                  AQS源码解析（3）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2019-05-16T17:24:24+08:00" content="2019-05-16">
+              2019-05-16
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>上一篇<a href="http://mrcame.github.io/2019/05/13/AQS-2/" target="_blank" rel="noopener">AQS源码解析(2)</a>，学习了<code>ReentrantLock</code>的加锁过程，对照地来看一下如何释放锁。与加锁有一些不同的地方是，释放时直接就<code>release(1)</code>，这是在AQS中实现的，不像加锁时在<code>Sync</code>的子类中才实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReentrantLock</span> <span class="keyword">implements</span> <span class="title">Lock</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Sync sync;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        sync.release(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Sync</span> <span class="keyword">extends</span> <span class="title">AbstractQueuedSynchronizer</span> </span>&#123; </span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryRelease</span><span class="params">(<span class="keyword">int</span> releases)</span> </span>&#123;&#125;  <span class="comment">// 见下文</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>核心方法有两个<code>tryRelease()</code>和<code>unparkSuccessor()</code>，看过加锁实现，应该也能猜到，<code>tryRelease</code>应该是在子类中才实现的，果不其然，AQS里只是定义，但不像加锁那样分为公平/非公平各自实现。而后者从名字能猜到，是要唤醒链表中的后续节点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** AbstractQueuedSynchronizer.java **/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">release</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (tryRelease(arg)) &#123;  <span class="comment">// 尝试释放资源</span></span><br><span class="line">            Node h = head;</span><br><span class="line">            <span class="keyword">if</span> (h != <span class="keyword">null</span> &amp;&amp; h.waitStatus != <span class="number">0</span>)</span><br><span class="line">                unparkSuccessor(h);  <span class="comment">// 唤醒头节点的后续节点</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">tryRelease</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** ReentrantLock#Sync.java **/</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Sync</span> <span class="keyword">extends</span> <span class="title">AbstractQueuedSynchronizer</span> </span>&#123; </span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryRelease</span><span class="params">(<span class="keyword">int</span> releases)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> c = getState() - releases;</span><br><span class="line">        <span class="comment">// 当前线程不是独占的，抛异常</span></span><br><span class="line">        <span class="keyword">if</span> (Thread.currentThread() != getExclusiveOwnerThread())</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalMonitorStateException();</span><br><span class="line">        <span class="keyword">boolean</span> free = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;  <span class="comment">// 之前acquire(1)，现在releases(1)</span></span><br><span class="line">            free = <span class="keyword">true</span>;</span><br><span class="line">            setExclusiveOwnerThread(<span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        setState(c);</span><br><span class="line">        <span class="keyword">return</span> free;         </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以<code>ReentrantLock</code>为例，<code>lock()</code>本质上就是<code>acquire(1)</code>的过程，在<code>unlock()</code>时只需释放掉这拿到的1个状态资源，接着分析上一篇中遗留的<code>unparkSuccessor()</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** AbstractQueuedSynchronizer.java **/</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">unparkSuccessor</span><span class="params">(Node node)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ws = node.waitStatus;</span><br><span class="line">        <span class="keyword">if</span> (ws &lt; <span class="number">0</span>)</span><br><span class="line">            compareAndSetWaitStatus(node, ws, <span class="number">0</span>);  <span class="comment">// 节点置为无状态</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 找到后续节点，如果是null或者是CANCELLED状态的话，从尾节点向前找</span></span><br><span class="line">        Node s = node.next;</span><br><span class="line">        <span class="keyword">if</span> (s == <span class="keyword">null</span> || s.waitStatus &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            s = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">for</span> (Node t = tail; t != <span class="keyword">null</span> &amp;&amp; t != node; t = t.prev)</span><br><span class="line">                <span class="keyword">if</span> (t.waitStatus &lt;= <span class="number">0</span>)</span><br><span class="line">                    s = t;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (s != <span class="keyword">null</span>)</span><br><span class="line">            LockSupport.unpark(s.thread);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>至此，可以看到<code>Reentrant</code>的整个<code>lock()</code>和<code>unlock()</code>过程，当节点<code>acquire</code>成功时，置为头节点，同时其他节点也在<code>acquire</code>,得不到竞态资源(state)就入队自旋等待，直到持有资源的头节点释放，并唤醒其后续节点。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
                 <a class="post-title-link" href="/2019/05/13/AQS-2/" itemprop="url">
                   AQS源码解析（2）
                 </a>
@@ -205,7 +305,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
@@ -311,7 +411,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
@@ -419,7 +519,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
@@ -555,7 +655,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
@@ -595,7 +695,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 别名，可以随便取</span><br><span class="line">Host github</span><br><span class="line">    User git</span><br><span class="line">    Hostname github.com</span><br><span class="line">    IdentityFile ~/.ssh/github_id_rsa</span><br><span class="line"></span><br><span class="line">Host gitlab</span><br><span class="line">    User git</span><br><span class="line">    Hostname gitlab.xxx.com</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
 
 <p>这里有个小小的坑，就是之前设置了git config —global，在hexo deploy时会使用全局配置的用户名进行，需要在hexo的项目中配置局部设置。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git config user.name <span class="string">"A"</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git config user.email <span class="string">"A@gmail.com"</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> git config user.name "A"</span><br><span class="line"><span class="meta">$</span> git config user.email "A@gmail.com"</span><br></pre></td></tr></table></figure>
 
 <p>这样就会使用配置后的局部用户名进行push。</p>
 <p>其次就是不要用hexo init命令。原因是当前目录已经建立了git仓库环境, hexo init会覆盖到当前的git环境，重建一个新的，这样和我们的私有Hexo源码仓库脱离了联系。<br>最后，由于在yml文件已经配置了deploy的branch是master，所以执行hexo d时还是会将页面文件保存至master，而源文件需要手动push到hexo分支上。</p>
@@ -657,7 +757,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
@@ -754,7 +854,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
@@ -848,7 +948,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
@@ -951,7 +1051,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
@@ -1052,7 +1152,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
@@ -1138,107 +1238,11 @@
 
 
     
-      
-
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                <a class="post-title-link" href="/2017/03/16/Java集合框架学习8/" itemprop="url">
-                  Java集合框架学习(8)——Set接口和SortedSet接口
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2017-03-16T09:38:11+08:00" content="2017-03-16">
-              2017-03-16
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <hr>
-<p>Set 是不包含重复元素的 Collection。更确切地讲，Set 不包含满足 e1.equals(e2) 的元素对 e1 和 e2，并且最多包含一个 null 元素。正如其名称所暗示的，此接口模仿了数学上的 set 抽象。声明的方法都是直接继承自父接口Collection的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">public interface Set&lt;E&gt; extends Collection&lt;E&gt; &#123;</span><br><span class="line">    </span><br><span class="line">    int size();</span><br><span class="line"></span><br><span class="line">    boolean isEmpty();</span><br><span class="line"></span><br><span class="line">    boolean contains(Object o);</span><br><span class="line"></span><br><span class="line">    Iterator&lt;E&gt; iterator();</span><br><span class="line"></span><br><span class="line">    Object[] toArray();</span><br><span class="line"></span><br><span class="line">    &lt;T&gt; T[] toArray(T[] a);</span><br><span class="line"></span><br><span class="line">    boolean add(E e);</span><br><span class="line"></span><br><span class="line">    boolean remove(Object o);</span><br><span class="line"></span><br><span class="line">    boolean containsAll(Collection&lt;?&gt; c);</span><br><span class="line"></span><br><span class="line">    boolean addAll(Collection&lt;? extends E&gt; c);</span><br><span class="line"></span><br><span class="line">    boolean retainAll(Collection&lt;?&gt; c);</span><br><span class="line"></span><br><span class="line">    boolean removeAll(Collection&lt;?&gt; c);</span><br><span class="line"></span><br><span class="line">    void clear();</span><br><span class="line"></span><br><span class="line">    boolean equals(Object o);</span><br><span class="line"></span><br><span class="line">    int hashCode();</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    default Spliterator&lt;E&gt; spliterator() &#123;  // ... &#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>SortedSet 里面的元素一定是有序的。保证迭代器按照元素递增顺序遍历的集合，可以按照元素的自然顺序（参见 Comparable）进行排序，或者按照创建有序集合时提供的 Comparator进行排序。要采用此排序，还要提供一些其他操作。插入有序集合的所有元素都必须实现 Comparable 接口（或者被指定的 Comparator 所接受）。另外，所有这些元素都必须是可相互比较的，比如像 e1.compareTo(e2)<br>（或 comparator.compare(e1, e2)）对于有序集合中的任意元素 e1 和 e2 都不能抛出ClassCastException。试图违反这些限制将导致违反规则的方法或者构造方法调用抛出 ClassCastException。<br>注意，如果有序集合正确实现了 Set 接口，则有序集合所保持的顺序（无论是否明确提供了比较器）<br>都必须保持相等一致性。这也是因为 Set 接口是按照 equals 操作定义的，但有序集合使用它的 compareTo（或 compare）方法对所有元素进行比较，<br>因此从有序集合的观点来看，此方法认为相等的两个元素就是相等的。<br>即使顺序没有保持相等一致性，有序集合的行为仍然是 定义良好的，<br>只不过没有遵守 Set 接口的常规协定。<br>所有通用有序集合实现类都应该提供 4 个“标准”构造方法：<br>1) void（不带参数）构造方法，创建空的有序集合，按照元素的自然顺序排序。<br>2) 带有一个 Comparator 类型参数的构造方法，创建一个空的有序集合，根据指定的比较器排序。<br>3) 带有一个 Collection 类型参数的构造方法，创建一个元素与参数相同的有序集合，按照元素的自然顺序排序。<br>4) 带有一个 SortedSet 类型参数的构造方法，创建一个新的有序集合，元素及排序方法与输入的有序集合相同。<br>除了 JDK 实现（TreeSet 类）遵循此建议外，无法保证强制实施此建议（因为接口不能包含构造方法）。</p>
-<p>声明的主要接口</p>
-<html><head><meta name="generator" content="Hexo 3.9.0"><title></title></head><body><table id="pubmethods"><tbody><tr><th colspan="12">Public Methods</th></tr><tr><td><nobr>abstract&nbsp;<a>Comparator</a>&lt;?&nbsp;super&nbsp;E&gt;</nobr></td><td width="100%"><nobr><span>comparator</span>()</nobr><div>Returns the comparator used to compare elements in this&nbsp;<code>SortedSet</code>.</div><div>返回与此有序集合关联的比较器，如果使用元素的自然顺序，则返回null。</div></td></tr><tr><td><nobr>abstract E</nobr></td><td width="100%"><nobr><span>first</span>()</nobr><div>Returns the first element in this&nbsp;<code>SortedSet</code>.</div><div>返回此有序集合中当前第一个（最小的）元素。</div></td></tr><tr><td><nobr>abstract&nbsp;<a>SortedSet</a>&lt;E&gt;</nobr></td><td width="100%"><nobr><span>headSet</span>(E end)</nobr><div>Returns a&nbsp;<code>SortedSet</code>&nbsp;which contains elements less than the end element.</div><div>用一个SortedSet,返回此有序集合中小于end的所有元素。</div></td></tr><tr><td><nobr>abstract E</nobr></td><td width="100%"><nobr><span>last</span>()</nobr><div>Returns the last element in this&nbsp;<code>SortedSet</code>.</div><div>返回此有序集合中最后一个（最大的）元素</div></td></tr><tr><td><nobr>abstract&nbsp;<a>SortedSet</a>&lt;E&gt;</nobr></td><td width="100%"><nobr><span>subSet</span>(E start,E end)</nobr><div>Returns a&nbsp;<code>SortedSet</code>&nbsp;which contains elements greater or equal to the start element but less than the end element.</div><div>返回此有序集合的部分元素，元素范围从fromElement（包括）到toElement（不包括）。</div></td></tr><tr><td><nobr>abstract&nbsp;<a>SortedSet</a>&lt;E&gt;</nobr></td><td width="100%"><nobr><span>tailSet</span>(E start)</nobr><div>Returns a&nbsp;<code>SortedSet</code>&nbsp;which contains elements greater or equal to the start element.</div><div>返回此有序集合的部分元素，其元素大于或等于fromElement。</div></td></tr></tbody></table></body></html>
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1269,14 +1273,14 @@
 
       <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" src="/uploads/avatar.jpg" alt="Carl John" itemprop="image"/>
+          <img class="site-author-image" src="/uploads/avatar.jpg" alt="Carl John" itemprop="image">
           <p class="site-author-name" itemprop="name">Carl John</p>
         </div>
         <p class="site-description motion-element" itemprop="description"></p>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">50</span>
+              <span class="site-state-item-count">51</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1322,7 +1326,7 @@
     </main>
 
     <footer id="footer" class="footer">
-      <div class="footer-inner"> <div class="copyright" >
+      <div class="footer-inner"> <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2020</span>
